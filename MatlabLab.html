@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl" translate="no">
+<head>
+<meta charset="UTF-8">
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>MATLAB Laboratory – Lab 1-2</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-anchor:none}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px;direction:rtl}
+.container{max-width:1200px;margin:0 auto}
+.labs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:360px;margin:0 auto 16px;direction:ltr}
+.lab{padding:8px 8px;background:#16a34a;border:2px solid #15803d;border-radius:10px;color:#fff;cursor:pointer;font-size:15px;font-weight:900;font-family:inherit;letter-spacing:.4px;box-shadow:0 3px 9px rgba(0,0,0,.28);transition:all .25s}
+.lab:hover{background:#22c55e;transform:translateY(-2px)}
+.lab.active{background:#14532d;border-color:#fff;box-shadow:0 0 0 2px #22c55e,0 4px 12px rgba(0,0,0,.4)}
+.labs-hr{border:0;height:2px;background:rgba(255,255,255,.55);border-radius:2px;max-width:360px;margin:0 auto 16px}
+.tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;justify-content:center}
+.tab{padding:12px 22px;background:rgba(255,255,255,.2);border:none;border-radius:8px;color:#fff;cursor:pointer;font-size:15px;font-weight:bold;transition:all .3s;backdrop-filter:blur(10px)}
+.tab:hover{background:rgba(255,255,255,.3);transform:translateY(-2px)}
+.tab.active{background:#fff;color:#667eea;box-shadow:0 4px 15px rgba(0,0,0,.2)}
+.content{display:none}.content.active{display:block;animation:fadeIn .4s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.example{background:#fff;border-radius:12px;padding:24px;margin-bottom:24px;box-shadow:0 8px 28px rgba(0,0,0,.18)}
+.title-row{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.example-title{flex:1;background:linear-gradient(135deg,#e0f2fe,#bae6fd);padding:14px 18px;border-radius:8px;font-size:17px;font-weight:bold;color:#0c4a6e}
+.pdf-page{background:#f97316;color:#fff;font-size:11px;font-weight:bold;padding:5px 11px;border-radius:20px;white-space:nowrap;direction:ltr;box-shadow:0 2px 6px rgba(249,115,22,.35)}
+.code-box{background:#1e1e1e;border-radius:10px;margin-bottom:18px;overflow:hidden;border:1px solid #333;display:flex;direction:ltr}
+.line-numbers{background:#2d2d2d;border-left:4px solid #5cb85c;padding:18px 0;min-width:42px;text-align:center;font-family:Consolas,Monaco,monospace;font-size:15px;color:#858585;line-height:1.7;user-select:none;flex-shrink:0}
+.line-numbers span{display:block;padding:0 8px}
+.code-content{padding:18px 20px;overflow-x:auto;flex:1}
+.code-content pre{font-family:Consolas,Monaco,monospace;line-height:1.7;white-space:pre;color:#e2e8f0;font-size:15px;text-align:left}
+.kw{color:#d4a574;font-weight:700}.dt{color:#bb86fc;font-weight:700}.con{color:#4fc3f7;font-weight:600}.num{color:#b5cea8}.str{color:#ce9178}.cmt{color:#6a9955;font-style:italic}
+.output-box{background:linear-gradient(135deg,#dbeafe,#bfdbfe);border:2px solid #3b82f6;border-radius:8px;padding:14px 18px;margin-bottom:18px;direction:ltr;overflow-x:auto}
+.output-header{font-weight:bold;color:#1e40af;margin-bottom:8px;font-size:15px}
+.output-content{color:#1e3a8a;font-family:Consolas,monospace;font-size:14px;line-height:1.8;white-space:pre;text-align:left}
+.expl-box{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #86efac;border-right:6px solid #22c55e;border-radius:14px;padding:22px 24px}
+.expl-title{font-weight:800;color:#166534;margin-bottom:14px;font-size:16px;border-bottom:2px dashed #86efac;padding-bottom:10px}
+.expl-box ul{list-style:none}
+.expl-box li{margin-bottom:11px;line-height:2;font-size:15px;color:#1c1917;padding:10px 14px;background:#fff;border-radius:9px;border-right:4px solid #22c55e;display:flex;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.rng{flex-shrink:0;min-width:36px;height:24px;line-height:22px;text-align:center;background:#dcfce7;color:#166534;font-weight:800;border:1.5px solid #22c55e;border-radius:5px;padding:0 6px;font-size:13px;margin-top:6px}.sn{direction:ltr;unicode-bidi:isolate;font-family:Consolas,monospace;font-size:13px;display:inline-block;max-width:100%;overflow-x:auto;white-space:nowrap;vertical-align:middle}.sn.sm{font-size:10px}
+.ln{background:#22c55e;color:#fff;font-weight:700;font-size:13px;padding:0 10px;border-radius:20px;height:26px;line-height:26px;flex-shrink:0;margin-top:5px;direction:ltr}
+.expl-box b{color:#0369a1;background:#dbeafe;padding:1px 7px;border-radius:5px;direction:ltr;display:inline-block;font-family:Consolas,monospace;font-size:13px}
+.expl-box code{background:#1e1e1e;color:#ce9178;padding:2px 7px;border-radius:5px;font-size:13px;font-family:Consolas,monospace;direction:ltr;display:inline-block}
+.intro{background:#fff;border-radius:12px;padding:30px;text-align:center;box-shadow:0 8px 28px rgba(0,0,0,.18)}
+.intro h2{color:#667eea;margin-bottom:18px;font-size:1.9em}.intro p{color:#4b5563;line-height:1.8;margin-bottom:12px}
+.expl-box li{flex-direction:column;align-items:flex-start;gap:6px}
+.expl-box li>span:last-child{width:100%}
+.expl-box .rng{min-width:30px;height:20px;line-height:18px;font-size:12px;padding:0 5px;border-radius:4px;margin-top:0}
+.expl-box .sn{display:block;width:fit-content;max-width:100%;margin-bottom:6px;white-space:pre;text-align:left}
+.expl-box .sn{overflow:visible;overflow-x:visible;white-space:normal;overflow-wrap:anywhere}
+.sn.xs{font-size:8px}
+.cls{color:#4ec9b0}.fn{color:#dcdcaa}.var{color:#9cdcfe}.op{color:#ff79c6}
+.more-btn{display:block;width:100%;margin-top:16px;padding:14px;border:none;border-radius:10px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:16px;font-weight:bold;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(102,126,234,.35)}
+.more-panel{display:none;margin-top:14px;background:#f5f3ff;border:1.5px solid #c4b5fd;border-right:6px solid #7c3aed;border-radius:14px;padding:20px}
+.more-panel.open{display:block;animation:fadeIn .4s}
+.more-title{font-weight:800;color:#5b21b6;font-size:16px;margin-bottom:10px}
+.more-intro,.more-sum{line-height:2;color:#1c1917;font-size:15px;margin-bottom:14px}
+.more-panel code{background:#1e1e1e;color:#ce9178;padding:2px 7px;border-radius:5px;font-size:13px;font-family:Consolas,monospace;direction:ltr;display:inline-block}
+.st{background:#fff;border:1.5px solid #ddd6fe;border-right:5px solid #7c3aed;border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.st-h{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.st-h .rng{margin-top:0;min-width:30px;height:20px;line-height:18px;font-size:12px;padding:0 5px;border-radius:4px}
+.st-h .sn{white-space:normal;overflow:visible;overflow-wrap:anywhere;background:#dbeafe;color:#0369a1;padding:1px 7px;border-radius:5px}
+.st p{line-height:2;font-size:15px;color:#1c1917;margin-bottom:8px}
+.st-v{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px;color:#6b7280}
+.vs{font-style:normal;background:#ede9fe;color:#4c1d95;border-radius:6px;padding:1px 8px;font-family:Consolas,monospace;direction:ltr;font-size:13px;font-weight:700}
+.st p{font-size:16px;line-height:2.1}
+.walk{background:#fff;border:1.5px solid #86efac;border-radius:10px;padding:12px 14px;margin-bottom:14px;line-height:2;font-size:15px;color:#1c1917}.more-panel .walk{border-color:#c4b5fd;margin-bottom:14px}
+.walk .wl{display:block;font-weight:800;color:#166534;margin-bottom:4px}.more-panel .walk .wl{color:#5b21b6}
+.walk code{background:#1e1e1e;color:#ce9178;padding:2px 7px;border-radius:5px;font-size:13px;font-family:Consolas,monospace;direction:ltr;display:inline-block}
+.expl-box .rng,.st-h .rng{min-width:0;padding:0 8px;white-space:nowrap}
+.code-box.pinned{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;max-height:42vh;overflow:auto;align-items:flex-start;box-shadow:0 8px 22px rgba(0,0,0,.45)}
+.code-box.pinned .line-numbers{font-size:12px}.code-box.pinned .code-content pre{font-size:12px}
+.container{padding-bottom:80px}
+.pin-wrap{display:none;position:fixed;left:16px;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:100;flex-direction:column;align-items:flex-start;gap:8px;direction:ltr}
+.pin-wrap.show{display:flex}
+.pin-pill{background:#fff;color:#111;font:600 15px 'Segoe UI',Tahoma,sans-serif;padding:8px 14px;border-radius:14px;box-shadow:0 3px 10px rgba(0,0,0,.25)}
+.pin-fab{width:58px;height:58px;border:none;border-radius:18px;background:#7c3aed;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 14px rgba(0,0,0,.35);cursor:pointer}
+.pin-wrap.on .pin-fab{background:#1fa855}.pin-wrap.on svg path:last-child{fill:#fff}
+.code-box.pinned.wide{width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);border-radius:0;border-left:0;border-right:0}
+.pin-fab{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+.code-box.pinned{position:fixed;margin:0}
+.code-box.pinned.wide{left:0;width:100vw;margin:0;border-radius:0;border-left:0;border-right:0}
+.pin2 .pin-fab{background:#dc2626}.pin2.on .pin-fab{background:#f97316}
+.code-box.pinned.dim{visibility:hidden}
+.output-box{padding:7px 12px;border-width:1.5px;border-radius:6px;margin-bottom:12px}
+.output-header{font-size:12px;margin-bottom:3px}
+.output-content{font-size:11px;line-height:1.5}
+.st-h{flex-direction:column;align-items:flex-start;gap:6px}
+.pin-fab{box-sizing:border-box;outline:none;-webkit-tap-highlight-color:transparent}
+.pin-fab svg{transition:transform .2s}
+.pin-wrap.full .pin-fab{border:4px solid #7c3aed}
+.pin2.full .pin-fab{border-color:#dc2626}
+.pin-wrap.full svg{transform:rotate(45deg)}
+.usr{color:#fff;font-weight:800}
+.pin-wrap.dock{left:0}
+.pin-wrap.dock .pin-fab{opacity:.45;transform:translateX(-32px)}
+.pin-wrap.dock .pin-pill{opacity:0;pointer-events:none}
+.pin-fab{transition:transform .2s ease,background .2s,opacity .2s}
+.pin-fab{touch-action:none;transition:transform .2s ease,background .2s}
+.pin-fab.drag{transition:none;box-shadow:0 10px 24px rgba(0,0,0,.45)}
+.pin-pill{transition:background .15s,color .15s}
+.pin-pill{white-space:nowrap;max-width:calc(100vw - 24px);font-size:13px;line-height:1.6;padding:8px 12px}
+.pin-pill.hint{background:#7c3aed;color:#fff}.pin2 .pin-pill.hint{background:#dc2626}
+.fb-box{margin-top:26px;padding:22px;background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:1.5px solid #c4b5fd;border-radius:14px;text-align:right}
+.fb-title{font-weight:800;color:#5b21b6;font-size:17px;margin-bottom:6px}
+.fb-sub{color:#6b5b95;font-size:13.5px;margin-bottom:14px;line-height:1.8}
+.fb-quick{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.fb-qbtn{flex:1;min-width:140px;padding:10px 14px;border:1.5px solid #ddd6fe;background:#fff;border-radius:10px;color:#5b21b6;font-weight:700;font-size:14.5px;cursor:pointer;font-family:inherit;transition:.2s}
+.fb-qbtn:hover{background:#ede9fe;border-color:#a78bfa}
+.fb-overlay{display:none;position:fixed;inset:0;background:rgba(17,12,34,.55);z-index:200;align-items:center;justify-content:center;padding:20px}
+.fb-overlay.open{display:flex}
+.fb-dialog{background:#fff;border-radius:16px;padding:22px;max-width:360px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.4);text-align:center}
+.fb-dialog h3{color:#5b21b6;font-size:17px;margin-bottom:14px}
+.fb-dialog .fb-qbtn{width:100%;margin-bottom:10px;text-align:center}
+.fb-dialog-cancel{width:100%;padding:10px;border:none;background:#f3f4f6;color:#4b5563;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;margin-top:4px}
+.fb-area{width:100%;min-height:84px;padding:12px 14px;border:1.5px solid #ddd6fe;border-radius:10px;font-family:inherit;font-size:14.5px;resize:vertical;color:#1c1917;box-sizing:border-box;margin-bottom:12px}
+.fb-area:focus{outline:none;border-color:#7c3aed}
+.fb-send{width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(102,126,234,.3)}
+.fb-send:hover{filter:brightness(1.07)}
+.fb-send:disabled{opacity:.6;cursor:default}
+.fb-send2{background:linear-gradient(135deg,#f97316,#ea580c);box-shadow:0 4px 12px rgba(234,88,12,.3);margin-top:10px}
+.fb-msg{margin-top:10px;text-align:center;font-size:13.5px;font-weight:700;border-radius:8px;padding:9px;display:none}
+.fb-msg.ok{display:block;background:#dcfce7;color:#166534}
+.fb-msg.err{display:block;background:#fee2e2;color:#991b1b}
+.code-box.has-tools{flex-wrap:wrap}
+.code-tools{flex:0 0 100%;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:2px 10px;background:linear-gradient(180deg,#2f2f35,#26262b);border-bottom:1px solid #3b3b44;position:sticky;top:0;z-index:3;direction:ltr}
+.ct-l{display:flex;align-items:center;gap:6px}
+.ct-l i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ff5f56}
+.ct-l i:nth-child(2){background:#ffbd2e}.ct-l i:nth-child(3){background:#27c93f}
+.ct-l b{margin-left:8px;color:#9ca3af;font:600 12px Consolas,monospace;letter-spacing:.5px}
+.ct-r{display:flex;align-items:center;gap:10px}
+.copy-btn{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.08);color:#e5e7eb;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;transition:.2s;-webkit-tap-highlight-color:transparent}
+.copy-btn:hover{background:rgba(255,255,255,.16)}
+.copy-btn.done{background:rgba(34,197,94,.22);border-color:#4ade80;color:#86efac}
+.ku-sw{display:flex;align-items:center;gap:8px;padding:0 10px 0 4px;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.06);font-weight:700;font-size:13px;color:#cbd5e1;cursor:pointer;user-select:none;direction:rtl;-webkit-tap-highlight-color:transparent;transition:background .25s,border-color .25s,color .25s}
+.ku-sw:has(input:checked){background:rgba(59,130,246,.2);border-color:#60a5fa;color:#93c5fd}
+.ku-sw input{display:none}
+.ku-sw .sw{position:relative;display:inline-block;width:36px;height:12px;margin:5px 4px;border-radius:6px;background:#475569;transition:background .25s;direction:ltr}
+.ku-sw .sw::after{content:'';position:absolute;top:-4px;left:-3px;width:20px;height:20px;border-radius:50%;background:#94a3b8;box-shadow:0 2px 5px rgba(0,0,0,.45);transition:left .25s,background .25s,box-shadow .25s}
+.ku-sw input:checked+.sw{background:#1e40af}
+.ku-sw input:checked+.sw::after{left:19px;background:#3b82f6;box-shadow:0 0 12px rgba(59,130,246,.85)}
+.code-box.pinned .code-tools{padding:1px 8px}.code-box.pinned .ct-l i{display:none}
+@media(max-width:480px){.ct-l{display:none}.code-tools{padding:2px 6px;justify-content:center}.ct-r{flex-wrap:nowrap;justify-content:center;gap:4px;max-width:100%}.copy-btn{padding:2px 7px;font-size:11px;white-space:nowrap;gap:3px}.ku-sw{font-size:11px;gap:3px;padding:0 6px 0 1px;white-space:nowrap}.ku-sw .sw{width:22px;height:8px;margin:5px 2px;border-radius:4px}.ku-sw .sw::after{top:-4px;left:-2px;width:16px;height:16px}.ku-sw input:checked+.sw::after{left:8px}}
+.req{line-height:2;font-size:13px;color:#1c1917;margin:10px 0 18px}
+.req b{font-size:15px}
+.example.wide5{margin-left:-3px;margin-right:-3px;padding:22px 14px}
+.example.wide5 .expl-box{padding:16px 12px}
+.example.wide5 .expl-box li{padding:9px 11px}
+.example.wide5 .more-panel{padding:14px 12px}
+.example.wide5 .st{padding:11px 11px}
+.example.wide5 .walk{padding:11px 12px}
+body.wide5{padding:18px 12px}
+body.wide5 .container{max-width:1400px}
+body.wide5 .example{padding:22px 14px}
+body.wide5 .title-row{padding:0}
+body.wide5 .req{padding:0}
+body.wide5 .code-box,body.wide5 .output-box{margin-left:0;margin-right:0}
+body.wide5 .expl-box{padding:18px 12px;border-right-width:5px}
+body.wide5 .expl-box li{padding:10px 12px}
+body.wide5 .more-panel{padding:16px 12px}
+body.wide5 .more-btn{width:100%;margin-left:0;margin-right:0}
+body.wide5 .intro{padding:30px 20px}
+.example > .code-box{margin-bottom:38px}
+.expl-box .walk{font-size:13px}
+.expl-box .walk .wl{font-size:13px}
+.code-box.pinned .ct-r{flex-wrap:nowrap;gap:4px}
+.code-box.pinned .copy-btn{padding:2px 7px;font-size:11px;white-space:nowrap}
+.code-box.pinned .ku-sw{font-size:11px;gap:3px;padding:0 6px 0 1px;white-space:nowrap}
+.code-box.pinned .ku-sw .sw{width:22px;height:8px;margin:5px 2px;border-radius:4px}
+.code-box.pinned .ku-sw .sw::after{top:-4px;left:-2px;width:16px;height:16px}
+.code-box.pinned .ku-sw input:checked+.sw::after{left:8px}
+.ku-sw.dis{opacity:.4;cursor:not-allowed}
+.code-tools,.code-box.pinned .code-tools{padding:1px 6px;gap:4px;min-height:0}
+.code-tools .ct-r,.code-box.pinned .ct-r{gap:4px}
+.code-tools .copy-btn,.code-box.pinned .copy-btn{padding:0 7px;font-size:11px;line-height:1.6}
+.code-tools .ku-sw,.code-box.pinned .ku-sw{padding:0 6px 0 1px;font-size:11px;line-height:1.6;gap:3px}
+.code-tools .ku-sw .sw,.code-box.pinned .ku-sw .sw{width:22px;height:8px;margin:3px 2px;border-radius:4px}
+.code-tools .ku-sw .sw::after,.code-box.pinned .ku-sw .sw::after{top:-4px;left:-2px;width:16px;height:16px}
+.code-tools .ku-sw input:checked+.sw::after,.code-box.pinned .ku-sw input:checked+.sw::after{left:8px}
+.chat-head{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));right:10px;z-index:130;width:50px;height:50px;border:3px solid #fff;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#2563eb);display:none;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.45);cursor:pointer;padding:0;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:transform .2s,background .3s}
+.chat-head.show{display:flex}
+.chat-head:active{transform:scale(.88)}
+.chat-head.min{background:linear-gradient(135deg,#f97316,#dc2626);animation:chPulse 1.6s infinite}
+@keyframes chPulse{0%{box-shadow:0 0 0 0 rgba(249,115,22,.65)}100%{box-shadow:0 0 0 16px rgba(249,115,22,0)}}
+.code-full{position:fixed;top:48px;left:0;right:0;bottom:0;z-index:120;background:#1e1e1e;display:none;overflow-y:auto;overflow-x:hidden;direction:ltr;-webkit-overflow-scrolling:touch}
+.code-full{touch-action:pan-x pan-y}
+#cz{position:relative}
+.code-full.open{display:block;animation:fadeIn .25s}
+.zoom-bar{display:none;position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:10px;z-index:130;align-items:center;gap:4px;background:rgba(45,45,45,.95);border:2px solid #fff;border-radius:26px;padding:3px;box-shadow:0 4px 14px rgba(0,0,0,.45);direction:ltr}
+.zoom-bar.show{display:flex}
+.zoom-bar button{width:40px;height:40px;border:none;border-radius:50%;background:#7c3aed;color:#fff;font:700 24px/1 Consolas,monospace;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.zoom-bar button:active{background:#5b21b6}
+.zoom-bar span{min-width:30px;text-align:center;color:#fff;font:700 14px Consolas,monospace}
+.code-full .code-box{border:0;border-radius:0;margin:0;min-height:100%;overflow:visible;align-items:stretch}
+.code-full .line-numbers{font-size:16px;line-height:1.35;padding:12px 0 80px;min-width:34px;position:relative;z-index:2}
+.code-full .code-content{overflow-x:auto;overflow-y:hidden;min-width:0;position:relative;padding:12px 6px 80px 12px}
+.code-full .code-content pre{font-size:16px;line-height:1.35}
+.chat-head{top:calc(1px + env(safe-area-inset-top,0px));right:6px;width:46px;height:46px;border:3px solid #fff;background:linear-gradient(135deg,#7c3aed,#2563eb);box-shadow:0 4px 14px rgba(0,0,0,.45)}
+.chat-head svg{width:24px;height:24px;stroke-width:2.4}
+.chat-head.min{background:linear-gradient(135deg,#f97316,#dc2626);border-color:#fff}
+.zoom-bar{top:calc(8px + env(safe-area-inset-top,0px));left:8px;gap:0;background:rgba(40,40,40,.92);border:1.5px solid rgba(255,255,255,.35);border-radius:19px;padding:2px;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.zoom-bar button{width:32px;height:32px;background:transparent;color:#e5e7eb;font:400 20px/1 Consolas,monospace}
+.zoom-bar button:active{background:rgba(255,255,255,.18)}
+.zoom-bar span{min-width:26px;color:#cbd5e1;font:600 12px Consolas,monospace}
+.code-full.tbo{top:92px}
+.code-head{display:none;position:fixed;top:0;left:0;right:0;height:48px;background:#1e1e1e;border-bottom:1px solid #333;z-index:125}
+.code-head.show{display:block}
+.tb{display:none;position:fixed;top:48px;left:0;right:0;height:44px;background:#252526;border-bottom:1px solid #333;z-index:125;align-items:center;gap:1px;padding:0 6px;direction:ltr;transform-origin:right center;overflow-x:auto}
+.tb.open{display:flex;animation:tbIn .25s ease-out}
+@keyframes tbIn{from{transform:scaleX(.1);opacity:0}to{transform:none;opacity:1}}
+.tb>:first-child{margin-left:auto}.tb>:last-child{margin-right:auto}
+.tb button{width:28px;height:32px;border:none;border-radius:8px;background:transparent;color:#cbd5e1;display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;flex:none}
+.tb button svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tb button.on{background:#7c3aed;color:#fff}
+.tb button:disabled{opacity:.3}
+.tb .col i{width:16px;height:16px;border-radius:50%;background:var(--c);border:2px solid transparent;box-sizing:border-box;display:block}
+.tb .col.on{background:rgba(255,255,255,.12)}.tb .col.on i{border-color:#fff}
+.tb .sz i{background:#cbd5e1;border-radius:50%;display:block}
+.tb .sz.on{background:rgba(255,255,255,.12)}.tb .sz.on i{background:#fff}
+.tb .sep{width:1px;height:20px;background:#444;margin:0 4px;flex:none}
+.ink{position:absolute;left:0;top:0;pointer-events:none;touch-action:none;overflow:visible}
+.ink.act{pointer-events:auto}
+.ink .hit{pointer-events:none}
+.ink.er .hit{pointer-events:stroke}
+.chat-head{touch-action:none;transition:transform .2s ease,background .2s}.chat-head.drag{transition:none}
+.code-full.split{bottom:var(--sp,0px)}
+.hb{display:none;position:fixed;top:calc(9px + env(safe-area-inset-top,0px));left:122px;right:54px;height:36px;align-items:center;justify-content:center;gap:5px;z-index:130;direction:rtl}
+.hb.show{display:flex}
+.hb button{height:30px;padding:0 9px;border-radius:15px;border:1.5px solid;background:rgba(40,40,40,.92);font:700 11px 'Segoe UI',Tahoma,sans-serif;white-space:nowrap;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#hbReq{color:#38bdf8;border-color:#38bdf8}#hbReq.on{background:#38bdf8;color:#082f49}
+#hbSum{color:#4ade80;border-color:#4ade80}#hbSum.on{background:#4ade80;color:#052e16}
+.pane{display:none;position:fixed;left:0;right:0;bottom:0;height:var(--sp,45vh);background:#f0f9ff;z-index:124;overflow-y:auto;direction:rtl;padding:18px 16px 28px;box-shadow:0 -4px 14px rgba(0,0,0,.4);border-radius:14px 14px 0 0}
+.pane.open{display:block}
+.pane.sum{background:#f0fdf4}
+.pane .pt{font-weight:800;font-size:13px;margin-bottom:8px;color:#0c4a6e}
+.pane.sum .pt{color:#166534}
+.pane .pb{font-size:13px;line-height:1.65;color:#1c1917}
+.pane code{background:#1e1e1e;color:#ce9178;padding:2px 6px;border-radius:5px;font-size:12px;font-family:Consolas,monospace;direction:ltr;display:inline-block}
+.split-h{display:none;position:fixed;left:0;right:0;bottom:calc(var(--sp,0px) - 11px);height:22px;z-index:126;touch-action:none;cursor:ns-resize}
+.split-h.show{display:block}
+.split-h::after{content:'';position:absolute;left:50%;top:9px;width:56px;height:4px;margin-left:-28px;border-radius:3px;background:#9ca3af}
+.code-full,.code-full.tbo{top:calc(var(--tp,48px) + var(--rq,0px));bottom:var(--sm,0px)}
+.code-full.split{bottom:var(--sm,0px)}
+#paneReq{top:var(--tp,48px);bottom:auto;height:var(--rq,0px);background:#f0f9ff;border-radius:0 0 14px 14px;box-shadow:0 4px 14px rgba(0,0,0,.4);padding:12px 16px 18px}
+#paneSum{top:auto;bottom:0;height:var(--sm,0px);background:#f0fdf4}
+#reqSplit{top:calc(var(--tp,48px) + var(--rq,0px) - 11px);bottom:auto}
+#codeSplit{bottom:calc(var(--sm,0px) - 11px)}
+.tb .cur i{display:block;border-radius:50%;border:2px solid #fff;box-sizing:border-box;width:18px;height:18px}
+#tbSz i{background:#e5e7eb;border-color:transparent}
+.pop{display:none;position:fixed;z-index:140;background:#2d2d2d;border:1px solid #555;border-radius:12px;padding:8px;gap:6px;flex-wrap:wrap;max-width:216px;box-shadow:0 6px 18px rgba(0,0,0,.5);direction:ltr}
+.pop.open{display:flex}
+.pop .sw{width:30px;height:30px;border-radius:50%;border:2px solid transparent;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;box-sizing:border-box;position:relative;flex:none}
+.pop .sw.on{border-color:#fff}
+.pop .sz{background:#3a3a3a}.pop .sz i{background:#e5e7eb;border-radius:50%;display:block}
+.pop .rb{background:conic-gradient(red,yellow,lime,aqua,blue,magenta,red);overflow:hidden}
+.pop .rb input{position:absolute;left:0;top:0;opacity:0;width:100%;height:100%;cursor:pointer;border:0;padding:0}
+.pane{overflow:hidden}
+#paneReq{padding:0}
+.pane .psc{position:absolute;left:0;top:0;right:0;bottom:0;overflow-y:auto;overflow-x:hidden;touch-action:pan-y;padding:0 0 22px;direction:rtl}
+.pane .pwr{position:relative;width:100%}
+.pane .pin{transform-origin:top right;direction:rtl;width:100%;padding:0 16px;box-sizing:border-box}
+.pzb{position:absolute;left:8px;top:6px;z-index:3;display:flex;align-items:center;background:rgba(40,40,40,.92);border-radius:16px;padding:1px;direction:ltr}
+.pzb button{width:26px;height:26px;border:none;border-radius:50%;background:transparent;color:#e5e7eb;font:400 17px/1 Consolas,monospace;padding:0;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.pzb span{min-width:22px;text-align:center;color:#cbd5e1;font:600 11px Consolas,monospace}
+.pane code{font-size:.84em;padding:0 4px;border-radius:4px;display:inline;unicode-bidi:isolate;direction:ltr;line-height:inherit;background:#334155;color:#fde68a}
+.snst{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#1e1e1e;direction:ltr;overflow:hidden}
+.snst .sp{direction:rtl;box-sizing:border-box;width:100%;padding:0 calc(16px*var(--k)) calc(14px*var(--k));line-height:1.65;color:#1c1917}
+.snst .sp.rq{background:#f0f9ff}.snst .sp.sm{background:#f0fdf4}
+.snst .sp .pb,.snst .sp .pt{font-size:calc(var(--zp)*var(--k)*1px)}
+.snst .sp .pt{font-weight:800;color:#166534;margin-bottom:calc(8px*var(--k))}
+.snst .sp code{background:#334155;color:#fde68a;padding:0 calc(4px*var(--k));border-radius:calc(4px*var(--k));font-family:Consolas,Monaco,monospace;font-size:.84em;unicode-bidi:isolate;direction:ltr;display:inline;line-height:inherit}
+.snst .code-box{border:0;border-radius:0;margin:0;display:flex;width:100%;min-width:max-content;overflow:visible}
+.snst .line-numbers{font-size:calc(var(--fc)*1px);line-height:1.35;padding:calc(12px*var(--sk)) 0 calc(24px*var(--sk));min-width:calc(34px*var(--sk));border-left-width:calc(4px*var(--sk))}
+.snst .line-numbers span{padding:0 calc(8px*var(--sk))}
+.snst .code-content{overflow:visible;position:relative;padding:calc(12px*var(--sk)) calc(6px*var(--sk)) calc(24px*var(--sk)) calc(12px*var(--sk));flex:none}
+.snst .code-content pre{font-size:calc(var(--fc)*1px);line-height:1.35}
+.snst .ink{position:absolute;left:0;top:0;overflow:visible}
+.toast{display:none;position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:rgba(30,30,30,.95);color:#fff;font:600 13px 'Segoe UI',Tahoma,sans-serif;padding:10px 16px;border-radius:20px;z-index:200;direction:rtl;white-space:nowrap}
+.toast.show{display:block}
+.hb{left:116px;right:50px;gap:4px}
+.hb button{padding:0 7px;font-size:10.5px}
+.hb .cam{width:30px;padding:0;display:flex;align-items:center;justify-content:center;color:#f9a8d4;border-color:#f9a8d4;flex:none}
+.hb .cam svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hb .cam:active{background:#f9a8d4;color:#500724}
+.pzb{transition:opacity .3s;opacity:.92}
+.pzb.hide{opacity:0;pointer-events:none}
+.pzb{display:none!important}
+.zoom-bar[data-a=req]{border-color:#38bdf8}.zoom-bar[data-a=sum]{border-color:#4ade80}
+.ctip{position:fixed;right:6px;top:calc(56px + env(safe-area-inset-top,0px));z-index:131;display:none;max-width:220px;background:#fff;color:#111;transition:background .15s,color .15s;font:600 14px 'Segoe UI',Tahoma,sans-serif;padding:8px 12px;border-radius:14px;box-shadow:0 3px 10px rgba(0,0,0,.35);pointer-events:none;animation:ctB 1.2s ease-in-out infinite}
+.ctip.show{display:block}.ctip.hint{background:#7c3aed;color:#fff;animation:none}.ctip.hint:before{border-bottom-color:#7c3aed}
+.ctip:before{content:"";position:absolute;top:-6px;right:14px;border:6px solid transparent;border-top:0;border-bottom-color:#fff}
+@keyframes ctB{50%{transform:translateY(4px)}}
+.zoom-bar{width:58px;height:30px;top:calc(12px + env(safe-area-inset-top,0px));box-sizing:border-box;justify-content:space-between;padding:0 1px;align-items:center}
+.zoom-bar button{width:19px;height:26px;font-size:16px}
+.zoom-bar span{min-width:0;font-size:10px}
+.hb{--g:max(2px,calc((100vw - 14px - 58px - 46px - 184px)/4));left:calc(8px + 58px + var(--g));right:calc(6px + 46px + var(--g));gap:var(--g);justify-content:flex-start}
+.hb button{padding:0;flex:none;font-size:10.5px}
+#hbReq{width:54px}#hbSum{width:96px}.hb .cam{width:30px}
+#paneReq,#paneSum{border-radius:0;box-shadow:none}
+#reqSplit::before,#codeSplit::before{display:none!important}
+#reqSplit::before{top:11px;background:linear-gradient(#f0f9ff,rgba(240,249,255,.55) 40%,rgba(240,249,255,0))}
+#codeSplit::before{bottom:11px;background:linear-gradient(rgba(240,253,244,0),rgba(240,253,244,.55) 60%,#f0fdf4)}
+.split-h::after{background:rgba(156,163,175,.9);box-shadow:none}
+.chat-head.dock{opacity:.4;transform:translateX(30px)}
+.chat-head.nudge{animation:chN 1.3s ease-in-out infinite}
+@keyframes chN{0%,100%{transform:translateY(0)}45%{transform:translateY(16px)}70%{transform:translateY(16px)}}
+.pane .pb>b:first-child,.pane .pb .hg,.snst .sp .pb>b:first-child,.snst .sp .pb .hg{color:#166534;font-weight:800;font-size:1.12em}
+.pane .pb:first-child,.snst .sp .pb:first-child{margin-top:0}
+.snst .sp{padding-top:calc(14px*var(--k))}
+.pane .pin{padding-top:12px}
+.qb{display:none;position:fixed;top:var(--qt,48px);left:0;right:0;height:36px;background:#252526;border-bottom:1px solid #333;z-index:125;align-items:center;justify-content:center;gap:8px;padding:0 6px;direction:ltr;transform-origin:right center}
+.qb.open{display:flex;animation:tbIn .25s ease-out}
+.qb .copy-btn{padding:0 9px;font-size:11.5px;line-height:1.7;white-space:nowrap}
+.qb .ku-sw{padding:0 7px 0 1px;font-size:11.5px;line-height:1.7;gap:3px;white-space:nowrap}
+.qb .ku-sw .sw{width:22px;height:8px;margin:3px 2px;border-radius:4px}
+.qb .ku-sw .sw::after{top:-4px;left:-2px;width:16px;height:16px}
+.qb .ku-sw input:checked+.sw::after{left:8px}
+.chat-head.nudgeL{animation:chL 1.3s ease-in-out infinite}
+@keyframes chL{0%,100%{transform:translateX(0)}45%{transform:translateX(-16px)}70%{transform:translateX(-16px)}}
+.pane .pin{padding-top:7px;position:relative}
+.snst .sp{padding-top:calc(8.4px*var(--k))}
+.code-full .line-numbers,.code-full .code-content pre{line-height:1.65}
+.snst .line-numbers,.snst .code-content pre{line-height:1.65}
+.tb{gap:0;padding:0 4px}
+.tb button{width:34px;height:40px;flex-direction:column;gap:1px}
+.tb button small{font:600 7px/1 'Segoe UI',Tahoma,sans-serif;color:#9ca3af;white-space:nowrap}
+.tb button.on small{color:#fff}
+.tb .sep{margin:0 2px;height:24px}
+.tb button[data-t=hl]{position:relative}
+.tb button[data-t=hl] small{margin-top:3px}
+#hlBar{position:absolute;left:50%;margin-left:-9px;top:24px;width:18px;height:3px;border-radius:2px;background:#ff4d4d}
+.hb .cam{flex-direction:column;gap:1px;width:34px;height:30px}
+.hb .cam svg{width:13px;height:13px}
+.hb .cam small{font:700 7px/1 'Segoe UI',Tahoma,sans-serif;color:#f9a8d4;white-space:nowrap}
+.code-full,.code-full .code-content,.pane .psc{scrollbar-width:none}
+.code-full::-webkit-scrollbar,.code-full .code-content::-webkit-scrollbar,.pane .psc::-webkit-scrollbar{display:none}
+.pane .psc{overflow-x:auto}
+.sbar{display:none;position:fixed;z-index:127;pointer-events:none}
+.sbar.v{width:22px}.sbar.h{height:22px}
+.sbar i{position:absolute;background:rgba(59,130,246,.9);border-radius:4px;pointer-events:auto;touch-action:none}
+.sbar i::before{content:'';position:absolute;left:-8px;right:-8px;top:-8px;bottom:-8px}
+.sbar.v i{right:3px;width:10px;border-radius:6px}.sbar.h i{bottom:3px;height:10px;border-radius:6px}
+.snst .spw{position:relative;overflow:hidden;width:100%;direction:rtl}
+.snst .spw.rq{background:#f0f9ff}.snst .spw.sm{background:#f0fdf4}
+.snst .spw .pin{position:relative;direction:rtl;box-sizing:border-box;padding:7px 16px 0}
+.snst .spw .pb{font-size:13px;line-height:1.65;color:#1c1917}
+.snst .spw code{background:#334155;color:#fde68a;padding:0 4px;border-radius:4px;font-family:Consolas,Monaco,monospace;font-size:.84em;unicode-bidi:isolate;direction:ltr;display:inline;line-height:inherit}
+.snst .spw .pb>b:first-child,.snst .spw .pb .hg{color:#166534;font-weight:800;font-size:1.12em}
+.snst .spw .pb:first-child{margin-top:0}
+.hb button{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;transition:transform .12s,background .15s;touch-action:none}
+.hb button.dg::before{content:'↓ '}
+#hbShot.dg{background:#f9a8d4;color:#500724}#hbShot.dg small{color:#500724}#hbReq.dg{background:#38bdf8;color:#082f49}#hbSum.dg{background:#4ade80;color:#052e16}
+.pin-pill{position:relative;font-weight:600;box-shadow:0 3px 10px rgba(0,0,0,.35);animation:ctB 1.2s ease-in-out infinite}
+.pin-pill:after{content:"";position:absolute;bottom:-6px;left:23px;border:6px solid transparent;border-bottom:0;border-top-color:#fff}
+.pin-pill.hint{animation:none}.pin-pill.hint:after{border-top-color:#7c3aed}.pin2 .pin-pill.hint:after{border-top-color:#dc2626}
+.pin-wrap:not(.dock).nR .pin-fab{animation:pnR 1.3s ease-in-out infinite}
+.pin-wrap:not(.dock).nU .pin-fab{animation:pnU 1.3s ease-in-out infinite}
+@keyframes pnR{0%,100%{transform:translateX(0)}45%,70%{transform:translateX(16px)}}
+@keyframes pnU{0%,100%{transform:translateY(0)}45%,70%{transform:translateY(-16px)}}
+.pin-fab.drag{animation:none!important}
+#tbSb.on{background:#3b82f6;color:#fff}
+#tbSb.on small{color:#fff}
+#lockAlertOverlay{z-index:100000}
+.lock-overlay{position:fixed;inset:0;z-index:99999;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.lock-overlay.hide{display:none}
+body.locked{overflow:hidden}
+.lock-card{background:#fff;border-radius:18px;padding:36px 28px;max-width:360px;width:100%;box-shadow:0 20px 60px #00000059;text-align:center}
+.lock-card .lock-ic{font-size:44px;margin-bottom:10px}
+.lock-card h2{color:#1e293b;font-size:19px;margin-bottom:8px}
+.lock-card p{color:#64748b;font-size:14px;margin-bottom:20px;line-height:1.7}
+.lock-input{width:100%;padding:13px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:18px;text-align:center;letter-spacing:3px;font-weight:700;color:#1e293b;direction:ltr;margin-bottom:14px;outline:none;transition:border-color .2s}
+.lock-input:focus{border-color:#7c3aed}
+.lock-name-input{width:100%;box-sizing:border-box;padding:12px 16px;border:2px solid #e2e8f0;border-radius:10px;font-size:15px;color:#1e293b;direction:rtl;margin-bottom:12px;outline:none;transition:border-color .2s;font-family:inherit}
+.lock-name-input:focus{border-color:#7c3aed}
+.lock-name-input.err{border-color:#dc2626;animation:lockshake .3s}
+.lock-name-input[readonly]{background:#f1f5f9;color:#64748b;border-color:#e2e8f0;cursor:not-allowed}
+.lock-input.err{border-color:#dc2626;animation:lockshake .3s}
+@keyframes lockshake{0%,to{transform:translate(0)}25%{transform:translate(-6px)}75%{transform:translate(6px)}}
+.lock-btn{width:100%;padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:transform .15s}
+.lock-btn:hover{transform:translateY(-2px)}
+.lock-msg{min-height:20px;color:#dc2626;font-size:13px;margin-top:10px;font-weight:600}
+.lock-alt{margin-top:6px;font-size:13px;color:#7c3aed;cursor:pointer;font-weight:700;text-decoration:underline;background:none;border:none;font-family:inherit;padding:4px}
+.lock-req{display:none;margin-top:12px;text-align:right;border-top:1px dashed #e2e8f0;padding-top:14px}
+.lock-req.open{display:block}
+.lock-req input{width:100%;box-sizing:border-box;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;margin-bottom:10px;font-family:inherit;direction:rtl;outline:none}
+.lock-req input:focus{border-color:#7c3aed}
+.lock-req button{position:relative;overflow:hidden;width:100%;padding:10px;border:none;border-radius:8px;background:#7c3aed;color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;user-select:none;-webkit-user-select:none}
+.lock-req button:disabled{opacity:.6}
+.lock-req button.holding:after{content:"";position:absolute;inset:0 0 0 auto;width:var(--hold-pct,0%);background:#fff6;pointer-events:none}
+.lock-req button.holding{background:#5b21b6}
+.lock-req-msg{margin-top:8px;font-size:12.5px;font-weight:600;min-height:16px;white-space:pre-line;line-height:1.7}
+.menu-btn{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:14px;z-index:50;width:46px;height:46px;border:none;border-radius:12px;background:#394cb3;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;box-shadow:0 3px 10px #0003}
+.menu-btn:active{background:#2f3f98}
+.menu-btn span{display:block;width:26px;height:4px;border-radius:3px;background:#fff}
+.drawer-bg{position:fixed;inset:0;background:#0006;z-index:99990;opacity:0;pointer-events:none;transition:opacity .25s}
+.drawer-bg.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;left:0;right:0;z-index:99991;background:#394cb3;color:#fff;border-radius:0 0 22px 22px;padding:calc(16px + env(safe-area-inset-top,0px)) 18px 20px;transform:translateY(-110%);transition:transform .28s ease;box-shadow:0 12px 32px #0006;direction:rtl}
+.drawer.open{transform:none}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.drawer-user{font-weight:800;color:#fff;font-size:15px;direction:ltr;unicode-bidi:isolate;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.drawer-close{width:36px;height:36px;border:none;border-radius:10px;background:#ffffff2e;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0}
+.drawer-item{display:block;width:100%;padding:14px;border:none;border-radius:12px;background:#fff;color:#b91c1c;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit}
+.drawer-item+.drawer-item{margin-top:10px}
+.drawer-item.asg{background:#ffffff26;color:#fff;box-shadow:inset 0 0 0 1.5px #ffffff4d}
+.asg-dialog{max-width:420px;max-height:82vh;overflow-y:auto;text-align:right;direction:rtl}
+.asg-dialog h3{text-align:center}
+.asg-empty{color:#6b7280;font-size:14px;text-align:center;padding:18px 6px;line-height:1.9}
+.asg-item{border:1.5px solid #c7d2fe;border-right:5px solid #394cb3;border-radius:12px;padding:10px 12px;margin-bottom:10px;background:#f8faff}
+.asg-item b{display:block;color:#1e293b;font-size:15px;margin-bottom:4px}
+.asg-due{display:inline-block;background:#e0e7ff;color:#394cb3;border-radius:20px;padding:1px 10px;font-size:12px;font-weight:700;margin-bottom:4px}
+.asg-item p{color:#4b5563;font-size:13.5px;line-height:1.8;margin:0}
+.asg-item a{color:#394cb3;font-weight:700;font-size:13px}
+body.locked .menu-btn,body.locked .drawer,body.locked .drawer-bg{display:none}
+.run-btn{background:rgba(34,197,94,.22)!important;border-color:#4ade80!important;color:#86efac!important}
+.run-btn:active{background:rgba(34,197,94,.4)!important}
+.output-box.run-live{position:relative}
+.run-badge{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#1e40af;font:700 13px Consolas,monospace;direction:ltr}
+.output-box.run-flash{animation:runFlash .9s ease-out}
+@keyframes runFlash{0%{box-shadow:0 0 0 0 #22c55e}40%{box-shadow:0 0 0 6px #22c55e66}100%{box-shadow:0 0 0 0 #22c55e00}}
+.code-box.run-out-on>.line-numbers,.code-box.run-out-on>.code-content{display:none}
+.run-out{flex:1 1 100%;background:#1e1e1e;padding:12px 20px 14px;direction:ltr;position:relative;min-height:56px}
+.run-out .ro-h{font:700 11px Consolas,monospace;color:#9ca3af;margin-bottom:8px;letter-spacing:.3px}
+.run-out .ro-b{font-family:Consolas,Monaco,monospace;font-size:15px;line-height:1.7;color:#a7f3d0;white-space:pre;text-align:left;overflow-x:auto;border-left:3px solid #22c55e;padding-left:10px}
+.code-box.pinned .run-out{padding:6px 12px 8px}
+.code-box.pinned .run-out .ro-b{font-size:12px;line-height:1.6}
+.run-out .run-badge{left:24px;top:40px;transform:none;color:#86efac}
+.run-btn.back{background:rgba(96,165,250,.22)!important;border-color:#60a5fa!important;color:#93c5fd!important}
+.run-pop{position:fixed;left:10px;right:10px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:9000;background:linear-gradient(135deg,#dbeafe,#bfdbfe);border:2px solid #3b82f6;border-radius:12px;padding:8px 12px 12px;box-shadow:0 10px 30px #0006;direction:ltr;max-height:45vh;overflow:auto;display:none}
+.run-pop.open{display:block}
+.run-pop .rp-h{display:flex;align-items:center;justify-content:space-between;font-weight:800;color:#1e40af;font-size:13px;margin-bottom:6px}
+.run-pop .rp-h button{border:none;background:#ffffffaa;color:#1e40af;border-radius:8px;width:28px;height:28px;font-size:15px;cursor:pointer}
+.run-pop .rp-b{color:#1e3a8a;font-family:Consolas,monospace;font-size:13px;line-height:1.6;white-space:pre;text-align:left;position:relative;min-height:22px}
+.labs{grid-template-columns:repeat(2,1fr);direction:rtl}
+.code-tools,.qb{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.code-tools::-webkit-scrollbar,.qb::-webkit-scrollbar{display:none}
+.code-tools{justify-content:flex-start!important}
+.code-tools .ct-r{margin:0 auto;flex:0 0 auto;max-width:none}
+.code-tools .ct-r>*,.qb>*{flex:none}
+.qb{justify-content:flex-start}
+.qb>:first-child{margin-left:auto}
+.qb>:last-child{margin-right:auto}
+.run-btn{background:rgba(34,197,94,.12)!important;border:1.5px solid #22c55e!important;color:#4ade80!important;font-weight:800!important}
+.run-btn.back{background:rgba(96,165,250,.14)!important;border-color:#60a5fa!important;color:#93c5fd!important}
+</style>
+</head>
+<body class="locked"><button id="menuBtn" class="menu-btn" onclick="siteMenu(1)" aria-label="menu"><span></span><span></span><span></span></button><div class="drawer-bg" id="drawerBg" onclick="siteMenu(0)"></div><div class="drawer" id="drawer"><div class="drawer-head"><div class="drawer-user" id="drawerUser"></div><button class="drawer-close" onclick="siteMenu(0)" aria-label="close">✕</button></div><button class="drawer-item asg" id="asgBtn" onclick="siteAssignments()">📝 ئەسایمێنتەکان</button><button class="drawer-item" id="logoutBtn" onclick="siteLogout()">🚪 چوونە دەرەوە</button></div><div class="lock-overlay" id="lockOverlay"><div class="lock-card"><div class="lock-ic">🔒</div><h2>ئەم ماڵپەڕە تایبەتە</h2><p>تکایە ناو و کۆدی تایبەت بە خۆت بنووسە بۆ چوونەژوورەوە</p><input class="lock-name-input" id="lockNameInput" maxlength="40" placeholder="ناوی خۆت + ناوی باوکت + چەند ژمارەیەک" autocomplete="off" onkeydown="if(event.key==='Enter')document.getElementById('lockInput').focus()"><input class="lock-input" id="lockInput" maxlength="12" placeholder="کۆد" autocomplete="off" onkeydown="if(event.key==='Enter')checkLock()"><button class="lock-btn" id="lockBtn" onclick="checkLock()">چوونەژوورەوە ✅</button><div class="lock-msg" id="lockMsg"></div><button class="lock-alt" id="lockAltBtn" onclick="lockToggleReq()">کۆدت نیە؟ داواکردنی مۆڵەت لە دروستکەری ماڵپەڕ</button><div class="lock-req" id="lockReq"><input class="lock-name-input" id="lockReqName" maxlength="40" placeholder="ناوی خۆت + ناوی باوکت + چەند ژمارەیەک" autocomplete="off"><input class="lock-name-input" id="lockReqContact" maxlength="60" placeholder="داواکاری" autocomplete="off"><button id="lockReqBtn" onclick="lockSendReq()" onmousedown="lockHoldStart()" onmouseup="lockHoldEnd()" onmouseleave="lockHoldEnd()" ontouchstart="lockHoldStart()" ontouchend="lockHoldEnd()" ontouchcancel="lockHoldEnd()">📤 ناردنی داواکاری</button><div class="lock-req-msg" id="lockReqMsg"></div></div></div></div>
+<div class="container">
+<div style="text-align:center;color:#fff;margin-bottom:24px">
+<h1 style="font-size:2.2em;text-shadow:2px 2px 4px rgba(0,0,0,.3);margin-bottom:10px">💻 <bdi dir="ltr">MATLAB Laboratory</bdi></h1>
+<h2 style="font-size:1.3em;font-weight:400">لیکچەری تاقیگە</h2>
+</div>
+<div class="labs" id="labs"></div>
+<hr class="labs-hr">
+<div class="tabs" id="tabs"></div>
+<div id="views"></div>
+</div>
+<div class="pin-wrap" id="pinWrap"><span class="pin-pill" id="pinTxt">pin</span><button class="pin-fab" onclick="pinClick(0)" onpointerdown="pinDown(0,event)" onpointermove="pinMove(0,event)" onpointerup="pinUp(0,event)" onpointercancel="pinUp(0,event)" oncontextmenu="return false" aria-label="pin"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 3h6l-1 7 3 3v2H7v-2l3-3z"/></svg></button></div>
+<div class="pin-wrap pin2" id="pinWrap2"><span class="pin-pill" id="pinTxt2">pin</span><button class="pin-fab" onclick="pinClick(1)" onpointerdown="pinDown(1,event)" onpointermove="pinMove(1,event)" onpointerup="pinUp(1,event)" onpointercancel="pinUp(1,event)" oncontextmenu="return false" aria-label="pin"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 3h6l-1 7 3 3v2H7v-2l3-3z"/></svg></button></div>
+<div class="fb-overlay" id="fbOverlay" onclick="if(event.target===this)fbCloseDialog()"><div class="fb-dialog"><h3>چۆن دەتەوێت نامەکە بێت؟</h3>
+<button class="fb-qbtn" onclick="fbQuick('thanks')">🙏 سپاسگوزاری</button>
+<button class="fb-qbtn" onclick="fbQuick('suggest')">💡 پێشنیار</button>
+<button class="fb-qbtn" onclick="fbQuick('complaint')">⚠️ ڕخنە</button>
+<button class="fb-dialog-cancel" onclick="fbCloseDialog()">پاشگەزبوونەوە</button></div></div>
+<div class="ctip" id="ctip"></div><button class="chat-head" id="chatHead" aria-label="code"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5"/><path d="M16 7l5 5-5 5"/><path d="M14 5l-4 14"/></svg></button>
+<div class="code-full" id="codeFull"></div>
+<div class="zoom-bar" id="zoomBar"><button onclick="zoomBy(-1)" aria-label="-">−</button><span id="zv">11</span><button onclick="zoomBy(1)" aria-label="+">+</button></div>
+<div class="code-head" id="codeHead"></div>
+<div class="tb" id="tb">
+<button data-t="pen" onclick="setTool('pen')" aria-label="pen"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg><small>قەڵەم</small></button>
+<button data-t="hl" onclick="setTool('hl')" aria-label="highlighter"><svg viewBox="0 0 24 24"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg><b id="hlBar"></b><small>هایلایت</small></button>
+<span class="sep"></span>
+<button id="tbCol" class="cur" onclick="popOpen('col',this)" aria-label="color"><i></i><small>ڕەنگ</small></button>
+<button id="tbSz" class="cur" onclick="popOpen('sz',this)" aria-label="size"><i></i><small>قەبارە</small></button>
+<span class="sep"></span>
+<button data-t="erase" onclick="setTool('erase')" aria-label="eraser"><svg viewBox="0 0 24 24"><path d="M7 21h10"/><path d="M5 13l8-8a2 2 0 013 0l3 3a2 2 0 010 3l-8 8H9z"/></svg><small>ڕەشکەرەوە</small></button>
+<button id="tbClear" onclick="clearInk()" aria-label="clear"><svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M10 11v6M14 11v6"/><path d="M6 7l1 13h10l1-13"/><path d="M9 7V4h6v3"/></svg><small>سڕینەوە</small></button>
+<span class="sep"></span>
+<button id="tbUndo" onclick="undo()" aria-label="undo"><svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg><small>گەڕانەوە</small></button>
+<button id="tbRedo" onclick="redo()" aria-label="redo"><svg viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 000 12h3"/></svg><small>دووبارە</small></button>
+<span class="sep"></span>
+<button id="tbSb" onclick="sbToggle()" aria-label="scrollbars"><svg viewBox="0 0 24 24"><path d="M12 4v16"/><path d="M9 7l3-3 3 3"/><path d="M9 17l3 3 3-3"/></svg><small>سکرۆڵ</small></button>
+</div>
+<div class="qb" id="qb"><button class="copy-btn" id="qbCopy" onclick="qCopy(this)">📋 کۆپی</button><button class="copy-btn run-btn" id="qbRun" onclick="qRun(this)">▶ Run</button><label class="ku-sw" id="qbP"><span>پرێنت</span><input type="checkbox" id="qbPi" onchange="qSet('p',this.checked)"><i class="sw"></i></label><label class="ku-sw" id="qbN"><span>ناوەکان</span><input type="checkbox" id="qbNi" onchange="qSet('n',this.checked)"><i class="sw"></i></label></div>
+<div class="hb" id="hb"><button id="hbSum" onclick="paneOpen('sum')">کارەکەی ئەم کۆدە</button><button id="hbShot" class="cam" onclick="shotClick()" aria-label="screenshot"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><small>سەیڤ</small></button><button id="hbReq" onclick="paneOpen('req')">داواکاری</button></div>
+<div class="toast" id="toast"></div>
+<div class="pane rq" id="paneReq"></div>
+<div class="pane sum" id="paneSum"></div>
+<div class="pop" id="pop"></div>
+<div class="split-h" id="reqSplit"></div>
+<div class="split-h" id="codeSplit"></div>
+<div class="fb-overlay" id="lockAlertOverlay" onclick="if(event.target===this)lockCloseAlert()"><div class="fb-dialog"><h3 id="lockAlertTitle">❌ هەڵە</h3><p id="lockAlertBody" style="white-space:pre-line;color:#4b5563;font-size:14px;line-height:1.9;margin-bottom:16px;text-align:right"></p><button class="fb-dialog-cancel" onclick="lockCloseAlert()">تێگەیشتم</button></div></div>
+
+<div class="fb-overlay" id="asgOverlay" onclick="if(event.target===this)asgClose()"><div class="fb-dialog asg-dialog"><h3>📝 ئەسایمێنتەکان</h3><div id="asgList"></div><button class="fb-dialog-cancel" onclick="asgClose()">داخستن</button></div></div>
+<script>
+const LABS=[
+{E:[
+{t:'Continue a Statement with ... – بەردەوامکردنی فەرمان بە ...',p:'PDF P.3',q:'<b>داواکاری:</b> ئەگەر فەرمانێک لە یەک هێڵ جێ نەبووەوە، چۆن بە <code>...</code> و Enter لە هێڵی دواتر بەردەوامی پێ دەدەیت؟ نموونە: <code>sqrt(225)*30</code> دابەش بکە بەسەر <code>20*sqrt(100)</code> و ئەنجامەکە بخە ناو <code>S</code>.',c:'S= sqrt (225)*30 /...\n (20*sqrt (100))',o:'S =\n    2.2500'},
+{t:'Now Try to do the following – ئێستا ئەمانەی خوارەوە تاقی بکەرەوە',p:'PDF P.4',q:'<b>داواکاری:</b> ئێستا هەوڵ بدە ئەم فەرمانانەی خوارەوە لە <code>Command Window</code> بنووسیت:<br>١- <code>a=3</code> و <code>a=3;</code>: ئایا کاریگەری <code>;</code> دەبینیت؟<br>٢- <code>a+5</code>: کۆی a و 5 دەخاتە ناو <code>ans</code>.<br>٣- <code>b=a+5</code>: کۆی a و 5 دەخاتە ناو b.<br>٤- <code>clear a</code> و دواتر <code>a</code>: ئایا کاریگەری <code>clear</code> دەبینیت؟<br>٥- <code>clc</code>: شاشەکە پاک دەکاتەوە، و دواتر <code>b</code>.',c:'a=3\na=3;\na+5\nb=a+5\nclear a\na\nclc\nb',o:'b =\n     8'},
+{t:'Entering a Matrix – نووسینی ماتریکس',p:'PDF P.5',q:'<b>داواکاری:</b> ماتریکسی <code>A</code>ی 4×4 بنووسە لە MATLAB و ببینە چۆن پیشانی دەدات. ڕێساکان:<br>١- بەهاکانی هەر ڕیزێک بە بۆشایی یان کۆما جیا بکەرەوە.<br>٢- بۆ کۆتایی هەر ڕیزێک <code>;</code> بەکاربهێنە.<br>٣- هەموو لیستی بەهاکان لە نێو <code>[ ]</code> دابنێ.',c:'A = [16 3 2 13; 5 10 11 8; 9 6 7 12; 4 15 14 1]',o:'A =\n    16     3     2    13\n     5    10    11     8\n     9     6     7    12\n     4    15    14     1'},
+{t:'Subscripts – ژمارەی ڕیز و ستوون',p:'PDF P.5',q:'<b>داواکاری:</b> گریمان ماتریکسی <code>A</code> هەمان ماتریکسی نموونەی پێشووە. کۆی توخمەکانی ستوونی چوارەم بدۆزەرەوە، بە نووسینی شوێنی هەر توخمێک بە شێوەی <code>A(i,j)</code> (ڕیزی i و ستوونی j).',c:'A(1,4) + A(2,4) + A(3,4) + A(4,4)',o:'ans =\n    34'},
+{t:'Index Exceeds Matrix – ئیندێکس لە دەرەوەی ماتریکس',p:'PDF P.6',q:'<b>داواکاری:</b> ئەگەر بەهای توخمێک بخوێنیتەوە کە لە دەرەوەی ماتریکسەکەیە (ڕیزی 4 و ستوونی 5ی <code>A</code>)، چی ڕوودەدات؟',c:'t = A(4,5)',o:'??? Index exceeds matrix dimensions.'},
+{t:'Matrix Grows Automatically – ماتریکس خۆکارانە گەورە دەبێت',p:'PDF P.6',q:'<b>داواکاری:</b> ئەگەر بەهایەک (17) بخەیتە شوێنێک لە دەرەوەی ماتریکسەکە (ڕیزی 4 و ستوونی 5)، چی بەسەر ماتریکسەکەدا دێت؟ سەرەتا کۆپییەکی <code>A</code> بخە ناو <code>X</code>.',c:'X = A;\nX(4,5) = 17',o:'X =\n    16     3     2    13     0\n     5    10    11     8     0\n     9     6     7    12     0\n     4    15    14     1    17'},
+{t:'Colon Operator 1:10 – ئۆپەراتۆری colon (1:10)',p:'PDF P.6',q:'<b>داواکاری:</b> ڕیزێک (row vector) دروست بکە کە ژمارە تەواوەکانی 1 تا 10 بگرێتە خۆی، بە ئۆپەراتۆری colon (<code>:</code>).',c:'1:10',o:'ans =\n     1     2     3     4     5     6     7     8     9    10'},
+{t:'Colon with a Step – colon بە هەنگاو',p:'PDF P.6',q:'<b>داواکاری:</b> ڕیزێک دروست بکە کە لە 100 دەست پێبکات و هەر جارێک 7 کەم بکات تا 50 (هەنگاوی جیاواز لە 1).',c:'100:-7:50',o:'ans =\n   100    93    86    79    72    65    58    51'},
+{t:'Colon for a Whole Row – colon بۆ تەواوی ڕیزێک',p:'PDF P.7',q:'<b>داواکاری:</b> گریمان <code>A</code> هەمان ماتریکسی نموونەی یەکەمە. هەموو توخمەکانی ڕیزی چوارەمی <code>A</code> پیشان بدە، بە دوو شێوە کە هەمان ئەنجام دەدەن.',c:'A(4,:)\nA(4,1:end)',o:'ans =\n     4    15    14     1\nans =\n     4    15    14     1'},
+{t:'The end Keyword – وشەی end',p:'PDF P.7',q:'<b>داواکاری:</b> گریمان <code>A</code> هەمان ماتریکسی نموونەی یەکەمە. توخمی کۆتایی ڕیزی دووەمی <code>A</code> پیشان بدە بە وشەی <code>end</code>.',c:'A(2,end)',o:'ans =\n     8'}
+],EX:[
+[['S= sqrt (225)*30 /...','گۆڕاوی <code>S</code> دروست دەکات لە جۆری double. سەرەتا sqrt(225) = 15، پاشان 15 * 30 = 450. نیشانەی <code>...</code> دەڵێت فەرمانەکە تەواو نەبووە و لە هێڵی دواتر بەردەوامە.'],['(20*sqrt (100))','sqrt(100) = 10، پاشان 20 * 10 = 200. دواتر 450 / 200 = 2.25 دەخاتە ناو S، و چونکە <code>;</code> نییە <code>S = 2.2500</code> پیشان دەدرێت.'],['','گۆڕاو (variable) وەک سندوقێکی ناونراوە: ناوی ئەم سندوقە <code>S</code>ـە و ئەنجامی حیسابەکەی تێدا هەڵدەگیرێت.'],['','<code>sqrt</code> واتە ڕەگی دووجا: <code>sqrt(225)</code> دەپرسێت «کام ژمارە خۆی لە خۆی بدرێت دەبێتە 225؟»، وەڵامەکە 15ـە.'],['','<code>double</code> جۆری ژمارەیە کە دەتوانێت دەهیش بێت، وەک 2.25.']],
+[['a=3','گۆڕاوی <code>a</code> دروست دەکات لە جۆری double (ژمارە) و بەهای 3ی دەداتێ. چونکە <code>;</code> نییە، ئەنجامەکە پیشان دەدرێت: <code>a = 3</code>.'],['a=3;','دووبارە a دەکات بە 3. بەڵام <code>;</code> لە کۆتاییدایە، بۆیە ئەنجامەکە پیشان نادرێت و هیچ نانووسرێت.'],['a+5','کۆی a و 5 حیساب دەکات: 3 + 5 = 8. چونکە ئەنجامەکە نەدراوەتە هیچ گۆڕاوێک، دەچێتە ناو گۆڕاوی <code>ans</code> و <code>ans = 8</code> دەنووسرێت.'],['b=a+5','کۆی a و 5 حیساب دەکات: 3 + 5 = 8. گۆڕاوی b دروست دەکات لە جۆری double و بەهای 8ی دەداتێ، بۆیە <code>b = 8</code> پیشان دەدرێت.'],['clear a','گۆڕاوی a لە Workspace دەسڕێتەوە. گۆڕاوی b هێشتا 8ە، و ans یش هەروا 8ە.'],['a','دەیەوێت بەهای a پیشان بدات، بەڵام a بە <code>clear</code> سڕایەوە. بۆیە هەڵە دەدات: <code>??? Undefined function or variable \'a\'.</code>'],['clc','هەموو نووسراوەکانی شاشەی Command Window دەسڕێتەوە (a = 3 و ans = 8 و b = 8 و هەڵەکە). گۆڕاوەکانی Workspace ناسڕێنەوە، بۆیە b هێشتا 8ە.'],['b','بەهای b پیشان دەدات: <code>b = 8</code>. ئەمە تاکە ئەنجامە کە دوای <code>clc</code> لەسەر شاشە دەمێنێتەوە.'],['','گۆڕاو (variable) وەک سندوقێکی ناونراوە؛ <code>a=3</code> واتە «سندوقی a دروست بکە و 3ی تێدا دابنێ».'],['','<code>;</code> وەک «بێدەنگ بە» وایە: فەرمانەکە ئەنجام دەدرێت، بەڵام ئەنجامەکەی لەسەر شاشە نانووسرێت.'],['','<code>ans</code> کورتکراوەی answer (وەڵام)ە؛ ئەگەر ئەنجامێک بۆ گۆڕاوێک نەنێریت، MATLAB لەم سندوقەدا هەڵیدەگرێت.'],['','<code>clear</code> گۆڕاوەکان لە بیرگە دەسڕێتەوە، بەڵام <code>clc</code> تەنها نووسراوەکانی شاشە دەسڕێتەوە.']],
+[['A = [16 3 2 13; 5 10 11 8; 9 6 7 12; 4 15 14 1]','گۆڕاوی <code>A</code> دروست دەکات لە جۆری double، ماتریکسێکی 4×4 بە 16 بەها: بۆشایی بەهاکانی ناو ڕیزەکە جیا دەکاتەوە و <code>;</code> هەر ڕیزێک تەواو دەکات. چونکە <code>;</code> لە کۆتایی فەرمانەکەدا نییە، ماتریکسەکە پیشان دەدرێت.'],['','ماتریکس (matrix) خشتەیەکی ژمارەیە: ڕیزەکان بە لای ڕاستدا دەڕۆن و ستوونەکان بەرەو خوارەوە. 4×4 واتە 4 ڕیز و 4 ستوون.'],['','<code>[ ]</code> هەموو ژمارەکان کۆ دەکاتەوە، بۆشایی ژمارەکان جیا دەکاتەوە، و <code>;</code> دەڵێت «ئەم ڕیزە تەواو بوو، ڕیزی نوێ دەست پێدەکات».']],
+[['A(1,4) + A(2,4) + A(3,4) + A(4,4)','چوار توخمی ستوونی چوارەمی A دەخوێنێتەوە: 13 و 8 و 12 و 1. کۆیان 13 + 8 + 12 + 1 = 34، و چونکە گۆڕاو نەدراوە دەچێتە ناو <code>ans</code>: <code>ans = 34</code>.'],['','<code>A(i,j)</code> وەک ژمارەی کورسی لە سینەما وایە: i ڕیزەکەیە و j ستوونەکە. <code>A(1,4)</code> واتە ڕیزی 1 و ستوونی 4.']],
+[['t = A(4,5)','دەیەوێت بەهای ڕیزی 4 و ستوونی 5ی A بخوێنێتەوە، بەڵام A تەنها 4 ستوونی هەیە. بۆیە گۆڕاوی t دروست نابێت و هەڵەی <code>??? Index exceeds matrix dimensions.</code> دەنووسرێت.'],['','A تەنها 4 ستوونی هەیە؛ داواکردنی ستوونی 5 وەک داواکردنی نهۆمی 5ـە لە بیناکەیەک کە تەنها 4 نهۆمی هەیە.'],['','هەڵە (error) واتە MATLAB ناتوانێت فەرمانەکە ئەنجام بدات، بۆیە گۆڕاوی t دروست ناکات.']],
+[['X = A;','گۆڕاوی X دروست دەکات و کۆپیی A (ماتریکسێکی 4×4) دەخاتە ناوی. بەهۆی <code>;</code> پیشان نادرێت.'],['X(4,5) = 17','بەهای 17 دەخاتە ڕیزی 4 و ستوونی 5، کە لە X نییە، بۆیە X دەبێتە 4×5 و توخمە نوێکانی تر (ستوونی 5 لە ڕیزی 1 تا 3) دەبن بە 0. ماتریکسەکە پیشان دەدرێت.'],['','ئەگەر شوێنێک پڕ بکەیتەوە کە لە ماتریکسەکەدا نییە، MATLAB ماتریکسەکە گەورە دەکات و شوێنە نوێکانی تر بە 0 پڕ دەکاتەوە.'],['','<code>X = A;</code> کۆپییەکی A دروست دەکات، بۆیە A خۆی ناگۆڕێت.']],
+[['1:10','ڕیزێک دروست دەکات لە 1 تا 10 بە هەنگاوی 1 (ماتریکسێکی 1×10). چونکە گۆڕاو نەدراوە، دەچێتە ناو <code>ans</code> و پیشان دەدرێت.'],['','<code>:</code> واتە «لە ... تا ...»؛ <code>1:10</code> واتە لە 1 تا 10، هەر جارێک 1 زیاد دەبێت.'],['','ئەنجامەکە ڕیزێکی 1×10ـە: یەک ڕیز و دە ستوون.']],
+[['100:-7:50','لە 100 دەست پێدەکات و هەر جارێک 7 کەم دەکات: 100 و 93 و 86 و 79 و 72 و 65 و 58 و 51. ژمارەی دواتر 44ـە و لە 50 بچووکترە، بۆیە لە 51 دەوەستێت.'],['','لە <code>100:-7:50</code> ژمارەی ناوەڕاست هەنگاوەکەیە: -7 واتە هەر جارێک 7 کەم بکە (دابەزین).'],['','ڕیزەکە دەوەستێت کاتێک ژمارەی دواتر لە 50 بچووکتر دەبێت.']],
+[['A(4,:)','<code>:</code> بەتەنها واتە هەموو ستوونەکان. بۆیە هەموو ڕیزی چوارەم پیشان دەدات: 4 و 15 و 14 و 1، و دەچێتە ناو <code>ans</code>.'],['A(4,1:end)','ڕیزی چوارەم لە ستوونی 1 تا ستوونی کۆتایی (<code>end</code> = 4): 4 و 15 و 14 و 1. هەمان ئەنجامی هێڵی پێشووە.'],['','<code>:</code> بە تەنها واتە «هەموو»؛ <code>A(4,:)</code> واتە هەموو ستوونەکانی ڕیزی 4.'],['','<code>end</code> واتە دوایین ڕیز یان ستوون؛ لێرە end = 4، بۆیە <code>1:end</code> هەمان <code>:</code>ـە.']],
+[['A(2,end)','ڕیزی 2ی A دەخوێنێتەوە و <code>end</code> واتە ژمارەی ستوونی کۆتایی، کە 4ـە. بۆیە توخمی ڕیزی 2 و ستوونی 4 دەخوێنێتەوە: 8، و <code>ans = 8</code> دەنووسرێت.'],['','<code>end</code> هەمیشە دوایین ڕیز یان ستوون دەدۆزێتەوە، تەنانەت ئەگەر ژمارەکەی نەزانیت.']]
+],EXSUM:[
+'ئەم فەرمانە لە دوو هێڵ نووسراوە بەڵام یەک فەرمانە، چونکە <code>...</code> لە کۆتایی هێڵی یەکەم دەیبەستێتەوە بە هێڵی دووەم. سەرەتا sqrt(225) دەکاتە 15، و 15 * 30 = 450. دواتر لە هێڵی دووەم sqrt(100) = 10 و 20 * 10 = 200. لە کۆتاییدا 450 / 200 = 2.25 دەخرێتە ناو گۆڕاوی S. چونکە <code>;</code> نییە، MATLAB <code>S = 2.2500</code> دەنووسێت.',
+'سەرەتا <code>a=3</code> گۆڕاوی a دروست دەکات و 3ی دەداتێ، و چونکە <code>;</code> نییە <code>a = 3</code> دەنووسێت. دواتر <code>a=3;</code> دووبارە 3ی دەداتێ بەڵام بە <code>;</code> هیچ نانووسێت. <code>a+5</code> دەکاتە 3 + 5 = 8 و چونکە گۆڕاوی ئامانج نییە، دەیخاتە ناو <code>ans</code> و <code>ans = 8</code> دەنووسێت. <code>b=a+5</code> هەمان 3 + 5 = 8 حیساب دەکات و دەیخاتە ناو b: <code>b = 8</code>. دواتر <code>clear a</code> گۆڕاوی a دەسڕێتەوە، بۆیە <code>a</code>ی دواتر هەڵە دەدات چونکە a نەماوە. <code>clc</code> شاشە پاک دەکاتەوە و هەموو ئەنجامەکانی سەرەوە دەسڕێنەوە، بەڵام b هێشتا لە بیرگەدایە، بۆیە فەرمانی کۆتایی <code>b</code> دەنووسێت <code>b = 8</code>. هەر ئەمەیە کە لە کۆتاییدا لەسەر شاشە دەمێنێتەوە.',
+'سەرەتا گۆڕاوی <code>A</code> دروست دەکات لە جۆری double، و <code>[ ]</code> هەموو بەهاکان کۆ دەکاتەوە. تا یەکەم <code>;</code> ڕیزی یەکەم دەبێت 16 و 3 و 2 و 13. دواتر ڕیزی دووەم 5 و 10 و 11 و 8، ڕیزی سێیەم 9 و 6 و 7 و 12، و ڕیزی چوارەم 4 و 15 و 14 و 1. بەم شێوەیە ماتریکسێکی 4×4 دروست دەبێت. چونکە لە کۆتایی فەرمانەکەدا <code>;</code> نییە، MATLAB ماتریکسەکە بە چوار ڕیز لەسەر شاشە پیشان دەدات.',
+'سەرەتا <code>A(1,4)</code> توخمی ڕیزی 1 و ستوونی 4 دەخوێنێتەوە: 13. <code>A(2,4)</code> = 8، <code>A(3,4)</code> = 12 و <code>A(4,4)</code> = 1. دواتر کۆیان دەکات: 13 + 8 = 21، پاشان 21 + 12 = 33، و لە کۆتاییدا 33 + 1 = 34. چونکە ئەنجامەکە نەدراوەتە هیچ گۆڕاوێک، دەچێتە ناو <code>ans</code> و <code>ans = 34</code> دەنووسرێت.',
+'سەرەتا دەیەوێت توخمی ڕیزی 4 و ستوونی 5ی A بخوێنێتەوە. A ماتریکسێکی 4×4ـە، یانی ستوونی 5ی نییە. بۆیە ناتوانێت بەهایەک بخاتە ناو t، گۆڕاوی t دروست نابێت، و هەڵەی <code>??? Index exceeds matrix dimensions.</code> پیشان دەدرێت.',
+'سەرەتا <code>X = A;</code> کۆپییەکی A دەخاتە ناو X، بۆیە X ماتریکسێکی 4×4ـە و بە <code>;</code> پیشان نادرێت. دواتر <code>X(4,5) = 17</code> دەیەوێت 17 بخاتە ڕیزی 4 و ستوونی 5. X ستوونی 5ی نییە، بۆیە MATLAB ستوونێکی نوێ زیاد دەکات و X دەبێتە 4×5. ستوونە نوێیەکە لە ڕیزی 1 تا 3 سفرە (0 و 0 و 0) و لە ڕیزی 4 دەبێتە 17. چونکە <code>;</code> نییە، ماتریکسی X پیشان دەدرێت.',
+'<code>1:10</code> لە 1 دەست پێدەکات و هەر جارێک 1 زیاد دەکات تا 10: 1 و 2 و 3 و 4 و 5 و 6 و 7 و 8 و 9 و 10. دەبێتە ڕیزێکی 1×10. چونکە ئەنجامەکە نەدراوەتە هیچ گۆڕاوێک، دەچێتە ناو <code>ans</code> و بە یەک ڕیز پیشان دەدرێت.',
+'<code>100:-7:50</code> هەنگاوەکەی -7ـە. 100، پاشان 100 - 7 = 93، 93 - 7 = 86، 86 - 7 = 79، 79 - 7 = 72، 72 - 7 = 65، 65 - 7 = 58، 58 - 7 = 51. ژمارەی دواتر 51 - 7 = 44ـە، کە لە 50 بچووکترە، بۆیە ناچێتە ناو ڕیزەکە. ئەنجام: ڕیزێکی 1×8 کە دەچێتە ناو <code>ans</code>.',
+'هەردوو فەرمان ڕیزی چوارەمی A دەخوێننەوە. <code>A(4,:)</code> لە ڕیزی 4 هەموو ستوونەکان وەردەگرێت: 4 و 15 و 14 و 1. <code>A(4,1:end)</code> ستوونەکان لە 1 تا end دیاری دەکات، و end لێرە 4ـە، بۆیە 1 و 2 و 3 و 4 دەخوێنێتەوە و هەمان 4 و 15 و 14 و 1 دەدات. هەر فەرمانێک ئەنجامەکەی دەخاتە ناو <code>ans</code> و پیشانی دەدات، بۆیە دوو جار <code>ans</code> دەنووسرێت.',
+'<code>A(2,end)</code> لە ڕیزی 2ی A، ستوونی کۆتایی دەخوێنێتەوە. A چوار ستوونی هەیە، بۆیە end دەکاتە 4. توخمی ڕیزی 2 و ستوونی 4 ژمارەی 8ـە، دەچێتە ناو <code>ans</code> و <code>ans = 8</code> دەنووسرێت.'
+],MORE:[
+{c:'T = 2 + 3 * ...\n(4 + 1)',o:'T =\n    17',intro:'سەرەتا هێڵی یەکەم 2 + 3 * دەنووسێت و بە <code>...</code> دەچێتە هێڵی دواتر. لە هێڵی دووەم 4 + 1 = 5. دواتر 3 * 5 = 15، و 2 + 15 = 17 دەخرێتە ناو T، بۆیە <code>T = 17</code> دەنووسرێت.',s:[['T = 2 + 3 * ...','گۆڕاوی T دروست دەکات لە جۆری double. فەرمانەکە تا 2 + 3 * هاتووە و بە <code>...</code> لە هێڵی دواتر بەردەوامە.',[]],['(4 + 1)','4 + 1 = 5 حیساب دەکات. دواتر 3 * 5 = 15 و 2 + 15 = 17 دەبێت و دەخرێتە ناو T. چونکە <code>;</code> نییە <code>T = 17</code> پیشان دەدرێت.',[]]],sum:'پوختە: <code>...</code> فەرمانێک لە دوو هێڵ دەبەستێتەوە و وەک یەک فەرمان دەخوێنرێتەوە.'},
+{c:'x=4;\ny=x*2\nz=y+1;\ny+3',o:'y =\n     8\nans =\n    11',intro:'سەرەتا x دروست دەکەین بە بەهای 4، و بە <code>;</code> هیچ نانووسرێت. دواتر y دروست دەکەین بە x*2، واتە 4 * 2 = 8، و چونکە <code>;</code> نییە <code>y = 8</code> دەنووسرێت. دواتر z دروست دەکەین بە y+1، واتە 8 + 1 = 9، بەڵام بە <code>;</code> نانووسرێت. لە کۆتاییدا <code>y+3</code> دەکاتە 8 + 3 = 11 و بێ گۆڕاوی ئامانج دەچێتە ناو <code>ans</code>، بۆیە <code>ans = 11</code> دەنووسرێت.',s:[['x=4;','گۆڕاوی x دروست دەکات لە جۆری double (ژمارە) و بەهای 4ی دەداتێ. چونکە <code>;</code> لە کۆتاییدایە، هیچ لەسەر شاشە نانووسرێت.',[]],['y=x*2','x*2 حیساب دەکات: 4 * 2 = 8. گۆڕاوی y دروست دەکات و 8ی دەداتێ. چونکە <code>;</code> نییە، <code>y = 8</code> دەنووسرێت.',[]],['z=y+1;','y+1 حیساب دەکات: 8 + 1 = 9. گۆڕاوی z دروست دەکات و 9ی دەداتێ. بەڵام بەهۆی <code>;</code> ئەنجامەکە پیشان نادرێت.',[]],['y+3','y+3 حیساب دەکات: 8 + 3 = 11. چونکە ئەنجامەکە نەدراوەتە هیچ گۆڕاوێک، دەچێتە ناو <code>ans</code> و <code>ans = 11</code> دەنووسرێت.',[]]],sum:'پوختە: <code>;</code> ئەنجام نانووسێت، و ئەنجامی بێ گۆڕاو دەچێتە ناو <code>ans</code>.'},
+{c:'B = [1, 2, 3; 4, 5, 6]',o:'B =\n     1     2     3\n     4     5     6',intro:'ماتریکسی B دروست دەکەین بە دوو ڕیز و سێ ستوون. بەهاکانی هەر ڕیزێک بە کۆما جیا کراونەتەوە و <code>;</code> ڕیزی یەکەم لە دووەم جیا دەکاتەوە. ڕیزی یەکەم 1 و 2 و 3 دەبێت، ڕیزی دووەم 4 و 5 و 6، و چونکە <code>;</code> لە کۆتاییدا نییە، ماتریکسەکە پیشان دەدرێت.',s:[['B = [1, 2, 3; 4, 5, 6]','گۆڕاوی B دروست دەکات لە جۆری double، ماتریکسێکی 2×3. بەهاکانی ناو ڕیزەکە بە کۆما جیا کراونەتەوە: ڕیزی یەکەم 1 و 2 و 3؛ دواتر <code>;</code> دێت و ڕیزی دووەم 4 و 5 و 6 دەبێت. چونکە <code>;</code> لە کۆتایی فەرمانەکەدا نییە، ماتریکسەکە پیشان دەدرێت.',[]]],sum:'پوختە: بۆشایی یان کۆما بەهاکانی ڕیزێک جیا دەکەنەوە و <code>;</code> ڕیزەکان لێک جیا دەکات.'},
+{c:'B = [1 2; 3 4];\nB(1,2) + B(2,1)',o:'ans =\n     5',intro:'سەرەتا ماتریکسی B دروست دەکەین (1 و 2 لە ڕیزی یەکەم، 3 و 4 لە دووەم) و بە <code>;</code> پیشان نادرێت. دواتر <code>B(1,2)</code> دەکاتە 2 و <code>B(2,1)</code> دەکاتە 3. کۆیان 2 + 3 = 5، و دەچێتە ناو <code>ans</code>.',s:[['B = [1 2; 3 4];','گۆڕاوی B دروست دەکات لە جۆری double، ماتریکسێکی 2×2: ڕیزی یەکەم 1 و 2، ڕیزی دووەم 3 و 4. بەهۆی <code>;</code> پیشان نادرێت.',[]],['B(1,2) + B(2,1)','B(1,2) توخمی ڕیزی 1 و ستوونی 2ـە: 2. B(2,1) توخمی ڕیزی 2 و ستوونی 1ـە: 3. کۆیان 2 + 3 = 5 و دەچێتە ناو ans.',[]]],sum:'پوختە: <code>B(i,j)</code> توخمی ڕیزی i و ستوونی j دەخوێنێتەوە.'},
+{c:'M = [1 2 3];\nv = M(2,1)',o:'??? Index exceeds matrix dimensions.',intro:'سەرەتا ماتریکسی M دروست دەکەین بە یەک ڕیز و سێ ستوون: 1 و 2 و 3. دواتر دەمانەوێت توخمی ڕیزی 2 و ستوونی 1 بخوێنینەوە، بەڵام M تەنها یەک ڕیزی هەیە. بۆیە v دروست نابێت و هەڵەی <code>??? Index exceeds matrix dimensions.</code> دێت.',s:[['M = [1 2 3];','گۆڕاوی M دروست دەکات لە جۆری double، ماتریکسێکی 1×3 (یەک ڕیز و سێ ستوون) بە بەهای 1 و 2 و 3. بەهۆی <code>;</code> پیشان نادرێت.',[]],['v = M(2,1)','دەیەوێت ڕیزی 2 بخوێنێتەوە، بەڵام M تەنها ڕیزی 1ی هەیە. بۆیە v دروست نابێت و هەڵەی <code>??? Index exceeds matrix dimensions.</code> پیشان دەدرێت.',[]]],sum:'پوختە: خوێندنەوەی توخمێک لە دەرەوەی ماتریکس هەڵە دەدات.'},
+{c:'Y = [1 2; 3 4];\nY(3,3) = 9',o:'Y =\n     1     2     0\n     3     4     0\n     0     0     9',intro:'سەرەتا ماتریکسی Y دروست دەکەین بە 2×2: ڕیزی یەکەم 1 و 2، ڕیزی دووەم 3 و 4، و بە <code>;</code> پیشان نادرێت. دواتر 9 دەخەینە ڕیزی 3 و ستوونی 3 کە لە Y نییە. بۆیە Y دەبێتە 3×3 و توخمە نوێکان دەبن بە 0، تەنها ڕیزی 3 و ستوونی 3 دەبێت 9.',s:[['Y = [1 2; 3 4];','گۆڕاوی Y دروست دەکات لە جۆری double، ماتریکسێکی 2×2: ڕیزی یەکەم 1 و 2، ڕیزی دووەم 3 و 4. بەهۆی <code>;</code> پیشان نادرێت.',[]],['Y(3,3) = 9','بەهای 9 دەخاتە ڕیزی 3 و ستوونی 3، کە لە Y نییە. بۆیە Y دەبێتە 3×3 و شوێنە نوێکان (جگە لە ڕیزی 3 و ستوونی 3) دەبن بە 0. ماتریکسەکە پیشان دەدرێت.',[]]],sum:'پوختە: ئەگەر بەهایەک بخەیتە دەرەوەی ماتریکس، ماتریکسەکە گەورە دەبێت و شوێنە نوێکان سفر دەبن.'},
+{c:'2:6',o:'ans =\n     2     3     4     5     6',intro:'<code>2:6</code> لە 2 دەست پێدەکات و هەر جارێک 1 زیاد دەکات تا 6: 2 و 3 و 4 و 5 و 6. ڕیزێکی 1×5 دروست دەبێت و دەچێتە ناو <code>ans</code>.',s:[['2:6','ڕیزێک دروست دەکات لە 2 تا 6 بە هەنگاوی 1: 2 و 3 و 4 و 5 و 6. چونکە گۆڕاو نەدراوە، دەچێتە ناو <code>ans</code> و پیشان دەدرێت.',[]]],sum:'پوختە: <code>a:b</code> ژمارەکان لە a تا b بە هەنگاوی 1 دروست دەکات.'},
+{c:'10:2:20',o:'ans =\n    10    12    14    16    18    20',intro:'<code>10:2:20</code> لە 10 دەست پێدەکات و هەر جارێک 2 زیاد دەکات تا 20: 10 و 12 و 14 و 16 و 18 و 20. ڕیزێکی 1×6 دروست دەبێت و دەچێتە ناو <code>ans</code>.',s:[['10:2:20','لە 10 دەست پێدەکات و هەر جارێک 2 زیاد دەکات: 10 و 12 و 14 و 16 و 18 و 20. ژمارەی دواتر 22ـە و لە 20 گەورەترە، بۆیە لە 20 دەوەستێت. دەچێتە ناو <code>ans</code>.',[]]],sum:'پوختە: ژمارەی ناوەڕاست لە <code>a:step:b</code> هەنگاوەکەیە.'},
+{c:'C = [7 8 9; 1 2 3];\nC(2,:)\nC(:,1)',o:'ans =\n     1     2     3\nans =\n     7\n     1',intro:'سەرەتا ماتریکسی C دروست دەکەین: ڕیزی یەکەم 7 و 8 و 9، ڕیزی دووەم 1 و 2 و 3. <code>C(2,:)</code> هەموو ڕیزی دووەم دەدات: 1 و 2 و 3. <code>C(:,1)</code> هەموو ستوونی یەکەم دەدات: 7 و 1، بە شێوەی ستوون.',s:[['C = [7 8 9; 1 2 3];','گۆڕاوی C دروست دەکات لە جۆری double، ماتریکسێکی 2×3. ڕیزی یەکەم 7 و 8 و 9، ڕیزی دووەم 1 و 2 و 3. بەهۆی <code>;</code> پیشان نادرێت.',[]],['C(2,:)','هەموو ستوونەکان لە ڕیزی 2 وەردەگرێت: 1 و 2 و 3. دەچێتە ناو <code>ans</code> و پیشان دەدرێت.',[]],['C(:,1)','هەموو ڕیزەکان لە ستوونی 1 وەردەگرێت: 7 لە ڕیزی 1 و 1 لە ڕیزی 2. ئەنجامەکە ستوونێکە و دەچێتە ناو <code>ans</code>.',[]]],sum:'پوختە: <code>:</code> بە تەنها واتە هەموو ڕیزەکان یان هەموو ستوونەکان.'},
+{c:'D = [5 6 7];\nD(end)',o:'ans =\n     7',intro:'سەرەتا ڕیزی D دروست دەکەین: 5 و 6 و 7، و بە <code>;</code> پیشان نادرێت. دواتر <code>D(end)</code> توخمی کۆتایی D دەخوێنێتەوە، کە سێیەمە و 7ـە، و دەچێتە ناو <code>ans</code>.',s:[['D = [5 6 7];','گۆڕاوی D دروست دەکات لە جۆری double، ماتریکسێکی 1×3 بە 5 و 6 و 7. بەهۆی <code>;</code> پیشان نادرێت.',[]],['D(end)','<code>end</code> لێرە 3ـە، چونکە D سێ توخمی هەیە. توخمی سێیەم 7ـە، دەچێتە ناو <code>ans</code> و <code>ans = 7</code> دەنووسرێت.',[]]],sum:'پوختە: <code>end</code> واتە ڕیزی یان ستوونی کۆتایی.'}
+]},
+{E:[
+{t:'sum Function – فەرمانی sum',p:'PDF P.7',q:'<b>داواکاری:</b> ماتریکسی <code>x = [1 2 3; 4 5 6]</code> دروست بکە (بە دوو هێڵ)، و بە <code>sum</code> کۆی هەر ستوون، کۆی هەر ڕیز، و کۆی هەموو ماتریکسەکە بدۆزەرەوە.',c:'x=[1 2 3\n    4 5 6];\nsum(x)\nsum(x,2)\nsum(sum(x))',o:'ans =\n     5     7     9\nans =\n     6\n    15\nans =\n    21'},
+{t:'mean Function – فەرمانی mean',p:'PDF P.8',q:'<b>داواکاری:</b> ماتریکسی <code>x = [1 2 3; 4 5 6]</code> دروست بکە، و بە <code>mean</code> تێکڕای هەر ستوون، تێکڕای هەر ڕیز، و تێکڕای هەموو ماتریکسەکە بدۆزەرەوە.',c:'x=[1 2 3; 4 5 6];\nmean(x)\nmean(x,2)\nmean(mean(x))',o:'ans =\n    2.5000    3.5000    4.5000\nans =\n     2\n     5\nans =\n    3.5000'},
+{t:'zeros Function – فەرمانی zeros',p:'PDF P.8',q:'<b>داواکاری:</b> ماتریکسێکی 2×3 دروست بکە کە هەموو توخمەکانی سفر بن، بە <code>zeros</code>.',c:'zeros(2,3)',o:'ans =\n     0     0     0\n     0     0     0'},
+{t:'ones Function – فەرمانی ones',p:'PDF P.8',q:'<b>داواکاری:</b> ماتریکسێکی 2×3 دروست بکە کە هەموو توخمەکانی یەک (1) بن، بە <code>ones</code>.',c:'ones(2,3)',o:'ans =\n     1     1     1\n     1     1     1'},
+{t:'size Function – فەرمانی size',p:'PDF P.9',q:'<b>داواکاری:</b> ماتریکسی <code>x = [1 2 3; 4 5 6]</code> دروست بکە و ژمارەی ڕیز و ستوونەکانی بدۆزەرەوە بە <code>size</code>.',c:'x=[1 2 3\n    4 5 6];\nsize(x)',o:'ans =\n     2     3'},
+{t:'length Function – فەرمانی length',p:'PDF P.9',q:'<b>داواکاری:</b> ڕیزی <code>v = [1 2 3]</code> دروست بکە و ژمارەی توخمەکانی بدۆزەرەوە بە <code>length</code>.',c:'v=[1 2 3];\nlength(v)',o:'ans =\n     3'},
+{t:'numel Function – فەرمانی numel',p:'PDF P.9',q:'<b>داواکاری:</b> ژمارەی هەموو توخمەکانی ڕیزی <code>v = [55 63 34]</code> و ماتریکسی <code>x</code> (3 ڕیز: 1 2، 4 5، 7 8) بدۆزەرەوە بە <code>numel</code>.',c:'v =[55 63 34];\nnumel(v)\nx=[1 2\n    4 5\n    7 8 ];\nnumel(x)',o:'ans =\n     3\nans =\n     6'},
+{t:'Transpose – وەرگێڕانی ماتریکس (transpose)',p:'PDF P.10',q:'<b>داواکاری:</b> ماتریکسی <code>x</code> (1 2 3، 4 5 6، 7 8 9) و ڕیزی <code>v = [1 2 3]</code> بگۆڕە بە transpose، بە نیشانەی <code>\'</code>.',c:'x=[1 2 3\n    4 5 6\n    7 8 9];\nx\'\nv=[1 2 3];\nv\'',o:'ans =\n     1     4     7\n     2     5     8\n     3     6     9\nans =\n     1\n     2\n     3'},
+{t:'max Function – فەرمانی max',p:'PDF P.10',q:'<b>داواکاری:</b> ماتریکسی <code>x = [1 2 3; 4 5 6]</code> دروست بکە، و گەورەترین بەهای هەر ستوون و گەورەترین بەهای هەموو ماتریکسەکە بدۆزەرەوە بە <code>max</code>.',c:'x=[1 2 3\n    4 5 6];\nmax (x)\nmax(max(x))',o:'ans =\n     4     5     6\nans =\n     6'},
+{t:'min Function – فەرمانی min',p:'PDF P.11',q:'<b>داواکاری:</b> ماتریکسی <code>x = [1 2 3; 4 5 6]</code> دروست بکە، و بچووکترین بەهای هەر ستوون و بچووکترین بەهای هەموو ماتریکسەکە بدۆزەرەوە بە <code>min</code>.',c:'x=[1 2 3\n    4 5 6];\nmin (x)\nmin(min(x))',o:'ans =\n     1     2     3\nans =\n     1'},
+{t:'magic Function – فەرمانی magic',p:'PDF P.11',q:'<b>داواکاری:</b> ماتریکسی جادوویی (magic square)ی 3×3 دروست بکە بە <code>magic</code>.',c:'magic(3)',o:'ans =\n     8     1     6\n     3     5     7\n     4     9     2'},
+{t:'inv Function – فەرمانی inv',p:'PDF P.11',q:'<b>داواکاری:</b> ماتریکسی <code>x = [1 4; 5 8]</code> دروست بکە و ڕێچەی پێچەوانەی (inverse)ی بدۆزەرەوە بە <code>inv</code>.',c:'x=[1 4;\n    5 8];\ninv(x)',o:'ans =\n   -0.6667    0.3333\n    0.4167   -0.0833'},
+{t:'diag Function – فەرمانی diag',p:'PDF P.12',q:'<b>داواکاری:</b> ئەستوونی سەرەکی (diagonal)ی ماتریکسی <code>x</code> (1 2 3، 4 5 6، 7 8 9) بدۆزەرەوە، و لە ڕیزی <code>v = [1 2 3]</code> ماتریکسێکی ئەستوونی دروست بکە، بە <code>diag</code>.',c:'x=[1 2 3\n    4 5 6\n    7 8 9];\ndiag(x)\nv=[1 2 3];\ndiag(v)',o:'ans =\n     1\n     5\n     9\nans =\n     1     0     0\n     0     2     0\n     0     0     3'},
+{t:'prod Function – فەرمانی prod',p:'PDF P.12',q:'<b>داواکاری:</b> ماتریکسی <code>x = [1 2 3; 4 5 6]</code> دروست بکە، و بە <code>prod</code> لێکدانی هەر ستوون و لێکدانی هەموو ماتریکسەکە بدۆزەرەوە.',c:'x=[1 2 3\n    4 5 6];\nprod(x)\nprod(prod(x))',o:'ans =\n     4    10    18\nans =\n   720'},
+{t:'median Function – فەرمانی median',p:'PDF P.13',q:'<b>داواکاری:</b> ماتریکسی <code>x</code> (4 6 8، 10 9 1، 8 2 5) دروست بکە، و بە <code>median</code> ناوەندی هەر ستوون، ناوەندی هەر ڕیز، و ناوەندی ناوەندەکان بدۆزەرەوە.',c:'x=[4 6 8\n    10 9 1\n    8 2 5];\nmedian(x)\nmedian(x,2)\nmedian(median(x))',o:'ans =\n     8     6     5\nans =\n     6\n     9\n     5\nans =\n     6'},
+{t:'sort Function – فەرمانی sort',p:'PDF P.13',q:'<b>داواکاری:</b> ماتریکسی <code>x = [3 7 5; 0 4 2]</code> ڕیز بکە: ستوونەکان بە بچووکەوە بۆ گەورە، ڕیزەکان بە بچووکەوە بۆ گەورە، و ڕیزەکان بە گەورەوە بۆ بچووک (<code>\'descend\'</code>).',c:'x = [3 7 5\n    0 4 2];\nsort(x,1)\nsort(x,2)\nsort(x,2,\'descend\')',o:'ans =\n     0     4     2\n     3     7     5\nans =\n     3     5     7\n     0     2     4\nans =\n     7     5     3\n     4     2     0'},
+{t:'det Function – فەرمانی det',p:'PDF P.14',q:'<b>داواکاری:</b> دیتێرمینانتی ماتریکسی <code>x</code> (5 1 8، 4 7 3، 2 5 6) بدۆزەرەوە بە <code>det</code>.',c:'x=[5 1 8\n    4 7 3\n    2 5 6];\ndet(x)',o:'ans =\n   165'},
+{t:'tril Function – فەرمانی tril',p:'PDF P.14',q:'<b>داواکاری:</b> بەشی خوارەوەی سیانگۆشەیی (lower triangular)ی ماتریکسی <code>x</code> (5 1 8، 4 7 3، 2 5 6) دەربهێنە بە <code>tril</code>.',c:'x=[5 1 8\n    4 7 3\n    2 5 6];\ntril(x)',o:'ans =\n     5     0     0\n     4     7     0\n     2     5     6'},
+{t:'triu Function – فەرمانی triu',p:'PDF P.14',q:'<b>داواکاری:</b> بەشی سەرەوەی سیانگۆشەیی (upper triangular)ی ماتریکسی <code>x</code> (5 1 8، 4 7 3، 2 5 6) دەربهێنە بە <code>triu</code>.',c:'x=[5 1 8\n    4 7 3\n    2 5 6];\ntriu(x)',o:'ans =\n     5     1     8\n     0     7     3\n     0     0     6'},
+{t:'Factorial of 5 – فاکتۆریاڵی 5',p:'PDF P.15',q:'<b>داواکاری:</b> فاکتۆریاڵی 5 بدۆزەرەوە (Find the factorial of 5).',c:'x=2:5;\nprod(x)',o:'ans =\n   120'},
+{t:'Replace and Reshape – گۆڕین و ڕێکخستنەوەی ماتریکس',p:'PDF P.15',q:'<b>داواکاری:</b> ئەگەر <code>x = [1,5,7,9,13,20,6,7,8]</code>، ئەوا:<br>أ) پێنج توخمی یەکەمی x بگۆڕە بە گەورەترین بەهای x.<br>ب) ئەم ڕیزە بگۆڕە بە ماتریکسێکی 3×3.',c:'x=[1,5,7,9,13,20,6,7,8];\nx(1:5)=max(x)\ny(1,:)=x(1:3);\ny(2,:)=x(4:6);\ny(3,:)=x(7:9);\ny',o:'x =\n    20    20    20    20    20    20     6     7     8\ny =\n    20    20    20\n    20    20    20\n     6     7     8'},
+{t:'Row Vector to Column – ڕیزەکە بکە بە ستوون',p:'PDF P.15',q:'<b>داواکاری:</b> ڕیزی <code>b = [1, 2, 3, 4, 5, ..., 9, 10]</code> دروست بکە، و دواتر بیگۆڕە بۆ ستوون (transpose).',c:'b=1:10\nb=b\';',o:'b =\n     1     2     3     4     5     6     7     8     9    10'}
+],EX:[
+[['x=[1 2 3','گۆڕاوی <code>x</code> دروست دەکات لە جۆری double. ڕیزی یەکەم 1 و 2 و 3ـە، و چونکە ] نەهاتووە ماتریکسەکە لە هێڵی دواتر بەردەوامە.'],['4 5 6];','ڕیزی دووەم 4 و 5 و 6ـە و ] ماتریکسەکە دادەخات. ماتریکسی 2×3 دروست دەبێت و بەهۆی <code>;</code> پیشان نادرێت.'],['sum(x)','کۆی هەر ستوونێک: 1 + 4 = 5 و 2 + 5 = 7 و 3 + 6 = 9. ئەنجام: 5 7 9.'],['sum(x,2)','کۆی هەر ڕیزێک (dim = 2): 1 + 2 + 3 = 6 و 4 + 5 + 6 = 15. ئەنجام: ستوونێک بە 6 و 15.'],['sum(sum(x))','sum(x) دەکاتە 5 7 9، و sum بۆ جاری دووەم 5 + 7 + 9 = 21 دەکات.'],['','<code>sum(x)</code> ژمارەکانی هەر ستوونێک کۆ دەکاتەوە (بەرەو خوارەوە)، و <code>sum(x,2)</code> ژمارەکانی هەر ڕیزێک (بە لای ڕاستدا). ژمارەی 2 ئاڕاستەی کۆکردنەوەکەیە.'],['','<code>sum(sum(x))</code> دوو جار کۆ دەکاتەوە: یەکەم جار ستوونەکان، دووەم جار ئەو ئەنجامانە، بۆ ئەوەی کۆی هەموو ماتریکسەکە بدۆزیتەوە.']],
+[['x=[1 2 3; 4 5 6];','گۆڕاوی x دروست دەکات لە جۆری double، ماتریکسێکی 2×3: ڕیزی یەکەم 1 و 2 و 3، ڕیزی دووەم 4 و 5 و 6. بەهۆی <code>;</code> پیشان نادرێت.'],['mean(x)','تێکڕای هەر ستوونێک: (1 + 4) / 2 = 2.5 و (2 + 5) / 2 = 3.5 و (3 + 6) / 2 = 4.5. ئەنجام: 2.5000 3.5000 4.5000.'],['mean(x,2)','تێکڕای هەر ڕیزێک: (1 + 2 + 3) / 3 = 2 و (4 + 5 + 6) / 3 = 5. ئەنجام: ستوونێک بە 2 و 5.'],['mean(mean(x))','mean(x) دەکاتە 2.5 3.5 4.5، و تێکڕای ئەوانە (2.5 + 3.5 + 4.5) / 3 = 3.5 دەدات: <code>ans = 3.5000</code>.'],['','تێکڕا (mean) واتە کۆی ژمارەکان دابەش بکە بەسەر ژمارەیانەوە؛ تێکڕای 1 و 4 = (1 + 4) / 2 = 2.5.'],['','<code>mean(x)</code> تێکڕای هەر ستوونێک دەدات، و <code>mean(x,2)</code> تێکڕای هەر ڕیزێک.']],
+[['zeros(2,3)','ماتریکسێکی 2×3 دروست دەکات (دوو ڕیز و سێ ستوون) و هەموو شەش توخمەکەی 0ـە. دەچێتە ناو <code>ans</code> و پیشان دەدرێت.'],['','<code>zeros(2,3)</code>: ژمارەی یەکەم ڕیزەکانە (2) و ژمارەی دووەم ستوونەکان (3)؛ هەموو توخمەکانی دەکات بە 0.']],
+[['ones(2,3)','ماتریکسێکی 2×3 دروست دەکات (دوو ڕیز و سێ ستوون) و هەموو شەش توخمەکەی 1ـە. دەچێتە ناو <code>ans</code> و پیشان دەدرێت.'],['','<code>ones(2,3)</code> هەمان شێوەی <code>zeros</code>ـە، بەڵام بە 1 پڕی دەکاتەوە، نەک 0.']],
+[['x=[1 2 3','گۆڕاوی <code>x</code> دروست دەکات لە جۆری double. ڕیزی یەکەم 1 و 2 و 3ـە، و چونکە ] نەهاتووە ماتریکسەکە لە هێڵی دواتر بەردەوامە.'],['4 5 6];','ڕیزی دووەم 4 و 5 و 6ـە و ] ماتریکسەکە دادەخات. ماتریکسی 2×3 دروست دەبێت و بەهۆی <code>;</code> پیشان نادرێت.'],['size(x)','قەبارەی x دەدات: 2 ڕیز و 3 ستوون، بە شێوەی ڕیزێک: <code>ans = 2 3</code>.'],['','<code>size</code> دەڵێت ماتریکسەکە چەند ڕیز و چەند ستوونی هەیە: یەکەم ژمارە ڕیزەکانە، دووەم ژمارە ستوونەکان.']],
+[['v=[1 2 3];','گۆڕاوی v دروست دەکات لە جۆری double، ڕیزێکی 1×3 بە 1 و 2 و 3. بەهۆی <code>;</code> پیشان نادرێت.'],['length(v)','ژمارەی توخمەکانی v دەژمێرێت: 1 و 2 و 3 دەکاتە 3 توخم. <code>ans = 3</code> دەنووسرێت.'],['','<code>length</code> ژمارەی توخمەکانی ڕیزێک دەژمێرێت. توخم (element) واتە یەک ژمارە لەناو ڕیزەکە.']],
+[['v =[55 63 34];','گۆڕاوی v دروست دەکات لە جۆری double، ڕیزێکی 1×3 بە 55 و 63 و 34. بەهۆی <code>;</code> پیشان نادرێت.'],['numel(v)','هەموو توخمەکانی v دەژمێرێت: 55 و 63 و 34، واتە 3. <code>ans = 3</code>.'],['x=[1 2','گۆڕاوی <code>x</code> دروست دەکات لە جۆری double. ڕیزی یەکەم 1 و 2ـە، و چونکە ] نەهاتووە ماتریکسەکە لە هێڵی دواتر بەردەوامە.'],['4 5','ڕیزی دووەم 4 و 5ـە، و ماتریکسەکە هێشتا بەردەوامە.'],['7 8 ];','ڕیزی سێیەم 7 و 8ـە و ] ماتریکسەکە دادەخات. ماتریکسی 3×2 دروست دەبێت و بەهۆی <code>;</code> پیشان نادرێت.'],['numel(x)','هەموو توخمەکانی x دەژمێرێت: 3 ڕیز * 2 ستوون = 6. <code>ans = 6</code>.'],['','<code>numel</code> هەموو توخمەکانی ماتریکسێک دەژمێرێت: ژمارەی ڕیزەکان لە ژمارەی ستوونەکان دەدات (3 * 2 = 6).']],
+[['x=[1 2 3','گۆڕاوی <code>x</code> دروست دەکات لە جۆری double. ڕیزی یەکەم 1 و 2 و 3ـە، و چونکە ] نەهاتووە ماتریکسەکە لە هێڵی دواتر بەردەوامە.'],['4 5 6','ڕیزی دووەم 4 و 5 و 6ـە، و ماتریکسەکە هێشتا بەردەوامە.'],['7 8 9];','ڕیزی سێیەم 7 و 8 و 9ـە و ] ماتریکسەکە دادەخات. ماتریکسی 3×3 دروست دەبێت و بەهۆی <code>;</code> پیشان نادرێت.'],['x\'','ڕیزەکان دەکات بە ستوون: ڕیزی یەکەم 1 2 3 دەبێتە ستوونی یەکەم، و هەروەها بۆ ڕیزەکانی تر. ئەنجام: 1 4 7 / 2 5 8 / 3 6 9.'],['v=[1 2 3];','گۆڕاوی v دروست دەکات لە جۆری double، ڕیزێکی 1×3 بە 1 و 2 و 3. بەهۆی <code>;</code> پیشان نادرێت.'],['v\'','ڕیزی v دەکات بە ستوون: 1 و 2 و 3 لە سێ ڕیزی جیا. ماتریکسێکی 3×1 دەبێت.'],['','transpose واتە ڕیزەکان و ستوونەکان شوێن بگۆڕنەوە: ڕیزی یەکەم دەبێتە ستوونی یەکەم. نیشانەکەی <code>\'</code>ـە.'],['','ڕیزێکی 1×3 دەبێتە ستوونێکی 3×1.']],
+[['x=[1 2 3','گۆڕاوی <code>x</code> دروست دەکات لە جۆری double. ڕیزی یەکەم 1 و 2 و 3ـە، و چونکە ] نەهاتووە ماتریکسەکە لە هێڵی دواتر بەردەوامە.'],['4 5 6];','ڕیزی دووەم 4 و 5 و 6ـە و ] ماتریکسەکە دادەخات. ماتریکسی 2×3 دروست دەبێت و بەهۆی <code>;</code> پیشان نادرێت.'],['max (x)','گەورەترین بەهای هەر ستوونێک: لە 1 و 4 گەورەتر 4ـە، لە 2 و 5 گەورەتر 5ـە، لە 3 و 6 گەورەتر 6ـە. ئەنجام: 4 5 6.'],['max(max(x))','max(x) دەکاتە 4 5 6، و max بۆ جاری دووەم گەورەترینی ئەوانە دەدات: 6.'],['','<code>max(x)</code> گەورەترین ژمارەی هەر ستوونێک دەدۆزێتەوە، نەک هەموو ماتریکسەکە.'],['','بۆ گەورەترینی هەموو ماتریکسەکە دوو جار max بەکاربهێنە: <code>max(max(x))</code>.']],
+[['x=[1 2 3','گۆڕاوی <code>x</code> دروست دەکات لە جۆری double. ڕیزی یەکەم 1 و 2 و 3ـە، و چونکە ] نەهاتووە ماتریکسەکە لە هێڵی دواتر بەردەوامە.'],['4 5 6];','ڕیزی دووەم 4 و 5 و 6ـە و ] ماتریکسەکە دادەخات. ماتریکسی 2×3 دروست دەبێت و بەهۆی <code>;</code> پیشان نادرێت.'],['min (x)','بچووکترین بەهای هەر ستوونێک: لە 1 و 4 بچووکتر 1ـە، لە 2 و 5 بچووکتر 2ـە، لە 3 و 6 بچووکتر 3ـە. ئەنجام: 1 2 3.'],['min(min(x))','min(x) دەکاتە 1 2 3، و min بۆ جاری دووەم بچووکترینی ئەوانە دەدات: 1.'],['','<code>min(x)</code> بچووکترین ژمارەی هەر ستوونێک دەدۆزێتەوە، نەک هەموو ماتریکسەکە.'],['','بۆ بچووکترینی هەموو ماتریکسەکە دوو جار min بەکاربهێنە: <code>min(min(x))</code>.']],
+[['magic(3)','ماتریکسێکی 3×3 دروست دەکات لە ژمارەکانی 1 تا 9 کە کۆی هەر ڕیز و ستوون و ئەستوونێکی 15ـە. دەچێتە ناو <code>ans</code> و پیشان دەدرێت.'],['','ماتریکسی جادوویی (magic square) ماتریکسێکە کە کۆی هەموو ڕیز و ستوونەکانی و هەردوو ئەستوونەکەی (diagonal) یەک ژمارەیە؛ بۆ 3×3 ئەو ژمارەیە 15ـە.']],
+[['x=[1 4;','گۆڕاوی x دروست دەکات لە جۆری double. ڕیزی یەکەم 1 و 4ـە و <code>;</code> ڕیزەکە تەواو دەکات، بەڵام ] نەهاتووە و ماتریکسەکە بەردەوامە.'],['5 8];','ڕیزی دووەم 5 و 8ـە و ] ماتریکسەکە دادەخات. ماتریکسی 2×2 دروست دەبێت و بەهۆی <code>;</code> پیشان نادرێت.'],['inv(x)','پێچەوانەی x حیساب دەکات. دیتێرمینانت 1 * 8 - 4 * 5 = -12، بۆیە ئەنجام: -0.6667 0.3333 / 0.4167 -0.0833.'],['','پێچەوانە (inverse) وەک پێچەوانەی ژمارەیە: ماتریکس لە پێچەوانەکەی بدرێت، ماتریکسی یەکە دروست دەبێت (1 لەسەر ئەستوونی سەرەکی).'],['','تەنها ماتریکسی چوارگۆشە (ژمارەی ڕیز = ژمارەی ستوون) پێچەوانەی هەیە، و دیتێرمینانتەکەی نابێت 0 بێت.']],
+[['x=[1 2 3','گۆڕاوی <code>x</code> دروست دەکات لە جۆری double. ڕیزی یەکەم 1 و 2 و 3ـە، و چونکە ] نەهاتووە ماتریکسەکە لە هێڵی دواتر بەردەوامە.'],['4 5 6','ڕیزی دووەم 4 و 5 و 6ـە، و ماتریکسەکە هێشتا بەردەوامە.'],['7 8 9];','ڕیزی سێیەم 7 و 8 و 9ـە و ] ماتریکسەکە دادەخات. ماتریکسی 3×3 دروست دەبێت و بەهۆی <code>;</code> پیشان نادرێت.'],['diag(x)','توخمەکانی ئەستوونی سەرەکی دەدات: 1 و 5 و 9، بە شێوەی ستوونێک.'],['v=[1 2 3];','گۆڕاوی v دروست دەکات لە جۆری double، ڕیزێکی 1×3 بە 1 و 2 و 3. بەهۆی <code>;</code> پیشان نادرێت.'],['diag(v)','ماتریکسێکی 3×3 دروست دەکات کە 1 و 2 و 3 لەسەر ئەستوونی سەرەکی بن و باقی 0 بن.'],['','ئەستوون (diagonal) هێڵێکە لە سەرەوەی چەپەوە بۆ خوارەوەی ڕاست.'],['','<code>diag</code> دوو شت دەکات: لە ماتریکسەوە ئەستوونەکە دەردەهێنێت، و لە ڕیزێکەوە ماتریکسێکی ئەستوونی دروست دەکات.']],
+[['x=[1 2 3','گۆڕاوی <code>x</code> دروست دەکات لە جۆری double. ڕیزی یەکەم 1 و 2 و 3ـە، و چونکە ] نەهاتووە ماتریکسەکە لە هێڵی دواتر بەردەوامە.'],['4 5 6];','ڕیزی دووەم 4 و 5 و 6ـە و ] ماتریکسەکە دادەخات. ماتریکسی 2×3 دروست دەبێت و بەهۆی <code>;</code> پیشان نادرێت.'],['prod(x)','لێکدانی هەر ستوونێک: 1 * 4 = 4 و 2 * 5 = 10 و 3 * 6 = 18. ئەنجام: 4 10 18.'],['prod(prod(x))','prod(x) دەکاتە 4 10 18، و prod بۆ جاری دووەم 4 * 10 * 18 = 720 دەدات.'],['','<code>prod</code> کورتکراوەی product (لێکدان)ە: ژمارەکانی هەر ستوونێک لە یەکتر دەدات، نەک کۆیان بکاتەوە.']],
+[['x=[4 6 8','گۆڕاوی <code>x</code> دروست دەکات لە جۆری double. ڕیزی یەکەم 4 و 6 و 8ـە، و چونکە ] نەهاتووە ماتریکسەکە لە هێڵی دواتر بەردەوامە.'],['10 9 1','ڕیزی دووەم 10 و 9 و 1ـە، و ماتریکسەکە هێشتا بەردەوامە.'],['8 2 5];','ڕیزی سێیەم 8 و 2 و 5ـە و ] ماتریکسەکە دادەخات. ماتریکسی 3×3 دروست دەبێت و بەهۆی <code>;</code> پیشان نادرێت.'],['median(x)','ناوەندی هەر ستوونێک (بەهای ناوەڕاست دوای ڕیزکردن): ستوونی 1 (4، 10، 8) 8ـە، ستوونی 2 (6، 9، 2) 6ـە، ستوونی 3 (8، 1، 5) 5ـە. ئەنجام: 8 6 5.'],['median(x,2)','ناوەندی هەر ڕیزێک: ڕیزی 1 (4، 6، 8) 6ـە، ڕیزی 2 (10، 9، 1) 9ـە، ڕیزی 3 (8، 2، 5) 5ـە. ئەنجام: ستوونێک بە 6 و 9 و 5.'],['median(median(x))','median(x) دەکاتە 8 6 5، و ناوەندی ئەوانە دوای ڕیزکردن (5، 6، 8) 6ـە: <code>ans = 6</code>.'],['','ناوەند (median) ئەو ژمارەیەیە کە دوای ڕیزکردن لە ناوەڕاستدایە: بۆ 4 و 10 و 8، دوای ڕیزکردن دەبێتە 4، 8، 10 و ناوەڕاستەکەی 8ـە.'],['','ئەگەر ژمارەی توخمەکان جووت بێت (وەک دوو توخم)، تێکڕای دوو ژمارەی ناوەڕاست وەردەگیرێت.']],
+[['x = [3 7 5','گۆڕاوی <code>x</code> دروست دەکات لە جۆری double. ڕیزی یەکەم 3 و 7 و 5ـە، و چونکە ] نەهاتووە ماتریکسەکە لە هێڵی دواتر بەردەوامە.'],['0 4 2];','ڕیزی دووەم 0 و 4 و 2ـە و ] ماتریکسەکە دادەخات. ماتریکسی 2×3 دروست دەبێت و بەهۆی <code>;</code> پیشان نادرێت.'],['sort(x,1)','هەر ستوونێک ڕیز دەکات: ستوونی 1 (3، 0) دەبێتە 0 و 3، ستوونی 2 (7، 4) دەبێتە 4 و 7، ستوونی 3 (5، 2) دەبێتە 2 و 5. ئەنجام: 0 4 2 / 3 7 5.'],['sort(x,2)','هەر ڕیزێک بە بچووکەوە بۆ گەورە ڕیز دەکات: ڕیزی 1 (3، 7، 5) دەبێتە 3 5 7، ڕیزی 2 (0، 4، 2) دەبێتە 0 2 4.'],['sort(x,2,\'descend\')','هەر ڕیزێک بە گەورەوە بۆ بچووک ڕیز دەکات: ڕیزی 1 دەبێتە 7 5 3، ڕیزی 2 دەبێتە 4 2 0.'],['','sort ڕیزی دەکات: بە شێوەی ئاسایی لە بچووکەوە بۆ گەورە، و <code>\'descend\'</code> پێچەوانەکەیە، لە گەورەوە بۆ بچووک.'],['','ژمارەی 1 یان 2 دەڵێت ستوونەکان ڕیز بکرێن یان ڕیزەکان (هەمان بیرۆکەی <code>sum</code>).']],
+[['x=[5 1 8','گۆڕاوی <code>x</code> دروست دەکات لە جۆری double. ڕیزی یەکەم 5 و 1 و 8ـە، و چونکە ] نەهاتووە ماتریکسەکە لە هێڵی دواتر بەردەوامە.'],['4 7 3','ڕیزی دووەم 4 و 7 و 3ـە، و ماتریکسەکە هێشتا بەردەوامە.'],['2 5 6];','ڕیزی سێیەم 2 و 5 و 6ـە و ] ماتریکسەکە دادەخات. ماتریکسی 3×3 دروست دەبێت و بەهۆی <code>;</code> پیشان نادرێت.'],['det(x)','دیتێرمینانتی x دەدات: 5 * (7 * 6 - 3 * 5) - 1 * (4 * 6 - 3 * 2) + 8 * (4 * 5 - 7 * 2) = 135 - 18 + 48 = 165.'],['','دیتێرمینانت (determinant) تەنها یەک ژمارەیە کە لە ماتریکسێکی چوارگۆشە دەردەهێنرێت؛ بۆ دۆزینەوەی پێچەوانە و چارەسەرکردنی هاوکێشەکان بەکاردێت.']],
+[['x=[5 1 8','گۆڕاوی <code>x</code> دروست دەکات لە جۆری double. ڕیزی یەکەم 5 و 1 و 8ـە، و چونکە ] نەهاتووە ماتریکسەکە لە هێڵی دواتر بەردەوامە.'],['4 7 3','ڕیزی دووەم 4 و 7 و 3ـە، و ماتریکسەکە هێشتا بەردەوامە.'],['2 5 6];','ڕیزی سێیەم 2 و 5 و 6ـە و ] ماتریکسەکە دادەخات. ماتریکسی 3×3 دروست دەبێت و بەهۆی <code>;</code> پیشان نادرێت.'],['tril(x)','تەنها ئەستوونی سەرەکی و ئەوەی لە خوارەوەیەتی دەهێڵێتەوە: 5 / 4 7 / 2 5 6، و ئەوەی لە سەرەوەیەتی (1 و 8 و 3) دەکات بە 0.'],['','<code>tril</code> کورتکراوەی triangle lower (سێگۆشەی خوارەوە)ە: ئەستوونەکە و ئەوەی لە خوارەوەیەتی دەهێڵێتەوە، و ئەوەی لە سەرەوەیەتی دەکات بە 0.']],
+[['x=[5 1 8','گۆڕاوی <code>x</code> دروست دەکات لە جۆری double. ڕیزی یەکەم 5 و 1 و 8ـە، و چونکە ] نەهاتووە ماتریکسەکە لە هێڵی دواتر بەردەوامە.'],['4 7 3','ڕیزی دووەم 4 و 7 و 3ـە، و ماتریکسەکە هێشتا بەردەوامە.'],['2 5 6];','ڕیزی سێیەم 2 و 5 و 6ـە و ] ماتریکسەکە دادەخات. ماتریکسی 3×3 دروست دەبێت و بەهۆی <code>;</code> پیشان نادرێت.'],['triu(x)','تەنها ئەستوونی سەرەکی و ئەوەی لە سەرەوەیەتی دەهێڵێتەوە: 5 1 8 / 7 3 / 6، و ئەوەی لە خوارەوەیەتی (4 و 2 و 5) دەکات بە 0.'],['','<code>triu</code> کورتکراوەی triangle upper (سێگۆشەی سەرەوە)ە: ئەستوونەکە و ئەوەی لە سەرەوەیەتی دەهێڵێتەوە، و ئەوەی لە خوارەوەیەتی دەکات بە 0.']],
+[['x=2:5;','ڕیزی x دروست دەکات لە جۆری double، لە 2 تا 5: 2 و 3 و 4 و 5. بەهۆی <code>;</code> پیشان نادرێت.'],['prod(x)','لێکدانی توخمەکانی x دەدات: 2 * 3 * 4 * 5 = 120، کە فاکتۆریاڵی 5ـە (1 هیچ کاریگەرییەکی نییە). <code>ans = 120</code>.'],['','فاکتۆریاڵی 5 (دەنووسرێت 5!) واتە 5 * 4 * 3 * 2 * 1 = 120.'],['','<code>2:5</code> ڕیزێکی 2 3 4 5 دروست دەکات و <code>prod</code> لێکیان دەدات؛ 1 پێویست نییە چونکە لێکدان بە 1 هیچ ناگۆڕێت.']],
+[['x=[1,5,7,9,13,20,6,7,8];','گۆڕاوی x دروست دەکات لە جۆری double، ڕیزێکی 1×9 بە 1 و 5 و 7 و 9 و 13 و 20 و 6 و 7 و 8. بەهۆی <code>;</code> پیشان نادرێت.'],['x(1:5)=max(x)','max(x) = 20. پێنج توخمی یەکەم (1 و 5 و 7 و 9 و 13) دەکات بە 20، بۆیە x دەبێتە 20 20 20 20 20 20 6 7 8 (توخمی 6 خۆی 20 بوو) و پیشان دەدرێت.'],['y(1,:)=x(1:3);','ڕیزی یەکەمی y دروست دەکات لە سێ توخمی یەکەمی x: 20 و 20 و 20. بەهۆی <code>;</code> پیشان نادرێت.'],['y(2,:)=x(4:6);','ڕیزی دووەمی y دەکات بە توخمی 4 تا 6ی x: 20 و 20 و 20.'],['y(3,:)=x(7:9);','ڕیزی سێیەمی y دەکات بە توخمی 7 تا 9ی x: 6 و 7 و 8.'],['y','y پیشان دەدات، کە ماتریکسێکی 3×3ـە: 20 20 20 / 20 20 20 / 6 7 8.'],['','<code>x(1:5)</code> واتە توخمی 1 تا 5ی x، و <code>max(x)</code> گەورەترین ژمارەی x دەدات (20).'],['','<code>y(1,:)=x(1:3)</code> ڕیزی یەکەمی y پڕ دەکاتەوە بە سێ توخمی یەکەمی x؛ بەم شێوەیە ڕیزێکی درێژ دەگۆڕدرێت بۆ ماتریکسی 3×3.']],
+[['b=1:10','گۆڕاوی b دروست دەکات لە جۆری double، ڕیزێکی 1×10 لە 1 تا 10. چونکە <code>;</code> نییە پیشان دەدرێت.'],['b=b\';','b دەگۆڕێت بۆ ستوون و دووبارە دەیخاتە ناو b، بۆیە b دەبێتە ستوونێکی 10×1. بەهۆی <code>;</code> پیشان نادرێت.'],['','نیشانەی <code>\'</code> ڕیز دەکات بە ستوون (transpose)؛ <code>b=b\'</code> واتە «b بگۆڕە و دووبارە بیخەرەوە ناو b».'],['','<code>;</code> لە کۆتایی هێڵی دووەم ئەنجامەکە پیشان نادات، بۆیە تەنها ڕیزە یەکەمەکە دەنووسرێت.']]
+],EXSUM:[
+'سەرەتا x دروست دەکات: ڕیزی یەکەم 1 و 2 و 3 و ڕیزی دووەم 4 و 5 و 6، ماتریکسێکی 2×3، بە <code>;</code> پیشان نادرێت. <code>sum(x)</code> هەر ستوونێک کۆ دەکات: 1 + 4 = 5، 2 + 5 = 7، 3 + 6 = 9، و ئەنجام 5 7 9ـە. <code>sum(x,2)</code> هەر ڕیزێک کۆ دەکات: 1 + 2 + 3 = 6 و 4 + 5 + 6 = 15، و ئەنجام ستوونێکە. <code>sum(sum(x))</code> یەکەم جار 5 7 9 دەدات و دووەم جار 5 + 7 + 9 = 21، کۆی هەموو ماتریکسەکە.',
+'سەرەتا x دروست دەکات، ماتریکسێکی 2×3 بە 1 و 2 و 3 لە ڕیزی یەکەم و 4 و 5 و 6 لە ڕیزی دووەم. <code>mean(x)</code> تێکڕای هەر ستوونێک دەدات: (1 + 4) / 2 = 2.5، (2 + 5) / 2 = 3.5، (3 + 6) / 2 = 4.5. <code>mean(x,2)</code> تێکڕای هەر ڕیزێک دەدات: 6 / 3 = 2 و 15 / 3 = 5. <code>mean(mean(x))</code> تێکڕای 2.5 و 3.5 و 4.5 دەدات: 10.5 / 3 = 3.5، تێکڕای هەموو ماتریکسەکە.',
+'<code>zeros(2,3)</code> ماتریکسێک دروست دەکات بە 2 ڕیز و 3 ستوون. هەموو شەش توخمەکەی (2 * 3 = 6) بە 0 پڕ دەکاتەوە. چونکە گۆڕاو نەدراوە، دەچێتە ناو <code>ans</code> و بە دوو ڕیز پیشان دەدرێت: 0 0 0 و 0 0 0.',
+'<code>ones(2,3)</code> ماتریکسێک دروست دەکات بە 2 ڕیز و 3 ستوون. هەموو شەش توخمەکەی (2 * 3 = 6) بە 1 پڕ دەکاتەوە. چونکە گۆڕاو نەدراوە، دەچێتە ناو <code>ans</code> و بە دوو ڕیز پیشان دەدرێت: 1 1 1 و 1 1 1.',
+'سەرەتا x دروست دەکات: ڕیزی یەکەم 1 و 2 و 3 و ڕیزی دووەم 4 و 5 و 6، بۆیە ماتریکسێکی 2×3ـە و بە <code>;</code> پیشان نادرێت. دواتر <code>size(x)</code> ژمارەی ڕیزەکان (2) و ژمارەی ستوونەکان (3) دەدات، و دەچێتە ناو <code>ans</code>: 2 3.',
+'سەرەتا v دروست دەکات، ڕیزێکی 1×3 بە بەهای 1 و 2 و 3، و بە <code>;</code> پیشان نادرێت. دواتر <code>length(v)</code> توخمەکانی v دەژمێرێت: 3 توخمی هەیە، بۆیە 3 دەچێتە ناو <code>ans</code> و <code>ans = 3</code> دەنووسرێت.',
+'سەرەتا v دروست دەکات، ڕیزێک بە 55 و 63 و 34. <code>numel(v)</code> سێ توخمەکەی دەژمێرێت و <code>ans = 3</code> دەنووسێت. دواتر x دروست دەکات لە سێ ڕیز: 1 و 2، 4 و 5، 7 و 8، ماتریکسێکی 3×2، و بە <code>;</code> پیشان نادرێت. <code>numel(x)</code> هەموو توخمەکان دەژمێرێت: 3 * 2 = 6، و <code>ans = 6</code> دەنووسێت.',
+'سەرەتا x دروست دەکات: ڕیزی یەکەم 1 و 2 و 3، دووەم 4 و 5 و 6، سێیەم 7 و 8 و 9، ماتریکسێکی 3×3. <code>x\'</code> ڕیزەکان دەکات بە ستوون: ستوونی یەکەم دەبێت 1 و 4 و 7، دووەم 2 و 5 و 8، سێیەم 3 و 6 و 9. دواتر v دروست دەکات، ڕیزێک بە 1 و 2 و 3. <code>v\'</code> ئەو ڕیزە دەکات بە ستوونێک: 1 و 2 و 3 لە سێ ڕیزدا.',
+'سەرەتا x دروست دەکات، ماتریکسێکی 2×3 بە 1 و 2 و 3 لە ڕیزی یەکەم و 4 و 5 و 6 لە ڕیزی دووەم. <code>max (x)</code> گەورەترینی هەر ستوونێک دەدات: 4 لە (1، 4)، 5 لە (2، 5)، 6 لە (3، 6)، واتە 4 5 6. <code>max(max(x))</code> گەورەترینی 4 5 6 دەدات، کە 6ـە، گەورەترین بەهای هەموو ماتریکسەکە.',
+'سەرەتا x دروست دەکات، ماتریکسێکی 2×3 بە 1 و 2 و 3 لە ڕیزی یەکەم و 4 و 5 و 6 لە ڕیزی دووەم. <code>min (x)</code> بچووکترینی هەر ستوونێک دەدات: 1 لە (1، 4)، 2 لە (2، 5)، 3 لە (3، 6)، واتە 1 2 3. <code>min(min(x))</code> بچووکترینی 1 2 3 دەدات، کە 1ـە، بچووکترین بەهای هەموو ماتریکسەکە.',
+'<code>magic(3)</code> ماتریکسێکی 3×3 دروست دەکات بە ژمارەکانی 1 تا 9: ڕیزی یەکەم 8 و 1 و 6، دووەم 3 و 5 و 7، سێیەم 4 و 9 و 2. کۆی هەر ڕیزێک 15ـە: 8 + 1 + 6 = 15، 3 + 5 + 7 = 15، 4 + 9 + 2 = 15. دەچێتە ناو <code>ans</code> و پیشان دەدرێت.',
+'سەرەتا x دروست دەکات: ڕیزی یەکەم 1 و 4، ڕیزی دووەم 5 و 8، ماتریکسێکی 2×2، و بە <code>;</code> پیشان نادرێت. <code>inv(x)</code> پێچەوانەی x دەدات. دیتێرمینانتی x ئەمەیە: 1 * 8 - 4 * 5 = 8 - 20 = -12. پێچەوانەکەی [8 -4; -5 1] / -12 دەبێت: -8 / 12 = -0.6667، 4 / 12 = 0.3333، 5 / 12 = 0.4167، -1 / 12 = -0.0833. دەچێتە ناو <code>ans</code> و پیشان دەدرێت.',
+'سەرەتا x دروست دەکات، ماتریکسێکی 3×3 بە 1 و 2 و 3، 4 و 5 و 6، 7 و 8 و 9. <code>diag(x)</code> ئەستوونی سەرەکی دەدات: 1 (ڕیزی 1 ستوونی 1)، 5 (ڕیزی 2 ستوونی 2)، 9 (ڕیزی 3 ستوونی 3)، وەک ستوونێک. دواتر v دروست دەکات، ڕیزێک بە 1 و 2 و 3. <code>diag(v)</code> چونکە v ڕیزە، ماتریکسێکی 3×3 دروست دەکات: 1 و 2 و 3 لەسەر ئەستوونی سەرەکی و هەموو شوێنەکانی تر 0.',
+'سەرەتا x دروست دەکات، ماتریکسێکی 2×3 بە 1 و 2 و 3 لە ڕیزی یەکەم و 4 و 5 و 6 لە ڕیزی دووەم. <code>prod(x)</code> لێکدانی هەر ستوونێک دەدات: 1 * 4 = 4، 2 * 5 = 10، 3 * 6 = 18، واتە 4 10 18. <code>prod(prod(x))</code> لێکدانی 4 و 10 و 18 دەدات: 4 * 10 = 40، پاشان 40 * 18 = 720.',
+'سەرەتا x دروست دەکات، ماتریکسێکی 3×3: 4 و 6 و 8، 10 و 9 و 1، 8 و 2 و 5. <code>median(x)</code> ناوەندی هەر ستوونێک دەدات: ستوونی یەکەم (4، 10، 8) دوای ڕیزکردن 4، 8، 10 دەبێت و ناوەندەکەی 8ـە. ستوونی دووەم (6، 9، 2) دەبێتە 2، 6، 9 و ناوەندەکەی 6ـە. ستوونی سێیەم (8، 1، 5) دەبێتە 1، 5، 8 و ناوەندەکەی 5ـە. ئەنجام 8 6 5. <code>median(x,2)</code> بۆ ڕیزەکان 6 و 9 و 5 دەدات. <code>median(median(x))</code> ناوەندی 8 6 5 دەدات، کە 5، 6، 8 دەبێت و ناوەندەکەی 6ـە.',
+'سەرەتا x دروست دەکات: ڕیزی یەکەم 3 و 7 و 5، ڕیزی دووەم 0 و 4 و 2. <code>sort(x,1)</code> ستوونەکان ڕیز دەکات (بە بچووکەوە بۆ گەورە): 3 و 0 دەبێتە 0 و 3، 7 و 4 دەبێتە 4 و 7، 5 و 2 دەبێتە 2 و 5، بۆیە ئەنجام 0 4 2 / 3 7 5. <code>sort(x,2)</code> ڕیزەکان ڕیز دەکات: 3 5 7 و 0 2 4. <code>sort(x,2,\'descend\')</code> ڕیزەکان بە گەورەوە بۆ بچووک ڕیز دەکات: 7 5 3 و 4 2 0.',
+'سەرەتا x دروست دەکات، ماتریکسێکی 3×3: 5 و 1 و 8، 4 و 7 و 3، 2 و 5 و 6. <code>det(x)</code> دیتێرمینانت حیساب دەکات: 5 * (7 * 6 - 3 * 5) = 5 * 27 = 135، دواتر 1 * (4 * 6 - 3 * 2) = 18 کەم دەکات، و 8 * (4 * 5 - 7 * 2) = 8 * 6 = 48 زیاد دەکات. 135 - 18 + 48 = 165، دەچێتە ناو <code>ans</code> و <code>ans = 165</code> دەنووسرێت.',
+'سەرەتا x دروست دەکات، ماتریکسێکی 3×3: 5 و 1 و 8، 4 و 7 و 3، 2 و 5 و 6. <code>tril(x)</code> بەشی خوارەوەی ئەستوونی سەرەکی دەهێڵێتەوە: ڕیزی 1 تەنها 5 دەمێنێت، ڕیزی 2 دەبێتە 4 و 7، ڕیزی 3 هەموو دەمێنێت (2 و 5 و 6). توخمەکانی سەرەوەی ئەستوونی (1 و 8 و 3) دەبن بە 0. ئەنجام: 5 0 0 / 4 7 0 / 2 5 6.',
+'سەرەتا x دروست دەکات، ماتریکسێکی 3×3: 5 و 1 و 8، 4 و 7 و 3، 2 و 5 و 6. <code>triu(x)</code> بەشی سەرەوەی ئەستوونی سەرەکی دەهێڵێتەوە: ڕیزی 1 هەموو دەمێنێت (5 و 1 و 8)، ڕیزی 2 دەبێتە 7 و 3، ڕیزی 3 تەنها 6 دەمێنێت. توخمەکانی خوارەوەی ئەستوونی (4 و 2 و 5) دەبن بە 0. ئەنجام: 5 1 8 / 0 7 3 / 0 0 6.',
+'سەرەتا <code>x=2:5;</code> ڕیزێک دروست دەکات: 2 و 3 و 4 و 5، و بە <code>;</code> پیشان نادرێت. دواتر <code>prod(x)</code> هەموو توخمەکان لێک دەدات: 2 * 3 = 6، پاشان 6 * 4 = 24، پاشان 24 * 5 = 120. ئەمە فاکتۆریاڵی 5ـە، و <code>ans = 120</code> دەنووسرێت.',
+'سەرەتا x دروست دەکات، ڕیزێک بە 9 توخم: 1 و 5 و 7 و 9 و 13 و 20 و 6 و 7 و 8. <code>x(1:5)=max(x)</code> گەورەترین بەها دەدۆزێتەوە (20) و پێنج توخمی یەکەم دەکات بە 20، بۆیە x دەبێتە 20 20 20 20 20 20 6 7 8 و پیشان دەدرێت. دواتر ڕیزەکانی y پڕ دەکات: ڕیزی 1 لە توخمی 1 تا 3 (20 و 20 و 20)، ڕیزی 2 لە توخمی 4 تا 6 (20 و 20 و 20)، ڕیزی 3 لە توخمی 7 تا 9 (6 و 7 و 8). لە کۆتاییدا <code>y</code> ماتریکسی 3×3 پیشان دەدات.',
+'سەرەتا <code>b=1:10</code> ڕیزێک دروست دەکات لە 1 تا 10 و چونکە <code>;</code> نییە لە یەک ڕیزدا پیشان دەدرێت. دواتر <code>b=b\';</code> transposeـی b دەکات: ڕیزی 1×10 دەبێتە ستوونی 10×1، و دووبارە دەخرێتە ناو هەمان b. بەهۆی <code>;</code> ئەنجامی دووەم پیشان نادرێت.'
+],MORE:[
+{c:'v = [2 4 6; 1 1 1];\nsum(v)\nsum(v,2)',o:'ans =\n     3     5     7\nans =\n    12\n     3',intro:'ماتریکسی v: ڕیزی یەکەم 2 و 4 و 6، ڕیزی دووەم 1 و 1 و 1. <code>sum(v)</code> ستوونەکان کۆ دەکات: 2 + 1 = 3، 4 + 1 = 5، 6 + 1 = 7. <code>sum(v,2)</code> ڕیزەکان کۆ دەکات: 2 + 4 + 6 = 12 و 1 + 1 + 1 = 3.',s:[['v = [2 4 6; 1 1 1];','گۆڕاوی v دروست دەکات لە جۆری double، ماتریکسێکی 2×3. بەهۆی <code>;</code> پیشان نادرێت.',[]],['sum(v)','کۆی هەر ستوونێک: 2 + 1 = 3 و 4 + 1 = 5 و 6 + 1 = 7. ئەنجام: 3 5 7.',[]],['sum(v,2)','کۆی هەر ڕیزێک: 2 + 4 + 6 = 12 و 1 + 1 + 1 = 3. ئەنجام: ستوونێک بە 12 و 3.',[]]],sum:'پوختە: <code>sum(v)</code> ستوونەکان کۆ دەکات و <code>sum(v,2)</code> ڕیزەکان.'},
+{c:'m = [2 4; 6 8];\nmean(m)\nmean(m,2)',o:'ans =\n     4     6\nans =\n     3\n     7',intro:'ماتریکسی m: ڕیزی یەکەم 2 و 4، ڕیزی دووەم 6 و 8. <code>mean(m)</code> تێکڕای ستوونەکان دەدات: (2 + 6) / 2 = 4 و (4 + 8) / 2 = 6. <code>mean(m,2)</code> تێکڕای ڕیزەکان دەدات: (2 + 4) / 2 = 3 و (6 + 8) / 2 = 7.',s:[['m = [2 4; 6 8];','گۆڕاوی m دروست دەکات لە جۆری double، ماتریکسێکی 2×2. بەهۆی <code>;</code> پیشان نادرێت.',[]],['mean(m)','تێکڕای هەر ستوونێک: (2 + 6) / 2 = 4 و (4 + 8) / 2 = 6. ئەنجام: 4 6.',[]],['mean(m,2)','تێکڕای هەر ڕیزێک: (2 + 4) / 2 = 3 و (6 + 8) / 2 = 7. ئەنجام: ستوونێک بە 3 و 7.',[]]],sum:'پوختە: <code>mean(m)</code> تێکڕای ستوونەکان دەدات و <code>mean(m,2)</code> تێکڕای ڕیزەکان.'},
+{c:'zeros(3)',o:'ans =\n     0     0     0\n     0     0     0\n     0     0     0',intro:'<code>zeros(3)</code> تەنها یەک ژمارە وەردەگرێت، بۆیە ماتریکسێکی چوارگۆشە دروست دەکات: 3×3. هەموو نۆ توخمەکەی (3 * 3 = 9) 0ـە و دەچێتە ناو <code>ans</code>.',s:[['zeros(3)','ماتریکسێکی 3×3 دروست دەکات و هەموو نۆ توخمەکەی 0ـە. دەچێتە ناو <code>ans</code> و بە سێ ڕیز پیشان دەدرێت.',[]]],sum:'پوختە: <code>zeros(N)</code> ماتریکسی N×N پڕ لە سفر دروست دەکات.'},
+{c:'ones(2)',o:'ans =\n     1     1\n     1     1',intro:'<code>ones(2)</code> تەنها یەک ژمارە وەردەگرێت، بۆیە ماتریکسێکی 2×2 دروست دەکات. هەر چوار توخمەکەی (2 * 2 = 4) 1ـە و دەچێتە ناو <code>ans</code>.',s:[['ones(2)','ماتریکسێکی 2×2 دروست دەکات و هەر چوار توخمەکەی 1ـە. دەچێتە ناو <code>ans</code> و بە دوو ڕیز پیشان دەدرێت.',[]]],sum:'پوختە: <code>ones(N)</code> ماتریکسی N×N پڕ لە یەک دروست دەکات.'},
+{c:'z = [1 2; 3 4; 5 6; 7 8];\nsize(z)',o:'ans =\n     4     2',intro:'ماتریکسی z چوار ڕیزی هەیە (1 و 2، 3 و 4، 5 و 6، 7 و 8) و هەر ڕیزێک دوو توخمی هەیە. بۆیە <code>size(z)</code> دەدات: 4 ڕیز و 2 ستوون.',s:[['z = [1 2; 3 4; 5 6; 7 8];','گۆڕاوی z دروست دەکات لە جۆری double، ماتریکسێکی 4×2: چوار ڕیز و هەر ڕیزێک دوو بەها. بەهۆی <code>;</code> پیشان نادرێت.',[]],['size(z)','ژمارەی ڕیزەکان 4 و ژمارەی ستوونەکان 2ـە. ئەنجام: <code>ans = 4 2</code>.',[]]],sum:'پوختە: <code>size</code> یەکەم جار ژمارەی ڕیزەکان و دواتر ژمارەی ستوونەکان دەدات.'},
+{c:'w = [4 8 12 16 20];\nlength(w)',o:'ans =\n     5',intro:'سەرەتا ڕیزی w دروست دەکەین: 4 و 8 و 12 و 16 و 20، و بە <code>;</code> پیشان نادرێت. دواتر <code>length(w)</code> توخمەکانی دەژمێرێت، کە پێنجن، و دەچێتە ناو <code>ans</code>.',s:[['w = [4 8 12 16 20];','گۆڕاوی w دروست دەکات لە جۆری double، ڕیزێکی 1×5 بە 4 و 8 و 12 و 16 و 20. بەهۆی <code>;</code> پیشان نادرێت.',[]],['length(w)','ژمارەی توخمەکانی w دەژمێرێت: 5. دەچێتە ناو <code>ans</code> و <code>ans = 5</code> دەنووسرێت.',[]]],sum:'پوختە: <code>length</code> ژمارەی توخمەکانی ڕیزێک دەدات.'},
+{c:'n = [1 2 3; 4 5 6];\nnumel(n)',o:'ans =\n     6',intro:'ماتریکسی n دوو ڕیز و سێ ستوونی هەیە: 1 و 2 و 3، 4 و 5 و 6. <code>numel(n)</code> هەموو توخمەکان دەژمێرێت: 2 * 3 = 6، و دەچێتە ناو <code>ans</code>.',s:[['n = [1 2 3; 4 5 6];','گۆڕاوی n دروست دەکات لە جۆری double، ماتریکسێکی 2×3. بەهۆی <code>;</code> پیشان نادرێت.',[]],['numel(n)','هەموو توخمەکانی n دەژمێرێت: 2 ڕیز * 3 ستوون = 6. دەچێتە ناو <code>ans</code> و <code>ans = 6</code> دەنووسرێت.',[]]],sum:'پوختە: <code>numel</code> ژمارەی هەموو توخمەکانی ڕیز یان ماتریکس دەدات.'},
+{c:'p = [1 2; 3 4];\np\'',o:'ans =\n     1     3\n     2     4',intro:'ماتریکسی p: ڕیزی یەکەم 1 و 2، ڕیزی دووەم 3 و 4. <code>p\'</code> ڕیزەکان دەکات بە ستوون: ڕیزی یەکەم (1 و 2) دەبێتە ستوونی یەکەم، و ڕیزی دووەم (3 و 4) دەبێتە ستوونی دووەم. ئەنجام: 1 3 / 2 4.',s:[['p = [1 2; 3 4];','گۆڕاوی p دروست دەکات لە جۆری double، ماتریکسێکی 2×2: 1 و 2، 3 و 4. بەهۆی <code>;</code> پیشان نادرێت.',[]],['p\'','ماتریکسەکە دەخولێنێتەوە لەسەر ئەستوونی سەرەکی: 1 و 3 دەبێتە ڕیزی یەکەم، 2 و 4 دەبێتە ڕیزی دووەم. دەچێتە ناو <code>ans</code>.',[]]],sum:'پوختە: <code>\'</code> ڕیزەکان دەکات بە ستوون و ستوونەکان بە ڕیز.'},
+{c:'g = [9 2; 3 7];\nmax(g)\nmax(max(g))',o:'ans =\n     9     7\nans =\n     9',intro:'ماتریکسی g: ڕیزی یەکەم 9 و 2، ڕیزی دووەم 3 و 7. <code>max(g)</code> گەورەترینی ستوونەکان دەدات: لە 9 و 3 گەورەتر 9، لە 2 و 7 گەورەتر 7. <code>max(max(g))</code> گەورەترینی 9 و 7 دەدات: 9.',s:[['g = [9 2; 3 7];','گۆڕاوی g دروست دەکات لە جۆری double، ماتریکسێکی 2×2: 9 و 2، 3 و 7. بەهۆی <code>;</code> پیشان نادرێت.',[]],['max(g)','گەورەترینی هەر ستوونێک: 9 لە (9، 3) و 7 لە (2، 7). ئەنجام: 9 7.',[]],['max(max(g))','گەورەترینی 9 و 7 دەدات: 9، گەورەترین بەهای هەموو ماتریکسەکە.',[]]],sum:'پوختە: <code>max(g)</code> گەورەترینی هەر ستوونێک دەدات و <code>max(max(g))</code> گەورەترینی هەموو ماتریکسەکە.'},
+{c:'g = [9 2; 3 7];\nmin(g)\nmin(min(g))',o:'ans =\n     3     2\nans =\n     2',intro:'ماتریکسی g: ڕیزی یەکەم 9 و 2، ڕیزی دووەم 3 و 7. <code>min(g)</code> بچووکترینی ستوونەکان دەدات: لە 9 و 3 بچووکتر 3، لە 2 و 7 بچووکتر 2. <code>min(min(g))</code> بچووکترینی 3 و 2 دەدات: 2.',s:[['g = [9 2; 3 7];','گۆڕاوی g دروست دەکات لە جۆری double، ماتریکسێکی 2×2: 9 و 2، 3 و 7. بەهۆی <code>;</code> پیشان نادرێت.',[]],['min(g)','بچووکترینی هەر ستوونێک: 3 لە (9، 3) و 2 لە (2، 7). ئەنجام: 3 2.',[]],['min(min(g))','بچووکترینی 3 و 2 دەدات: 2، بچووکترین بەهای هەموو ماتریکسەکە.',[]]],sum:'پوختە: <code>min(g)</code> بچووکترینی هەر ستوونێک دەدات و <code>min(min(g))</code> بچووکترینی هەموو ماتریکسەکە.'},
+{c:'magic(4)',o:'ans =\n    16     2     3    13\n     5    11    10     8\n     9     7     6    12\n     4    14    15     1',intro:'<code>magic(4)</code> ماتریکسێکی 4×4 دروست دەکات بە ژمارەکانی 1 تا 16. کۆی هەر ڕیزێک 34ـە: 16 + 2 + 3 + 13 = 34، 5 + 11 + 10 + 8 = 34، 9 + 7 + 6 + 12 = 34، 4 + 14 + 15 + 1 = 34.',s:[['magic(4)','ماتریکسێکی 4×4 دروست دەکات لە ژمارەکانی 1 تا 16 کە کۆی هەر ڕیزێک 34ـە. دەچێتە ناو <code>ans</code> و بە چوار ڕیز پیشان دەدرێت.',[]]],sum:'پوختە: <code>magic(N)</code> ماتریکسێکی N×N دروست دەکات کە کۆی هەموو ڕیز و ستوونەکانی وەک یەکن.'},
+{c:'y = [2 0; 0 4];\ninv(y)',o:'ans =\n    0.5000         0\n         0    0.2500',intro:'ماتریکسی y: ڕیزی یەکەم 2 و 0، ڕیزی دووەم 0 و 4، واتە تەنها ئەستوونی سەرەکی بەهای هەیە. پێچەوانەکەی هەر بەهایەک بە 1 دابەش دەکات: 1 / 2 = 0.5 و 1 / 4 = 0.25، و سفرەکان دەمێننەوە.',s:[['y = [2 0; 0 4];','گۆڕاوی y دروست دەکات لە جۆری double، ماتریکسێکی 2×2: 2 و 0، 0 و 4. بەهۆی <code>;</code> پیشان نادرێت.',[]],['inv(y)','پێچەوانەی y دەدات: 1 / 2 = 0.5 و 1 / 4 = 0.25 لەسەر ئەستوونی سەرەکی، و سفرەکان هەر 0. ئەنجام: 0.5000 0 / 0 0.2500.',[]]],sum:'پوختە: <code>inv</code> پێچەوانەی ماتریکس دەدات.'},
+{c:'w = [4 5];\ndiag(w)',o:'ans =\n     4     0\n     0     5',intro:'سەرەتا ڕیزی w دروست دەکەین: 4 و 5، و بە <code>;</code> پیشان نادرێت. چونکە w ڕیزە، <code>diag(w)</code> ماتریکسێکی 2×2 دروست دەکات: 4 و 5 لەسەر ئەستوونی سەرەکی و باقی 0.',s:[['w = [4 5];','گۆڕاوی w دروست دەکات لە جۆری double، ڕیزێکی 1×2 بە 4 و 5. بەهۆی <code>;</code> پیشان نادرێت.',[]],['diag(w)','ماتریکسێکی 2×2 دروست دەکات: 4 لە ڕیزی 1 ستوونی 1، 5 لە ڕیزی 2 ستوونی 2، و دوو شوێنەکەی تر 0. دەچێتە ناو <code>ans</code>.',[]]],sum:'پوختە: <code>diag</code> بۆ ماتریکس ئەستوونی سەرەکی دەدات و بۆ ڕیز ماتریکسی ئەستوونی دروست دەکات.'},
+{c:'q = [2 3; 4 5];\nprod(q)',o:'ans =\n     8    15',intro:'ماتریکسی q: ڕیزی یەکەم 2 و 3، ڕیزی دووەم 4 و 5. <code>prod(q)</code> لێکدانی هەر ستوونێک دەدات: 2 * 4 = 8 و 3 * 5 = 15.',s:[['q = [2 3; 4 5];','گۆڕاوی q دروست دەکات لە جۆری double، ماتریکسێکی 2×2: 2 و 3، 4 و 5. بەهۆی <code>;</code> پیشان نادرێت.',[]],['prod(q)','لێکدانی هەر ستوونێک: 2 * 4 = 8 و 3 * 5 = 15. ئەنجام: 8 15.',[]]],sum:'پوختە: <code>prod</code> لێکدانی توخمەکانی هەر ستوونێک دەدات.'},
+{c:'k = [3 1 2; 9 7 8];\nmedian(k)',o:'ans =\n     6     4     5',intro:'ماتریکسی k: ڕیزی یەکەم 3 و 1 و 2، ڕیزی دووەم 9 و 7 و 8. هەر ستوونێک تەنها دوو بەهای هەیە، بۆیە ناوەندەکەی تێکڕای ئەو دووانەیە: (3 + 9) / 2 = 6، (1 + 7) / 2 = 4، (2 + 8) / 2 = 5.',s:[['k = [3 1 2; 9 7 8];','گۆڕاوی k دروست دەکات لە جۆری double، ماتریکسێکی 2×3. بەهۆی <code>;</code> پیشان نادرێت.',[]],['median(k)','ناوەندی هەر ستوونێک، کە بۆ دوو بەها تێکڕای ئەو دووانەیە: (3 + 9) / 2 = 6 و (1 + 7) / 2 = 4 و (2 + 8) / 2 = 5. ئەنجام: 6 4 5.',[]]],sum:'پوختە: <code>median</code> بەهای ناوەڕاستی هەر ستوونێک دەدات دوای ڕیزکردن.'},
+{c:'s = [8 3 6];\nsort(s)\nsort(s,2,\'descend\')',o:'ans =\n     3     6     8\nans =\n     8     6     3',intro:'ڕیزی s: 8 و 3 و 6. <code>sort(s)</code> بە بچووکەوە بۆ گەورە ڕیزی دەکات: 3 و 6 و 8. <code>sort(s,2,\'descend\')</code> بە گەورەوە بۆ بچووک ڕیزی دەکات: 8 و 6 و 3.',s:[['s = [8 3 6];','گۆڕاوی s دروست دەکات لە جۆری double، ڕیزێکی 1×3 بە 8 و 3 و 6. بەهۆی <code>;</code> پیشان نادرێت.',[]],['sort(s)','ڕیزەکە بە بچووکەوە بۆ گەورە ڕیز دەکات: 3 و 6 و 8. دەچێتە ناو <code>ans</code>.',[]],['sort(s,2,\'descend\')','ڕیزەکە بە گەورەوە بۆ بچووک ڕیز دەکات: 8 و 6 و 3. دەچێتە ناو <code>ans</code>.',[]]],sum:'پوختە: <code>sort</code> بە شێوەی ئاسایی بە بچووکەوە بۆ گەورە ڕیز دەکات، و <code>descend</code> بە پێچەوانەوە.'},
+{c:'y = [2 1; 0 3];\ndet(y)',o:'ans =\n     6',intro:'ماتریکسی y: ڕیزی یەکەم 2 و 1، ڕیزی دووەم 0 و 3. دیتێرمینانتی ماتریکسی 2×2 ئەمەیە: 2 * 3 - 1 * 0 = 6 - 0 = 6، و دەچێتە ناو <code>ans</code>.',s:[['y = [2 1; 0 3];','گۆڕاوی y دروست دەکات لە جۆری double، ماتریکسێکی 2×2: 2 و 1، 0 و 3. بەهۆی <code>;</code> پیشان نادرێت.',[]],['det(y)','دیتێرمینانت: 2 * 3 - 1 * 0 = 6. دەچێتە ناو <code>ans</code> و <code>ans = 6</code> دەنووسرێت.',[]]],sum:'پوختە: <code>det</code> دیتێرمینانتی ماتریکسی چوارگۆشە دەدات.'},
+{c:'m = [1 2 3; 4 5 6; 7 8 9];\ntril(m)',o:'ans =\n     1     0     0\n     4     5     0\n     7     8     9',intro:'ماتریکسی m: 1 و 2 و 3، 4 و 5 و 6، 7 و 8 و 9. <code>tril(m)</code> تەنها بەشی خوارەوەی ئەستوونی سەرەکی دەهێڵێتەوە: 1، 4 و 5، 7 و 8 و 9. توخمەکانی سەرەوە (2 و 3 و 6) دەبن بە 0.',s:[['m = [1 2 3; 4 5 6; 7 8 9];','گۆڕاوی m دروست دەکات لە جۆری double، ماتریکسێکی 3×3. بەهۆی <code>;</code> پیشان نادرێت.',[]],['tril(m)','بەشی خوارەوەی ئەستوونی سەرەکی دەهێڵێتەوە (1، 4 5، 7 8 9) و 2 و 3 و 6 دەکات بە 0. ئەنجام: 1 0 0 / 4 5 0 / 7 8 9.',[]]],sum:'پوختە: <code>tril</code> بەشی خوارەوەی ئەستوونی سەرەکی دەهێڵێتەوە و سەرەوە دەکات بە سفر.'},
+{c:'m = [1 2 3; 4 5 6; 7 8 9];\ntriu(m)',o:'ans =\n     1     2     3\n     0     5     6\n     0     0     9',intro:'ماتریکسی m: 1 و 2 و 3، 4 و 5 و 6، 7 و 8 و 9. <code>triu(m)</code> تەنها بەشی سەرەوەی ئەستوونی سەرەکی دەهێڵێتەوە: 1 و 2 و 3، 5 و 6، 9. توخمەکانی خوارەوە (4 و 7 و 8) دەبن بە 0.',s:[['m = [1 2 3; 4 5 6; 7 8 9];','گۆڕاوی m دروست دەکات لە جۆری double، ماتریکسێکی 3×3. بەهۆی <code>;</code> پیشان نادرێت.',[]],['triu(m)','بەشی سەرەوەی ئەستوونی سەرەکی دەهێڵێتەوە (1 2 3، 5 6، 9) و 4 و 7 و 8 دەکات بە 0. ئەنجام: 1 2 3 / 0 5 6 / 0 0 9.',[]]],sum:'پوختە: <code>triu</code> بەشی سەرەوەی ئەستوونی سەرەکی دەهێڵێتەوە و خوارەوە دەکات بە سفر.'},
+{c:'n = 1:4;\nprod(n)',o:'ans =\n    24',intro:'سەرەتا ڕیزی n دروست دەکەین: 1 و 2 و 3 و 4، و بە <code>;</code> پیشان نادرێت. دواتر <code>prod(n)</code> لێکدانیان دەدات: 1 * 2 = 2، پاشان 2 * 3 = 6، پاشان 6 * 4 = 24، کە فاکتۆریاڵی 4ـە.',s:[['n = 1:4;','ڕیزی n دروست دەکات لە جۆری double: 1 و 2 و 3 و 4. بەهۆی <code>;</code> پیشان نادرێت.',[]],['prod(n)','لێکدانی توخمەکانی n دەدات: 1 * 2 * 3 * 4 = 24. دەچێتە ناو <code>ans</code> و <code>ans = 24</code> دەنووسرێت.',[]]],sum:'پوختە: <code>prod</code> بۆ ڕیزی 1 تا N فاکتۆریاڵی N دەدات.'},
+{c:'z = 1:6;\nm = zeros(2,3);\nm(1,:) = z(1:3);\nm(2,:) = z(4:6);\nm',o:'m =\n     1     2     3\n     4     5     6',intro:'سەرەتا ڕیزی z دروست دەکەین: 1 و 2 و 3 و 4 و 5 و 6. دواتر ماتریکسی m دروست دەکەین بە 2×3 و هەموو توخمەکانی 0. ڕیزی یەکەمی m دەکەین بە توخمی 1 تا 3ی z (1 و 2 و 3) و ڕیزی دووەم بە توخمی 4 تا 6 (4 و 5 و 6). لە کۆتاییدا m پیشان دەدەین.',s:[['z = 1:6;','ڕیزی z دروست دەکات لە جۆری double: 1 و 2 و 3 و 4 و 5 و 6. بەهۆی <code>;</code> پیشان نادرێت.',[]],['m = zeros(2,3);','ماتریکسی m دروست دەکات لە جۆری double، 2×3 و هەموو شەش توخمەکەی 0. بەهۆی <code>;</code> پیشان نادرێت.',[]],['m(1,:) = z(1:3);','ڕیزی یەکەمی m دەکات بە 1 و 2 و 3 (توخمی 1 تا 3ی z). بەهۆی <code>;</code> پیشان نادرێت.',[]],['m(2,:) = z(4:6);','ڕیزی دووەمی m دەکات بە 4 و 5 و 6 (توخمی 4 تا 6ی z). بەهۆی <code>;</code> پیشان نادرێت.',[]],['m','m پیشان دەدات: 1 2 3 / 4 5 6.',[]]],sum:'پوختە: <code>m(i,:)</code> ڕیزی i دیاری دەکات و دەتوانیت بەهاکان لە ڕیزێکی تر بیخەیتە ناوی.'},
+{c:'r = 1:3\nr = r\';\nr',o:'r =\n     1     2     3\nr =\n     1\n     2\n     3',intro:'سەرەتا r دروست دەکەین بە 1 و 2 و 3 و چونکە <code>;</code> نییە لە یەک ڕیزدا پیشان دەدرێت. دواتر <code>r = r\';</code> دەیکات بە ستوون و بە <code>;</code> پیشان نادرێت. لە کۆتاییدا <code>r</code> ستوونەکە پیشان دەدات: 1 و 2 و 3 لە سێ ڕیزدا.',s:[['r = 1:3','ڕیزی r دروست دەکات لە جۆری double: 1 و 2 و 3. چونکە <code>;</code> نییە پیشان دەدرێت.',[]],['r = r\';','r دەگۆڕێت بۆ ستوون (3×1) و دووبارە دەیخاتە ناو r. بەهۆی <code>;</code> پیشان نادرێت.',[]],['r','r پیشان دەدات: ستوونێک بە 1 و 2 و 3.',[]]],sum:'پوختە: <code>r = r\'</code> ڕیزەکە دەکات بە ستوون و لە هەمان گۆڕاودا هەڵیدەگرێت.'}
+]}
+];
+const ADD=(i,d)=>{for(const k of ['E','EX','EXSUM','MORE'])LABS[i][k].push(...d[k]);};
+const CREATOR_EMAIL='tanyakam0001@gmail.com';
+const FORMSPREE_URL='https://formspree.io/f/xyekorok';
+function fbVisitorCode(){
+ try{
+  let c=localStorage.getItem('fbVisitorCode');
+  if(!c){const ch='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';c='';for(let i=0;i<4;i++)c+=ch[Math.floor(Math.random()*ch.length)];localStorage.setItem('fbVisitorCode',c);}
+  return c;
+ }catch(e){return '----';}
+}
+function fbShowMsg(ok,text){const m=document.getElementById('fbMsg');m.className='fb-msg '+(ok?'ok':'err');m.textContent=text;}
+async function fbSubmit(subject,body){const btn=document.getElementById('fbSendBtn');btn.disabled=true;btn.textContent='⏳ دەنێردرێت...';
+ const code=fbVisitorCode();
+ try{
+  const res=await fetch(FORMSPREE_URL,{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify({subject:subject,message:body,visitor_code:code})});
+  if(res.ok){fbShowMsg(true,'✅ نامەکەت بە سەرکەوتوویی نێردرا، سوپاس! (کۆدی تۆ: '+code+')');document.getElementById('fbText').value='';}
+  else{fbShowMsg(false,'❌ نەتوانرا نامەکە بنێردرێت. تکایە دووبارە هەوڵ بدەرەوە.');}
+ }catch(e){fbShowMsg(false,'❌ کێشەیەک لە پەیوەندیدا ڕوویدا. ئینتەرنێتەکەت بپشکنە و دووبارە هەوڵ بدەرەوە.');}
+ btn.disabled=false;btn.textContent='📤 ناردنی نامە';}
+function fbMailto(subject,body){
+ const code=fbVisitorCode();
+ const su=encodeURIComponent(subject),bo=encodeURIComponent(body+'\n\n—\nکۆدی بەکارهێنەر: '+code);
+ window.location.href='mailto:'+CREATOR_EMAIL+'?subject='+su+'&body='+bo;
+}
+const FB_PRESETS={thanks:['سپاس بۆ ماڵپەڕەکە','سڵاو،\n\nدەمەوێت سپاسی تۆ بکەم بۆ ئەم ماڵپەڕە باشە. زۆر سوودمەند بووم بۆ فێربوونی C#.'],suggest:['پێشنیار بۆ ماڵپەڕەکە','سڵاو،\n\nئەم پێشنیارەم هەیە بۆ باشترکردنی ماڵپەڕەکە:\n'],complaint:['ڕخنە بۆ ماڵپەڕەکە','سڵاو،\n\nڕخنەم هەیە لە ماڵپەڕەکە:\nلێرەدا بنووسە...']};
+function fbQuick(kind){const[subject,body]=FB_PRESETS[kind];fbMailto(subject,body);fbCloseDialog();}
+function fbFill(kind){const[,body]=FB_PRESETS[kind];const ta=document.getElementById('fbText');ta.value=body;ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);}
+function fbOpenDialog(){document.getElementById('fbOverlay').classList.add('open');}
+function fbCloseDialog(){document.getElementById('fbOverlay').classList.remove('open');}
+function fbSendDirect(){const t=document.getElementById('fbText').value.trim();if(!t){document.getElementById('fbText').focus();return;}fbSubmit('نامە لە ماڵپەڕی نموونەکانی C#',t);}
+function fbSendEmail(){const t=document.getElementById('fbText').value.trim();if(t){fbMailto('نامە لە ماڵپەڕی نموونەکانی C#','فەرموو:\n\n'+t);}else{fbOpenDialog();}}
+function fbBox(){return `<div class="fb-box"><div class="fb-title">✉️ دروستکەری ماڵپەڕ</div><div class="fb-sub">پێشنیار و ڕخنەت هەیە؟ بینێرە بۆ دروستکەری ماڵپەڕ.<br>کۆدی تایبەت بە تۆ: <b style="color:#5b21b6">${fbVisitorCode()}</b> بەم کۆدە دەناسرێنەوە "بیرتان نەچێ دووعای خێر"</div>
+<div class="fb-quick"><button class="fb-qbtn" onclick="fbFill('thanks')">🙏 سپاسگوزاری</button><button class="fb-qbtn" onclick="fbFill('suggest')">💡 پێشنیار</button></div>
+<textarea class="fb-area" id="fbText" placeholder="نامەکەت لێرە بنووسە، یان یەکێک لە دوگمەکانی سەرەوە هەڵبژێرە..."></textarea>
+<button class="fb-send" id="fbSendBtn" onclick="fbSendDirect()">📤 ناردنی نامە بە شێوەی ڕاستەوخۆ</button>
+<button class="fb-send fb-send2" onclick="fbSendEmail()">📧 ناردنی نامە بە ئیمەیل</button>
+<div class="fb-msg" id="fbMsg"></div></div>`;}
+const LAB_NAMES=['پێشەکی','کۆدەکان'];
+const KU=[];
+const MQ=[['<b>داواکاری:</b> بەرنامەیەک بنووسە کە <code>2 + 3 * (4 + 1)</code> حیساب بکات و ئەنجامەکە بخاتە ناو T، بە <code>...</code> لە دوو هێڵدا بینووسێت.','<b>داواکاری:</b> بەرنامەیەک بنووسە کە x بە 4 دروست بکات (بێ پیشاندانی ئەنجام)، y بە x*2 دروست بکات و پیشانی بدات، z بە y+1 دروست بکات (بێ پیشاندان)، و لە کۆتاییدا y+3 بنووسێت.','<b>داواکاری:</b> ماتریکسی <code>B</code> بنووسە لە دوو ڕیز و سێ ستوون: ڕیزی یەکەم 1 و 2 و 3، ڕیزی دووەم 4 و 5 و 6، و بەهاکانی ناو ڕیزەکە بە کۆما جیا بکەرەوە.','<b>داواکاری:</b> ماتریکسی <code>B = [1 2; 3 4]</code> دروست بکە (بێ پیشاندان)، و کۆی توخمی ڕیزی 1 ستوونی 2 و توخمی ڕیزی 2 ستوونی 1 بدۆزەرەوە.','<b>داواکاری:</b> ماتریکسی <code>M = [1 2 3]</code> دروست بکە و هەوڵ بدە توخمی ڕیزی 2 و ستوونی 1 بخوێنیتەوە و بیخەیتە ناو v.','<b>داواکاری:</b> ماتریکسی <code>Y = [1 2; 3 4]</code> دروست بکە (بێ پیشاندان)، و دواتر بەهای 9 بخە ڕیزی 3 و ستوونی 3 و ماتریکسەکە پیشان بدە.','<b>داواکاری:</b> ڕیزێک دروست بکە کە ژمارە تەواوەکانی 2 تا 6 بگرێتە خۆی، بە ئۆپەراتۆری colon.','<b>داواکاری:</b> ڕیزێک دروست بکە کە لە 10 دەست پێبکات و هەر جارێک 2 زیاد بکات تا 20.','<b>داواکاری:</b> ماتریکسی <code>C = [7 8 9; 1 2 3]</code> دروست بکە (بێ پیشاندان)، و هەموو ڕیزی دووەم و دواتر هەموو ستوونی یەکەمی پیشان بدە.','<b>داواکاری:</b> ڕیزی <code>D = [5 6 7]</code> دروست بکە (بێ پیشاندان) و توخمی کۆتایی بە وشەی <code>end</code> پیشان بدە.'],['<b>داواکاری:</b> ماتریکسی <code>v = [2 4 6; 1 1 1]</code> دروست بکە (بێ پیشاندان) و کۆی هەر ستوون و دواتر کۆی هەر ڕیزێکی بدۆزەرەوە.','<b>داواکاری:</b> ماتریکسی <code>m = [2 4; 6 8]</code> دروست بکە (بێ پیشاندان) و تێکڕای هەر ستوون و دواتر تێکڕای هەر ڕیزێکی بدۆزەرەوە.','<b>داواکاری:</b> ماتریکسێکی 3×3 دروست بکە کە هەموو توخمەکانی سفر بن.','<b>داواکاری:</b> ماتریکسێکی 2×2 دروست بکە کە هەموو توخمەکانی یەک بن.','<b>داواکاری:</b> ماتریکسێک بنووسە بە چوار ڕیز و دوو ستوون (1 و 2، 3 و 4، 5 و 6، 7 و 8) و قەبارەکەی بدۆزەرەوە.','<b>داواکاری:</b> ڕیزی <code>w = [4 8 12 16 20]</code> دروست بکە (بێ پیشاندان) و ژمارەی توخمەکانی بدۆزەرەوە.','<b>داواکاری:</b> ماتریکسی <code>n = [1 2 3; 4 5 6]</code> دروست بکە (بێ پیشاندان) و ژمارەی هەموو توخمەکانی بدۆزەرەوە.','<b>داواکاری:</b> ماتریکسی <code>p = [1 2; 3 4]</code> دروست بکە (بێ پیشاندان) و transposeـەکەی پیشان بدە.','<b>داواکاری:</b> ماتریکسی <code>g = [9 2; 3 7]</code> دروست بکە (بێ پیشاندان) و گەورەترینی هەر ستوون و دواتر گەورەترینی هەموو ماتریکسەکەی بدۆزەرەوە.','<b>داواکاری:</b> ماتریکسی <code>g = [9 2; 3 7]</code> دروست بکە (بێ پیشاندان) و بچووکترینی هەر ستوون و دواتر بچووکترینی هەموو ماتریکسەکەی بدۆزەرەوە.','<b>داواکاری:</b> ماتریکسی جادوویی (magic square)ی 4×4 دروست بکە.','<b>داواکاری:</b> ماتریکسی <code>y = [2 0; 0 4]</code> دروست بکە (بێ پیشاندان) و پێچەوانەکەی بدۆزەرەوە.','<b>داواکاری:</b> ڕیزی <code>w = [4 5]</code> دروست بکە (بێ پیشاندان) و ماتریکسێکی ئەستوونی لێ دروست بکە کە 4 و 5 لەسەر ئەستوونی سەرەکی بن.','<b>داواکاری:</b> ماتریکسی <code>q = [2 3; 4 5]</code> دروست بکە (بێ پیشاندان) و لێکدانی هەر ستوونێکی بدۆزەرەوە.','<b>داواکاری:</b> ماتریکسی <code>k = [3 1 2; 9 7 8]</code> دروست بکە (بێ پیشاندان) و ناوەندی هەر ستوونێکی بدۆزەرەوە.','<b>داواکاری:</b> ڕیزی <code>s = [8 3 6]</code> دروست بکە (بێ پیشاندان) و یەکەم جار بە بچووکەوە بۆ گەورە و دواتر بە گەورەوە بۆ بچووک (<code>\'descend\'</code>) ڕیزی بکە.','<b>داواکاری:</b> ماتریکسی <code>y = [2 1; 0 3]</code> دروست بکە (بێ پیشاندان) و دیتێرمینانتەکەی بدۆزەرەوە.','<b>داواکاری:</b> ماتریکسی <code>m = [1 2 3; 4 5 6; 7 8 9]</code> دروست بکە (بێ پیشاندان) و بەشی خوارەوەی سیانگۆشەیی دەربهێنە.','<b>داواکاری:</b> ماتریکسی <code>m = [1 2 3; 4 5 6; 7 8 9]</code> دروست بکە (بێ پیشاندان) و بەشی سەرەوەی سیانگۆشەیی دەربهێنە.','<b>داواکاری:</b> فاکتۆریاڵی 4 بدۆزەرەوە بە دروستکردنی ڕیزی 1 تا 4 و لێکدانی توخمەکانی.','<b>داواکاری:</b> ڕیزی <code>z = 1:6</code> بگۆڕە بە ماتریکسێکی 2×3 (m)، بەوەی ڕیزی یەکەم توخمی 1 تا 3 و ڕیزی دووەم توخمی 4 تا 6 بێت.','<b>داواکاری:</b> ڕیزی <code>r = 1:3</code> دروست بکە و پیشانی بدە، دواتر بیگۆڕە بۆ ستوون (بێ پیشاندان)، و لە کۆتاییدا ستوونەکە پیشان بدە.']];
+let curLab=0,KU_ON={},KN_ON={};
+const NM={a:'یەکەم',b:'دووەم',A:'ماتریکس',X:'ماتریکسی_گەورە',x:'ژمارەکان',v:'ڕیزی_ژمارە',y:'ماتریکسی_نوێ',t:'بەها',S:'ئەنجام'};
+function kuNames(t){return t.replace(/("(?:[^"\\]|\\.)*")|(\/\/.*)|\b([A-Za-z_]\w*)\b/g,(m,a,b,id)=>a||b||NM[id]||m);}
+function kuText(t){let r=t;KU.forEach(([a,b])=>{r=r.split(a).join(b);});return r;}
+function curCode(k){let t=E[k].c;if(KU_ON[k])t=kuText(t);if(KN_ON[k])t=kuNames(t);return t;}
+function refreshCode(k){const c=document.querySelectorAll('.content')[k+1];
+ c.querySelector('.example > .code-box pre').innerHTML=curCode(k).split('\n').map(hl).join('\n');
+ c.querySelector('.example > .output-box .output-content').innerHTML=bdiK(esc(KU_ON[k]?kuText(E[k].o):E[k].o));pinSync();}
+function toggleKu(k,on){KU_ON[k]=on;refreshCode(k);}
+function toggleKn(k,on){KN_ON[k]=on;refreshCode(k);}
+function copyCode(k,btn){const t=curCode(k);
+ const ok=()=>{btn.textContent='✅ کۆپی کرا';btn.classList.add('done');setTimeout(()=>{btn.textContent='📋 کۆپی';btn.classList.remove('done');},1600);};
+ const fb=()=>{const a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');ok();}catch(e){btn.textContent='❌ کۆپی نەکرا';}a.remove();};
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok).catch(fb);}else fb();}
+let E,EX,EXSUM,MORE;
+const LX=/((?:\d+(?:\s*→\s*\d+)+)|(?:[A-Za-z0-9_]+(?:\s*(?:&lt;|&gt;|&amp;|[=!|+\-*\/%÷×])+\s*[A-Za-z0-9_]+)+)|(?:[A-Za-z][A-Za-z0-9_]*(?: [A-Za-z][A-Za-z0-9_]*)*[.!?]?))/g;
+function fx(h){let sk=0;return String(h).split(/(<[^>]+>)/).map(p=>{if(p[0]==='<'){if(/^<code[\s>]/.test(p))sk++;else if(p==='</code>')sk--;return p;}return sk>0?p:p.replace(LX,'<bdi dir="ltr">$1</bdi>');}).join('');}
+function tfx(t){t=String(t);const e=x=>x.replace(/&/g,'&amp;'),m=t.match(/^(.*?) – (.*)$/);if(m)return '<bdi dir="ltr">'+e(m[1])+'</bdi> – '+fx(e(m[2]));return /[\u0600-\u06FF]/.test(t)?fx(e(t)):'<bdi dir="ltr">'+e(t)+'</bdi>';}
+const li=(r,sn,tx)=>`<li><span class="rng">${r==='💡'?r:'هێڵی '+r}</span><span>${sn?`<b class="sn${sn.length>=25?' xs':sn.length>13?' sm':''}">${esc(sn)}</b> : `:''}${fx(tx)}</span></li>`;
+function expl(e,items){const L=e.c.split('\n'),cl=[],cm=[];
+ L.forEach((l,i)=>{const t=l.trim();if(!t)return;if(t.startsWith('//'))cm.push(i+1);else cl.push({i:i+1,t:t.replace(/\s*\/\/.*$/,'').trim()});});
+ let o='';
+ if(cm.length){let s=cm[0],p=s;const r=[];
+  for(let k=1;k<cm.length;k++){if(cm[k]===p+1)p=cm[k];else{r.push(s===p?s:s+'-'+p);s=p=cm[k];}}
+  r.push(s===p?s:s+'-'+p);
+  o+=li(r.join('، '),'// کۆمێنت','ئەم هێڵانە کۆمێنتن؛ جێبەجێ ناکرێن و هیچ چاپ ناکرێن، تەنها بۆ خوێندنەوەی مرۆڤن.');}
+ const map={},extra=[];let cur=0;
+ for(const [sn,tx] of items){if(!sn){extra.push(tx);continue;}
+  let f=-1;for(let k=cur;k<cl.length;k++){if(cl[k].t===sn.trim()){f=k;break;}}
+  if(f<0){extra.push(tx);continue;}map[f]=tx;cur=f+1;}
+ cl.forEach((c,k)=>{const tx=map[k]||(c.t==='{'?'دەستپێکی بلۆکی کۆد؛ کۆدەکانی دوای ئەمە ئەندامی ئەم بلۆکەن.':c.t==='}'?'کۆتایی بلۆکی کۆد؛ بلۆکەکە دادەخات.':'—');o+=li(c.i,c.t,tx);});
+ extra.forEach(tx=>{o+=li('💡','',tx);});
+ return o;}
+const RX=/(\/\/.*|%.*)|("(?:[^"\\]|\\.)*"|\B'[^'\n]*')|\b(double|char|logical|single|int8|int16|int32|int64)\b|\b(if|else|elseif|for|while|end|switch|case|otherwise|break|continue|return)\b|\b(function|global|persistent|clear|clc|close|hold|format|more|help|lookfor|edit|quit|exit)\b|\b(\d+)\b|\b(ans|pi|inf|Inf|NaN|eps|realmax|realmin)\b|\b([A-Za-z_]\w*)(?=\s*\()|\b([A-Za-z_]\w*)\b|([=+\-*\/%<>!&|?:^]+)|([\u0600-\u06FF][\u0600-\u06FF0-9_\u200c]*)/g;
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const UF=new Set();
+const KRX=/[\u0600-\u06FF\u200c][\u0600-\u06FF\u200c0-9_]*(?: +[\u0600-\u06FF\u200c][\u0600-\u06FF\u200c0-9_]*)*/g;
+function bdiK(h){return String(h).split(/(<[^>]+>)/).map(p=>p[0]==='<'?p:p.replace(KRX,'<bdi dir="rtl">$&</bdi>')).join('');}
+function hl(line){return bdiK(hl0(line));}
+function hl0(line){let r='',l=0,m;RX.lastIndex=0;const dm=line.match(/\bstatic\s+\w+\s+(\w+)\s*\(/);if(dm&&dm[1]!=='Main')UF.add(dm[1]);
+ while((m=RX.exec(line))){r+=esc(line.slice(l,m.index));
+  const c=m[1]?'cmt':m[2]?'str':m[3]?'dt':m[4]?'con':m[5]?'kw':m[6]?'num':m[7]?'cls':m[8]?(UF.has(m[0])?'usr':'fn'):(m[9]||m[11])?'usr':'op';
+  r+=`<span class="${c}">${esc(m[0])}</span>`;l=RX.lastIndex;}
+ return r+esc(line.slice(l));}
+function moreHtml(k){const m=MORE[k];if(!m)return '';const L=m.c.split('\n'),map={};let cur=0;
+ m.s.forEach(([sn,tx,st])=>{for(let q=cur;q<L.length;q++){if(L[q].trim()===sn){map[q]=[tx,st||[]];cur=q+1;break;}}});
+ const cards=L.map((l,i)=>{const t=l.trim();const d=map[i]||[t==='{'?'دەستپێکی بلۆکی کۆد؛ کۆدەکانی دوای ئەمە ئەندامی ئەم بلۆکەن.':t==='}'?'کۆتایی بلۆکی کۆد؛ بلۆکەکە دادەخات.':'—',[]];
+  return `<div class="st"><div class="st-h"><span class="rng">هێڵی ${i+1}</span><b class="sn${t.length>=25?' xs':t.length>13?' sm':''}">${esc(t)}</b></div><p>${fx(d[0])}</p>${d[1].length?`<div class="st-v"><span>بەهاکان دوای ئەم هێڵە:</span>${d[1].map(v=>`<i class="vs">${v}</i>`).join('')}</div>`:''}</div>`;}).join('');
+ return `<button class="more-btn" onclick="toggleMore(${k},this)">ڕوونکردنەوەی زیاتر 📖</button>
+<div class="more-panel" id="more${k}"><div class="more-title">ڕوونکردنەوەی زیاتر — بە نموونەیەکی نوێ</div>${(MQ[curLab]||[])[k]?`<hr><p class="req">${fx(MQ[curLab][k])}</p>`:''}
+<div class="code-box"><div class="line-numbers">${L.map((_,i)=>`<span>${i+1}</span>`).join('')}</div><div class="code-content"><pre>${L.map(hl).join('\n')}</pre></div></div>
+<div class="output-box"><div class="output-header">:دەرەنجام &nbsp;|&nbsp; Output:</div><div class="output-content">${esc(m.o)}</div></div>
+<div class="walk"><span class="wl">کارەکەی ئەم کۆدە بە کورتی:</span>${fx(m.intro)}</div>
+${cards}<p class="more-sum">${fx(m.sum)}</p></div>`;}
+function toggleMore(k,b){const o=document.getElementById('more'+k).classList.toggle('open');b.textContent=o?'شاردنەوە 📕':'ڕوونکردنەوەی زیاتر 📖';if(k===curTab-1){if(!o){PS[1].on=false;PS[1].wide=false;pinApply(1);}pinSync();}}
+const tabs=document.getElementById('tabs'),views=document.getElementById('views'),labsEl=document.getElementById('labs');
+const n=i=>String(i).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+labsEl.innerHTML=LABS.map((_,i)=>`<button class="lab" onclick="setLab(${i})">${LAB_NAMES[i]||'Lab '+(i+1)}</button>`).join('');
+function build(lab){
+ const has=E.length>0;
+ tabs.innerHTML=`<button class="tab active" onclick="showTab(0)">دەستپێک</button>`+E.map((_,i)=>`<button class="tab" onclick="showTab(${i+1})">کۆدی ${n(i+1)}</button>`).join('');
+ const intro=has?`<p>لێرەدا <b>${n(E.length)} نموونە</b>ی <bdi dir="ltr">MATLAB</bdi> دەبینیت لە PDFـەکەوە.</p><p>هەر نموونەیەک: سەردێڕ، کۆد لەگەڵ ژمارەی هێڵ، دەرەنجام و ڕوونکردنەوە.</p><p style="font-weight:bold;color:#667eea">دوگمەکانی سەرەوە هەڵبژێرە 👆</p>`:`<p>ناوەڕۆکی ئەم بەشە دواتر زیاد دەکرێت.</p>`;
+ views.innerHTML=`<div class="content active"><div class="intro"><h2>🎯 ${LAB_NAMES[lab]||'Lab '+(lab+1)}</h2>${intro}${fbBox()}</div></div>`+
+ E.map((e,k)=>{const L=e.c.split('\n');
+ return `<div class="content"><div class="example wide5"><div class="title-row"><div class="example-title">${tfx(e.t)}</div><span class="pdf-page">${e.p}</span></div>${e.q?`<hr><p class="req">${fx(e.q)}</p>`:''}
+<div class="code-box has-tools"><div class="code-tools"><span class="ct-l"><i></i><i></i><i></i><b>C#</b></span><span class="ct-r">${[['پرێنت','toggleKu',kuText(e.c)!==e.c],['ناوەکان','toggleKn',kuNames(e.c)!==e.c]].map(([nm,fn,on])=>`<label class="ku-sw${on?'':' dis'}"><span>${nm}</span><input type="checkbox"${on?'':' disabled'} onchange="${fn}(${k},this.checked)"><i class="sw"></i></label>`).join('')}<button class="copy-btn" onclick="copyCode(${k},this)">📋 کۆپی</button><button class="copy-btn run-btn" onclick="runCode(this)">▶ Run</button></span></div><div class="line-numbers">${L.map((_,i)=>`<span>${i+1}</span>`).join('')}</div><div class="code-content"><pre>${L.map(hl).join('\n')}</pre></div></div>
+<div class="output-box"><div class="output-header">:دەرەنجام &nbsp;|&nbsp; Output:</div><div class="output-content">${esc(e.o)}</div></div>
+<div class="expl-box"><div class="expl-title">📚 ڕوونکردنەوە:</div><div class="walk"><span class="wl">کارەکەی ئەم کۆدە بەم شێوەیەیە:</span>${fx(EXSUM[k])}</div><ul>${expl(e,EX[k])}</ul></div>${moreHtml(k)}</div></div>`}).join('');}
+function setLab(i){pinReset();curLab=i;KU_ON={};KN_ON={};document.body.classList.add('wide5');const d=LABS[i];E=d.E;EX=d.EX;EXSUM=d.EXSUM;MORE=d.MORE;
+ document.querySelectorAll('.lab').forEach((b,k)=>b.classList.toggle('active',k===i));
+ build(i);curTab=0;pinSync();window.scrollTo({top:0,behavior:'smooth'});}
+let curTab=0,inMore=false;const PS=[{on:false,wide:false,lp:false,t:null,w:'pinWrap',x:'pinTxt'},{on:false,wide:false,lp:false,t:null,w:'pinWrap2',x:'pinTxt2'}];
+function pinBox(n){const c=document.querySelectorAll('.content')[curTab];return c&&c.querySelector(n?'#more'+(curTab-1)+' .code-box':'.example > .code-box');}
+let HS=(()=>{try{return Math.min(2,+localStorage.getItem('pinHS')||0)}catch(_){return 0}})();function hsSave(){try{localStorage.setItem('pinHS',HS)}catch(_){}}
+function pinLabel(q){if(!q.on)return HS===0?'ئایکۆنەکە بگرە و ڕایکێشە بۆ دەستی ڕاست ➡️':'pin';if(q.wide)return HS===1?'ئێستا ڕایکێشە بۆ سەرەوە ⬆️':'pinned · full';return 'pinned';}
+function pinNudge(q){const w=document.getElementById(q.w),t=document.getElementById(q.x).textContent;w.classList.toggle('nR',t.indexOf('➡')>=0);w.classList.toggle('nU',t.indexOf('⬆')>=0);}
+function pinApply(n){const q=PS[n],w=document.getElementById(q.w);w.classList.toggle('on',q.on);w.classList.toggle('full',q.on&&q.wide);w.classList.toggle('dock',!!q.dock);document.getElementById(q.x).textContent=pinLabel(q);pinNudge(q);pinSync();}
+function pinFree(b){b.classList.remove('pinned','wide');b.style.left='';b.style.width='';b.style.top='';if(b._sp){b._sp.remove();b._sp=null;}}
+function pinSync(){pinSync0();if(typeof chatSync==='function')chatSync();}
+function pinSync0(){const w1=document.getElementById('pinWrap'),w2=document.getElementById('pinWrap2');
+ if(curTab<1){w1.classList.remove('show');w2.classList.remove('show');[0,1].forEach(n=>{const b=pinBox(n);if(b)pinFree(b);});return;}
+ const m=document.getElementById('more'+(curTab-1));inMore=false;
+ if(m&&m.classList.contains('open')){const r=m.getBoundingClientRect();inMore=r.top<window.innerHeight*0.55&&r.bottom>120;}
+ const b0=pinBox(0);let mainIn=false;if(b0&&b0.parentNode){const nr=(b0._sp||b0).getBoundingClientRect(),pr=b0.parentNode.getBoundingClientRect();mainIn=nr.top<window.innerHeight*0.6&&pr.bottom>200;}
+ w1.classList.toggle('show',mainIn&&!inMore);w2.classList.toggle('show',inMore);
+ [0,1].forEach(n=>{const q=PS[n],b=pinBox(n);if(!b)return;const cont=n?m:b.parentNode;
+  if(!cont||(n&&!m.classList.contains('open'))){pinFree(b);return;}
+  const nat=(b._sp||b).getBoundingClientRect(),cr=cont.getBoundingClientRect(),want=q.on&&(n?inMore:!inMore);
+  if(want&&nat.top<0&&cr.bottom>0){
+   if(!b._sp){const sp=document.createElement('div');sp.className='pin-spacer';b.parentNode.insertBefore(sp,b);b._sp=sp;}
+   b.classList.add('pinned');b.classList.toggle('wide',q.wide);
+   const sr=b._sp.getBoundingClientRect();if(q.wide){b.style.left='';b.style.width='';}else{b.style.left=sr.left+'px';b.style.width=sr.width+'px';}
+   b.style.top=Math.min(0,cr.bottom-b.offsetHeight)+'px';b._sp.style.height=(b.offsetHeight+38)+'px';}
+  else pinFree(b);});
+ document.body.style.paddingTop='20px';}
+function pinClick(n){const q=PS[n];if(q.lp){q.lp=false;return;}if(q.dock){q.dock=false;pinApply(n);return;}q.on=!q.on;if(!q.on)q.wide=false;pinApply(n);}
+function pinDown(n,e){const q=PS[n];q.lp=false;q.mv=false;q.dir='';clearTimeout(q.t);q.x0=e.clientX;q.y0=e.clientY;q.dr=true;
+ try{e.currentTarget.setPointerCapture(e.pointerId);}catch(_){}
+ q.t=setTimeout(()=>{q.lp=true;q.dr=false;q.dock=false;if(!q.on){q.on=true;q.wide=true;}else q.wide=!q.wide;if(HS===0&&q.on&&q.wide)HS=1;hsSave();pinApply(n);if(navigator.vibrate)navigator.vibrate(40);},700);}
+function pinMove(n,e){const q=PS[n];if(!q.dr)return;const dx=e.clientX-q.x0,dy=e.clientY-q.y0;
+ if(Math.abs(dx)<10&&Math.abs(dy)<10)return;
+ clearTimeout(q.t);q.mv=true;
+ const b=e.currentTarget,w=document.getElementById(q.w),tx=document.getElementById(q.x);
+ q.dir=Math.abs(dx)>=Math.abs(dy)?(dx>40?'r':''):(dy>40?'d':(dy<-40?'u':''));
+ b.classList.add('drag');b.style.transform='translate('+Math.max(0,Math.min(50,dx))+'px,'+Math.max(-50,Math.min(50,dy))+'px)';
+ w.querySelector('.pin-pill').classList.toggle('hint',!!q.dir);
+ tx.textContent=q.dir==='r'?'ئێستا بەربدە ➡️':q.dir==='d'?'ئێستا بەربدە ⬇️':q.dir==='u'?'ئێستا بەربدە ⬆️':pinLabel(q);}
+function pinUp(n,e){const q=PS[n];clearTimeout(q.t);if(!q.dr)return;q.dr=false;
+ const b=e.currentTarget;b.classList.remove('drag');b.style.transform='';
+ document.getElementById(q.w).querySelector('.pin-pill').classList.remove('hint');
+ if(q.mv){q.lp=true;if(q.dir==='u'){if(HS===1)HS=2;hsSave();q.dock=true;if(navigator.vibrate)navigator.vibrate(30);}else if(q.dir==='r'){if(HS===0)HS=1;hsSave();q.dock=false;q.on=true;q.wide=true;if(navigator.vibrate)navigator.vibrate(30);}else if(q.dir==='d'){q.dock=false;q.on=true;q.wide=false;if(navigator.vibrate)navigator.vibrate(30);}pinApply(n);}}
+function pinReset(){if(curTab>=1)[0,1].forEach(n=>{const b=pinBox(n);if(b)pinFree(b);});PS.forEach(q=>{q.on=false;q.wide=false;document.getElementById(q.w).classList.remove('on','full','dock');q.dr=false;q.dock=false;document.getElementById(q.x).textContent=pinLabel(q);pinNudge(q);});}
+window.addEventListener('scroll',pinSync,{passive:true});window.addEventListener('resize',pinSync);
+function showTab(i){pinReset();curTab=i;pinSync();setTimeout(pinSync,450);document.querySelectorAll('.tab').forEach((t,k)=>t.classList.toggle('active',k===i));
+ document.querySelectorAll('.content').forEach((c,k)=>c.classList.toggle('active',k===i));
+ const t=i===0?null:document.querySelectorAll('.content')[i].querySelector('.title-row');
+ if(t)t.scrollIntoView({behavior:'smooth',block:'start'});else window.scrollTo({top:0,behavior:'smooth'});}
+let ctS=(()=>{try{const v=JSON.parse(localStorage.getItem('ctS')||'{}');return {a:+v.a||0,b:+v.b||0,c:+v.c||0}}catch(_){return {a:0,b:0,c:0}}})();
+const gid=id=>document.getElementById(id);
+function ctSave(){try{localStorage.setItem('ctS',JSON.stringify(ctS));}catch(_){}}
+function tipSync(){const t=gid('ctip'),f=gid('codeFull'),o=f.classList.contains('open'),bub=gid('chatHead').classList.contains('show');let m='';if(o&&!ctS.a){ctS.a=1;ctSave();}
+ if(gid('chatHead').classList.contains('dock'))m='';else if(bub&&!o&&!ctS.a&&!ctS.b)m='👆 کلیکی لەسەر بکە';else if(o&&!ctS.b&&!gid('tb').classList.contains('open'))m='⬇️ ڕایبکێشە بۆ خوارەوە';else if(o&&ctS.b&&!ctS.c&&!gid('qb').classList.contains('open'))m='⬅️ ڕایبکێشە بۆ لای چەپ';
+ t.textContent=m;t.classList.toggle('show',!!m);gid('chatHead').classList.toggle('nudge',m.indexOf('⬇')===0);gid('chatHead').classList.toggle('nudgeL',m.indexOf('⬅')===0);}
+function chatSync(){const f=document.getElementById('codeFull'),o=f.classList.contains('open');let vis=!!document.querySelector('.code-box.pinned');
+ if(!vis&&curTab>=1){const c=document.querySelectorAll('.content')[curTab],bx=c&&c.querySelector('.example > .code-box');if(bx){const r=bx.getBoundingClientRect();vis=r.bottom>60&&r.top<window.innerHeight-60;}}
+ const ch=document.getElementById('chatHead');ch.classList.toggle('show',o||vis);ch.classList.toggle('min',o);document.getElementById('zoomBar').classList.toggle('show',o);document.getElementById('codeHead').classList.toggle('show',o);document.getElementById('hb').classList.toggle('show',o);tipSync();sbUpdate();}
+function chatToggle(){const f=document.getElementById('codeFull');
+ if(f.classList.contains('open')){paneClose();popClose();saveInk();tool=null;document.getElementById('tb').classList.remove('open');sbShow=false;gid('tbSb').classList.remove('on');gid('qb').classList.remove('open');f.classList.remove('open','tbo');f.innerHTML='';document.body.style.overflow='';}
+ else{const c=document.querySelectorAll('.content')[curTab],bx=c&&c.querySelector('.example > .code-box');if(!bx)return;
+  const cl=bx.cloneNode(true);cl.classList.remove('pinned','wide','dim','has-tools');cl.removeAttribute('style');const ct=cl.querySelector('.code-tools');if(ct)ct.remove();f.innerHTML='';const z=document.createElement('div');z.id='cz';z.appendChild(cl);f.appendChild(z);f.classList.add('open');applyZ();mkInk(cl.querySelector('.code-content'));layout();f.scrollTop=0;f.scrollLeft=0;document.body.style.overflow='hidden';}
+ chatSync();}
+let cf=11;try{cf=parseFloat(localStorage.getItem('cf'))||11}catch(e){}
+let act='code';
+function setAct(a){act=a;const z=gid('zoomBar');z.dataset.a=a;gid('zv').textContent=a==='code'?cf:a==='req'?zq:zs;}
+function setCf(v,fine){cf=Math.max(4,Math.min(32,fine?Math.round(v*10)/10:Math.round(v*2)/2));if(act==='code')document.getElementById('zv').textContent=cf;applyZ();try{localStorage.setItem('cf',cf)}catch(e){}}
+function applyZ(){const f=document.getElementById('codeFull'),z=document.getElementById('cz');if(!z||!z.firstChild)return;const bx=z.firstChild,s=cf/16;
+ bx.style.transformOrigin='0 0';bx.style.transform='scale('+s+')';bx.style.width=(f.clientWidth/s)+'px';bx.style.minHeight=(f.clientHeight/s)+'px';
+ z.style.width=f.clientWidth+'px';z.style.height=bx.offsetHeight*s+'px';sizeInk();sbUpdate();}
+window.addEventListener('resize',()=>{if(document.getElementById('codeFull').classList.contains('open'))applyZ();});
+function zoomAt(v,cx,cy,fine){const f=document.getElementById('codeFull'),c=f.querySelector('.code-content'),n=f.querySelector('.line-numbers');if(!c){setCf(v,fine);return;}
+ const o=cf,nw=n.getBoundingClientRect().width,P=c.scrollLeft*o/16+cx-nw;setCf(v,fine);const r=cf/o;
+ if(r!==1){const nw2=n.getBoundingClientRect().width;c.scrollLeft=(P*r-cx+nw2)/(cf/16);f.scrollTop=(f.scrollTop+cy)*r-cy;}}
+function zoomBy(d){if(act!=='code'){pz(act,d);return;}const f=document.getElementById('codeFull');zoomAt(cf+d,f.clientWidth/2,f.clientHeight/2);}
+(function(){const f=document.getElementById('codeFull');let d0=0,c0=11;const dist=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
+ f.addEventListener('touchstart',e=>{if(e.touches.length===2){d0=dist(e.touches);c0=cf;}},{passive:true});
+ f.addEventListener('touchmove',e=>{if(e.touches.length===2&&d0){e.preventDefault();const t=e.touches,r=f.getBoundingClientRect();zoomAt(c0*dist(t)/d0,(t[0].clientX+t[1].clientX)/2-r.left,(t[0].clientY+t[1].clientY)/2-r.top,true);}},{passive:false});
+ f.addEventListener('touchend',e=>{if(e.touches.length<2)d0=0;},{passive:true});
+ f.addEventListener('wheel',e=>{if(e.ctrlKey){e.preventDefault();zoomAt(cf+(e.deltaY<0?1:-1),e.clientX,e.clientY);}},{passive:false});
+ setCf(cf);})();
+const INK={};let tool=null,U=[],R=[];const TS={pen:{c:'#3b82f6',si:1},hl:{c:'#ff4d4d',si:2}};let lastDraw='pen';function dt(){return tool==='hl'||tool==='pen'?tool:lastDraw;}function cur(){return TS[dt()];}const PAL=['#ff4d4d','#fb923c','#facc15','#4ade80','#22d3ee','#3b82f6','#a78bfa','#f472b6','#ffffff','#9ca3af'],SZ=[2,4,6,9,13],NS='http://www.w3.org/2000/svg';
+function inks(){return [...document.querySelectorAll('#codeFull svg.ink,#paneReq svg.ink,#paneSum svg.ink')];}
+function ink(){return document.querySelector('#codeFull svg.ink');}
+function inkKey(s){const t=E[curTab-1].t,l=s.dataset.layer;return(!l||l==='code')?t:t+'|'+l;}
+function saveInk(){if(curTab<1)return;inks().forEach(s=>{INK[inkKey(s)]=s.innerHTML;});}
+function scOf(s){const l=s.dataset.layer;return l==='req'?zq/13:l==='sum'?zs/13:cf/16;}
+function sizeInk(){const s=ink(),cc=s&&s.parentNode;if(!cc)return;const pre=cc.querySelector('pre');s.style.width=Math.max(pre.scrollWidth+18,cc.clientWidth)+'px';s.style.height=cc.offsetHeight+'px';}
+function sizePaneInk(k){const p=gid(k==='req'?'paneReq':'paneSum'),s=p.querySelector('svg.ink'),pin=p.querySelector('.pin');if(!s||!pin)return;s.style.width=pin.offsetWidth+'px';s.style.height=pin.offsetHeight+'px';}
+function tbSync(){const all=inks();document.querySelectorAll('#tb [data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===tool));const cb=gid('tbCol').firstChild,sb=gid('tbSz').firstChild,T=cur(),dd=Math.min(16,(dt()==='hl'?Math.max(SZ[T.si]*3,14)/2:SZ[T.si])+3),hb=gid('hlBar');cb.style.background=T.c;sb.style.width=sb.style.height=dd+'px';if(hb)hb.style.background=TS.hl.c;
+ gid('tbUndo').disabled=!U.length;gid('tbRedo').disabled=!R.length;gid('tbClear').disabled=!all.some(s=>s.querySelector('g.stk'));
+ all.forEach(s=>s.setAttribute('class','ink'+(tool?' act':'')+(tool==='erase'?' er':'')));}
+function setTool(t){tool=tool===t?null:t;if(tool==='pen'||tool==='hl')lastDraw=tool;tbSync();}
+function setCol(c){const k=dt();TS[k].c=c;tool=k;lastDraw=k;tbSync();}
+function setSz(i){const k=dt();TS[k].si=i;tool=k;lastDraw=k;tbSync();}
+function undo(){const o=U.pop();if(!o)return;if(o.t==='add')o.el.remove();else if(o.t==='del'){const s=o.s;if(s&&s.isConnected)s.insertBefore(o.el,o.ref&&o.ref.parentNode===s?o.ref:null);}else o.els.forEach(x=>{if(x.s&&x.s.isConnected)x.s.appendChild(x.g);});R.push(o);tbSync();}
+function redo(){const o=R.pop();if(!o)return;if(o.t==='add'){if(o.s&&o.s.isConnected)o.s.appendChild(o.el);}else if(o.t==='del')o.el.remove();else o.els.forEach(x=>x.g.remove());U.push(o);tbSync();}
+function clearInk(){const els=[];inks().forEach(s=>s.querySelectorAll('g.stk').forEach(g=>els.push({g,s})));if(!els.length)return;els.forEach(x=>x.g.remove());U.push({t:'clear',els});R=[];tbSync();}
+function pt(s,e){const p=s.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const m=s.getScreenCTM();return m?p.matrixTransform(m.inverse()):p;}
+function mkInk(cc){const s=document.createElementNS(NS,'svg');s.setAttribute('class','ink');s.dataset.layer='code';const sv=INK[E[curTab-1].t];if(sv)s.innerHTML=sv;cc.appendChild(s);U=[];R=[];sizeInk();wireInk(s);tbSync();}
+function mkPaneInk(k){const p=gid(k==='req'?'paneReq':'paneSum'),pin=p.querySelector('.pin');if(!pin)return;const s=document.createElementNS(NS,'svg');s.setAttribute('class','ink');s.dataset.layer=k;const sv=INK[E[curTab-1].t+'|'+k];if(sv)s.innerHTML=sv;pin.appendChild(s);wireInk(s);tbSync();}
+function wireInk(s){let cur=null;const ptrs=new Set();
+ const eraseAt=e=>{const el=document.elementFromPoint(e.clientX,e.clientY),g=el&&el.closest&&el.closest('g.stk');if(g&&s.contains(g)){const ref=g.nextSibling;g.remove();U.push({t:'del',el:g,ref,s});R=[];tbSync();}};
+ const drop=()=>{if(cur){cur.g.remove();cur=null;}};
+ const mk=(c,sw,cl)=>{const a=document.createElementNS(NS,'path');a.setAttribute('class',cl);a.setAttribute('fill','none');a.setAttribute('stroke',c);a.setAttribute('stroke-width',sw);a.setAttribute('stroke-linecap','round');a.setAttribute('stroke-linejoin','round');return a;};
+ s.addEventListener('pointerdown',e=>{if(!tool)return;ptrs.add(e.pointerId);if(ptrs.size>1){drop();return;}e.preventDefault();try{s.setPointerCapture(e.pointerId);}catch(_){}
+  if(tool==='erase'){eraseAt(e);return;}
+  const p=pt(s,e),sc=scOf(s),isH=tool==='hl',T=TS[tool],w=(isH?Math.max(SZ[T.si]*3,14):SZ[T.si])/sc,g=document.createElementNS(NS,'g');g.setAttribute('class','stk');
+  const vis=mk(T.c,w,'vis'),hit=mk('transparent',Math.max(w,18/sc),'hit'),d='M'+p.x.toFixed(1)+' '+p.y.toFixed(1)+' L'+p.x.toFixed(1)+' '+p.y.toFixed(1);
+  if(isH)vis.setAttribute('stroke-opacity','.4');
+  vis.setAttribute('d',d);hit.setAttribute('d',d);g.appendChild(vis);g.appendChild(hit);s.appendChild(g);cur={g,vis,hit,d};});
+ s.addEventListener('pointermove',e=>{if(!tool||ptrs.size!==1)return;if(tool==='erase'){eraseAt(e);return;}if(!cur)return;const p=pt(s,e);cur.d+=' L'+p.x.toFixed(1)+' '+p.y.toFixed(1);cur.vis.setAttribute('d',cur.d);cur.hit.setAttribute('d',cur.d);});
+ s.addEventListener('pointerup',e=>{ptrs.delete(e.pointerId);if(cur){U.push({t:'add',el:cur.g,s});R=[];cur=null;tbSync();}});
+ s.addEventListener('pointercancel',e=>{ptrs.delete(e.pointerId);drop();});}
+function toolToggle(){const f=gid('codeFull');if(!f.classList.contains('open'))chatToggle();const tb=gid('tb'),on=!tb.classList.contains('open');tb.classList.toggle('open',on);f.classList.toggle('tbo',on);tool=on?'pen':null;if(on){ctS.b=1;ctSave();}popClose();tbSync();layout();tipSync();}
+document.addEventListener('keydown',e=>{if(!gid('codeFull').classList.contains('open'))return;const k=e.key.toLowerCase(),m=e.ctrlKey||e.metaKey;if(m&&k==='z'&&!e.shiftKey){e.preventDefault();undo();}else if(m&&(k==='y'||(k==='z'&&e.shiftKey))){e.preventDefault();redo();}});
+function tpv(){return 48+(gid('tb').classList.contains('open')?44:0)+(gid('qb').classList.contains('open')?36:0);}
+function qSync(){const k=curTab-1,e=E[k];if(!e)return;const hp=kuText(e.c)!==e.c,hn=kuNames(e.c)!==e.c;
+ gid('qbPi').checked=!!KU_ON[k];gid('qbNi').checked=!!KN_ON[k];gid('qbPi').disabled=!hp;gid('qbNi').disabled=!hn;gid('qbP').classList.toggle('dis',!hp);gid('qbN').classList.toggle('dis',!hn);}
+function viewerRefresh(){const pre=gid('codeFull').querySelector('.code-content pre');if(!pre)return;pre.innerHTML=curCode(curTab-1).split('\n').map(hl).join('\n');applyZ();}
+function qSet(t,on){const k=curTab-1;if(t==='p')KU_ON[k]=on;else KN_ON[k]=on;refreshCode(k);
+ const c=document.querySelectorAll('.content')[curTab];if(c)c.querySelectorAll('.code-tools input').forEach(i=>{if((i.getAttribute('onchange')||'').indexOf(t==='p'?'toggleKu':'toggleKn')===0)i.checked=on;});viewerRefresh();}
+function qCopy(btn){copyCode(curTab-1,btn);}
+function quickToggle(){const f=gid('codeFull');if(!f.classList.contains('open'))chatToggle();const q=gid('qb'),on=!q.classList.contains('open');q.classList.toggle('open',on);if(on){ctS.c=1;ctSave();qSync();}popClose();layout();tipSync();}
+(function(){const c=gid('chatHead');let x0=0,xx=0,dr=false,dir=0;
+ const reset=()=>{c.classList.remove('drag');c.style.transform='';gid('ctip').classList.remove('hint');tipSync();};
+ c.addEventListener('pointerdown',e=>{gid('ctip').classList.remove('show');xx=e.clientX;x0=e.clientY;dr=true;dir=0;try{c.setPointerCapture(e.pointerId);}catch(_){}});
+ c.addEventListener('pointermove',e=>{if(!dr)return;const dy=e.clientY-x0,dx=e.clientX-xx;
+  if(!dir){if(dy>24&&dy>Math.abs(dx))dir='d';else if(dx<-24&&-dx>Math.abs(dy))dir='l';else if(dy<-24&&-dy>Math.abs(dx))dir='u';else if(Math.abs(dy)>24||Math.abs(dx)>24)dir=-1;}
+  if(dir!==-1){c.classList.add('drag');c.style.transform=dir==='l'?'translateX('+Math.max(-50,Math.min(0,dx))+'px)':dir==='u'?'translateY('+Math.max(-50,Math.min(0,dy))+'px)':'translateY('+Math.max(0,Math.min(50,dy))+'px)';gid('ctip').classList.remove('show','hint');}});
+ c.addEventListener('pointerup',()=>{if(!dr)return;dr=false;reset();if(dir==='u'){c.classList.toggle('dock');if(navigator.vibrate)navigator.vibrate(30);tipSync();}else if(c.classList.contains('dock')){if(!dir||dir===-1){c.classList.remove('dock');tipSync();}}else if(dir==='d')toolToggle();else if(dir==='l')quickToggle();else if(!dir)chatToggle();});
+ c.addEventListener('pointercancel',()=>{dr=false;reset();});
+ c.addEventListener('click',e=>{if(e.detail===0)chatToggle();});})();
+let pq=false,ps=false,rqv=0,smv=0,popK=null;
+function layout(){const H=window.innerHeight,tp=tpv();if(!rqv){rqv=Math.round(H*.33);smv=Math.round(H*.34);}
+ let a=pq?rqv:0,b=ps?smv:0;const av=Math.max(0,H-tp-110);if(a+b>av){const k=av/(a+b);a*=k;b*=k;}
+ if(solo==='req'){a=H-tp;b=0;}else if(solo==='sum'){a=0;b=H-tp;}
+ const r=document.documentElement.style;r.setProperty('--qt',(48+(gid('tb').classList.contains('open')?44:0))+'px');r.setProperty('--tp',tp+'px');r.setProperty('--rq',Math.round(a)+'px');r.setProperty('--sm',Math.round(b)+'px');
+ const oq=solo?solo==='req':pq,os=solo?solo==='sum':ps;gid('codeFull').classList.toggle('split',os);gid('paneReq').classList.toggle('open',oq);gid('paneSum').classList.toggle('open',os);
+ gid('reqSplit').classList.toggle('show',oq&&!solo);gid('codeSplit').classList.toggle('show',os&&!solo);gid('hbReq').classList.toggle('on',oq);gid('hbSum').classList.toggle('on',os);if(oq)applyP('req');if(os)applyP('sum');applyZ();sbUpdate();}
+function paneClose(){solo=null;soloPrev=null;pq=false;ps=false;layout();}
+let solo=null,soloPrev=null,lpFlag=false,shFlag=false;
+function renderPane(k){const i=curTab-1;if(k==='req'){const p=gid('paneReq');p.innerHTML=paneHtml('req','<div class="pb">'+fx(E[i].q||'')+'</div>');pzShow('req');mkPaneInk('req');}else{const p=gid('paneSum');p.innerHTML=paneHtml('sum','<div class="pb"><b class="hg">📚 کارەکەی ئەم کۆدە بەم شێوەیەیە:</b> '+fx(EXSUM[i]||'')+'</div>');pzShow('sum');mkPaneInk('sum');}}
+function soloSet(k){if(!gid('codeFull').classList.contains('open'))return;saveInk();
+ if(solo){solo=null;if(soloPrev){pq=soloPrev.pq;ps=soloPrev.ps;}soloPrev=null;layout();return;}
+ soloPrev={pq,ps};if(k==='req'&&!pq){pq=true;renderPane('req');}if(k==='sum'&&!ps){ps=true;renderPane('sum');}
+ solo=k;layout();if(navigator.vibrate)navigator.vibrate(40);}
+function paneOpen(k){if(!gid('codeFull').classList.contains('open'))return;if(lpFlag){lpFlag=false;return;}if(solo){soloSet(k);return;}saveInk();
+ if(k==='req'){pq=!pq;if(pq)renderPane('req');}else{ps=!ps;if(ps)renderPane('sum');}
+ layout();}
+(function(){const b=gid('hbShot');let on=false,x=0,y=0,ok=false;
+ const st=(cx,cy)=>{on=true;ok=false;x=cx;y=cy;};
+ const mv=(cx,cy)=>{if(!on)return;const dy=cy-y,dx=Math.abs(cx-x);if(dy<=0||dx>dy+20){b.style.transform='';b.classList.remove('dg');ok=false;return;}b.style.transform='translateY('+Math.min(dy,26)+'px)';ok=dy>26;b.classList.toggle('dg',ok);};
+ const en=()=>{if(!on)return;on=false;b.style.transform='';b.classList.remove('dg');if(ok){shFlag=true;setTimeout(()=>{shFlag=false;},400);shot();}ok=false;};
+ b.addEventListener('touchstart',e=>{const q=e.touches[0];st(q.clientX,q.clientY);},{passive:true});
+ b.addEventListener('touchmove',e=>{const q=e.touches[0];mv(q.clientX,q.clientY);},{passive:true});
+ b.addEventListener('touchend',en);b.addEventListener('touchcancel',en);
+ b.addEventListener('mousedown',e=>st(e.clientX,e.clientY));window.addEventListener('mousemove',e=>mv(e.clientX,e.clientY));window.addEventListener('mouseup',en);
+ b.addEventListener('contextmenu',e=>e.preventDefault());})();
+['hbReq','hbSum'].forEach(id=>{const b=gid(id),k=id==='hbReq'?'req':'sum';let on=false,x=0,y=0,ok=false;
+ const st=(cx,cy)=>{on=true;ok=false;x=cx;y=cy;};
+ const mv=(cx,cy)=>{if(!on)return;const dy=cy-y,dx=Math.abs(cx-x);if(dy<=0||dx>dy+20){b.style.transform='';b.classList.remove('dg');ok=false;return;}
+  b.style.transform='translateY('+Math.min(dy,26)+'px)';ok=dy>26;b.classList.toggle('dg',ok);};
+ const en=()=>{if(!on)return;on=false;b.style.transform='';b.classList.remove('dg');if(ok){lpFlag=true;setTimeout(()=>{lpFlag=false;},400);soloSet(k);}ok=false;};
+ b.addEventListener('touchstart',e=>{const q=e.touches[0];st(q.clientX,q.clientY);},{passive:true});
+ b.addEventListener('touchmove',e=>{const q=e.touches[0];mv(q.clientX,q.clientY);},{passive:true});
+ b.addEventListener('touchend',en);b.addEventListener('touchcancel',en);
+ b.addEventListener('mousedown',e=>st(e.clientX,e.clientY));window.addEventListener('mousemove',e=>mv(e.clientX,e.clientY));window.addEventListener('mouseup',en);
+ b.addEventListener('contextmenu',e=>e.preventDefault());});
+(function(){const mk=(id,fn)=>{const hd=gid(id);let d=false;hd.addEventListener('pointerdown',e=>{d=true;try{hd.setPointerCapture(e.pointerId);}catch(_){}});hd.addEventListener('pointermove',e=>{if(d){fn(e.clientY);layout();}});hd.addEventListener('pointerup',()=>{d=false;});hd.addEventListener('pointercancel',()=>{d=false;});};
+ const tp=()=>tpv();
+ mk('reqSplit',y=>{rqv=Math.max(70,y-tp());});
+ mk('codeSplit',y=>{smv=Math.max(70,window.innerHeight-y);});})();
+function popClose(){popK=null;gid('pop').className='pop';}
+function popOpen(k,btn){const p=gid('pop'),T=cur();if(popK===k){popClose();return;}popK=k;
+ if(k==='col')p.innerHTML=PAL.map(c=>'<button class="sw'+(c===T.c?' on':'')+'" style="background:'+c+'" onclick="pickCol(\''+c+'\')"></button>').join('')+'<label class="sw rb"><input type="color" value="'+(/^#[0-9a-f]{6}$/i.test(T.c)?T.c:'#ff4d4d')+'" oninput="setCol(this.value)" onchange="popClose()"></label>';
+ else p.innerHTML=SZ.map((s,i)=>{const d=Math.min(18,(dt()==='hl'?Math.max(s*3,14)/2:s)+3);return '<button class="sw sz'+(i===T.si?' on':'')+'" onclick="pickSz('+i+')"><i style="width:'+d+'px;height:'+d+'px"></i></button>';}).join('');
+ p.className='pop open';const r=btn.getBoundingClientRect(),w=p.offsetWidth;p.style.left=Math.max(6,Math.min(window.innerWidth-w-6,r.left+r.width/2-w/2))+'px';p.style.top=(r.bottom+6)+'px';}
+function pickCol(c){setCol(c);popClose();}
+function pickSz(i){setSz(i);popClose();}
+document.addEventListener('pointerdown',e=>{if(popK&&!(e.target.closest&&e.target.closest('#pop,#tbCol,#tbSz')))popClose();},true);
+let zq=13,zs=13;try{zq=parseFloat(localStorage.getItem('zq'))||13;zs=parseFloat(localStorage.getItem('zs'))||13;}catch(e){}
+function paneHtml(k,inner){const z=k==='req'?zq:zs;return '<div class="pzb"><button onclick="pz(\''+k+'\',-1)" aria-label="-">−</button><span>'+z+'</span><button onclick="pz(\''+k+'\',1)" aria-label="+">+</button></div><div class="psc"><div class="pwr"><div class="pin">'+inner+'</div></div></div>';}
+const pzT={};
+[['codeFull','code'],['paneReq','req'],['paneSum','sum']].forEach(([i,a])=>gid(i).addEventListener('pointerdown',()=>setAct(a),true));
+function pzShow(k){const b=gid(k==='req'?'paneReq':'paneSum').querySelector('.pzb');if(!b)return;b.classList.remove('hide');clearTimeout(pzT[k]);pzT[k]=setTimeout(()=>b.classList.add('hide'),4000);}
+function applyP(k){const p=gid(k==='req'?'paneReq':'paneSum'),sc=p.querySelector('.psc');if(!sc)return;const z=k==='req'?zq:zs,s=z/13,pin=p.querySelector('.pin');
+ pin.style.width=(sc.clientWidth/s)+'px';pin.style.transform='scale('+s+')';p.querySelector('.pwr').style.height=(pin.offsetHeight*s)+'px';p.querySelector('.pzb span').textContent=z;if(act===k)gid('zv').textContent=z;sizePaneInk(k);sbUpdate();}
+function setPz(k,v,fine,cy){pzShow(k);v=Math.max(4,Math.min(32,fine?Math.round(v*10)/10:Math.round(v*2)/2));const o=k==='req'?zq:zs;if(k==='req')zq=v;else zs=v;try{localStorage.setItem(k==='req'?'zq':'zs',v);}catch(e){}
+ const sc=gid(k==='req'?'paneReq':'paneSum').querySelector('.psc');applyP(k);if(sc&&o!==v){const r=v/o,c=cy==null?sc.clientHeight/2:cy;sc.scrollTop=(sc.scrollTop+c)*r-c;}}
+function pz(k,d){setPz(k,(k==='req'?zq:zs)+d,false,null);}
+['paneReq','paneSum'].forEach((id,ix)=>{const el=gid(id),k=ix?'sum':'req';let d0=0,z0=13;const dist=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
+ el.addEventListener('pointerdown',()=>pzShow(k),{passive:true});
+ el.addEventListener('touchstart',e=>{if(e.touches.length===2){d0=dist(e.touches);z0=k==='req'?zq:zs;}},{passive:true});
+ el.addEventListener('touchmove',e=>{if(e.touches.length===2&&d0){e.preventDefault();const r=el.getBoundingClientRect();setPz(k,z0*dist(e.touches)/d0,true,(e.touches[0].clientY+e.touches[1].clientY)/2-r.top);}},{passive:false});
+ el.addEventListener('touchend',e=>{if(e.touches.length<2)d0=0;},{passive:true});
+ el.addEventListener('wheel',e=>{if(e.ctrlKey){e.preventDefault();const r=el.getBoundingClientRect();setPz(k,(k==='req'?zq:zs)+(e.deltaY<0?1:-1),false,e.clientY-r.top);}},{passive:false});});
+function toast(t){const e=gid('toast');e.textContent=t;e.classList.add('show');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),3000);}
+let shooting=false;
+async function shotClick(){if(shFlag){shFlag=false;return;}shot();}
+async function shot(only){const f=gid('codeFull');if(!f.classList.contains('open')||shooting)return;if(only==='code'&&f.clientHeight<3){toast('بۆکسی ڕەش دیار نییە');return;}shooting=true;toast('⏳ ...');
+ try{
+  const W=f.clientWidth,i=curTab-1,hq=only!=='code'&&gid('paneReq').classList.contains('open')?gid('paneReq').offsetHeight:0,hs=only!=='code'&&gid('paneSum').classList.contains('open')?gid('paneSum').offsetHeight:0,hc=f.clientHeight<3?0:f.clientHeight,H=hq+hc+hs,K0=8072/W,bg=hs?'#f0fdf4':hc?'#1e1e1e':'#f0f9ff';
+  const wrap=document.createElement('div');wrap.style.cssText='width:'+W+'px;text-rendering:geometricPrecision;-webkit-font-smoothing:antialiased;font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;background:'+(hs?'#f0fdf4':hc?'#1e1e1e':'#f0f9ff');
+  const sty=document.createElement('style');sty.textContent=document.querySelector('style').textContent;wrap.appendChild(sty);
+  const mkPane=(id,cls,Hp)=>{const pn=gid(id),c=pn.cloneNode(true);c.removeAttribute('id');c.className='pane '+cls+' open';
+   c.style.cssText='display:block;position:relative;left:auto;right:auto;top:auto;bottom:auto;width:'+W+'px;height:'+Hp+'px;overflow:hidden;box-shadow:none;border-radius:0;margin:0;animation:none';
+   const sc=pn.querySelector('.psc'),cs=c.querySelector('.psc'),wr=c.querySelector('.pwr'),pzb=c.querySelector('.pzb');if(pzb)pzb.remove();
+   cs.style.overflow='hidden';wr.style.transform='translate('+(-sc.scrollLeft)+'px,'+(-sc.scrollTop)+'px)';return c;};
+  if(hq)wrap.appendChild(mkPane('paneReq','rq',hq));
+  const cl=f.cloneNode(true);cl.removeAttribute('id');cl.className='code-full open';
+  cl.style.cssText='display:block;position:relative;left:auto;right:auto;top:auto;bottom:auto;width:'+W+'px;height:'+hc+'px;overflow:hidden;animation:none';
+  const cz=cl.querySelector('#cz');cz.removeAttribute('id');cz.style.position='relative';cz.style.transform='translateY('+(-f.scrollTop)+'px)';
+  const cc=cl.querySelector('.code-content'),sl=f.querySelector('.code-content').scrollLeft;cc.style.overflow='hidden';[...cc.children].forEach(x=>{x.style.transform='translateX('+(-sl)+'px)';});
+  if(hc)wrap.appendChild(cl);
+  if(hs)wrap.appendChild(mkPane('paneSum','sum',hs));
+  const enc=t=>'data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(t)));
+  let blob=null,TW=0;
+  for(let att=0;att<6&&!blob;att++){
+   const Kc=K0*Math.pow(.72,att),Wd=Math.round(W*Kc),Hd=Math.round(H*Kc);
+   try{wrap.style.setProperty('zoom',Kc);
+    const svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+Wd+'" height="'+Hd+'"><foreignObject x="0" y="0" width="'+Wd+'" height="'+Hd+'">'+new XMLSerializer().serializeToString(wrap)+'</foreignObject></svg>';
+    const img=new Image();await new Promise((ok,no)=>{img.onload=ok;img.onerror=()=>no(new Error('img'));img.src=enc(svg);});
+    const cv=document.createElement('canvas');cv.width=Wd;cv.height=Hd;const ctx=cv.getContext('2d');if(!ctx)throw new Error('ctx');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,Wd,Hd);ctx.drawImage(img,0,0,Wd,Hd);
+    blob=await new Promise(r=>cv.toBlob(r,'image/png'));if(blob)TW=Wd;cv.width=cv.height=0;
+   }catch(_){blob=null;}
+   if(!blob&&att<5)toast('⏳ '+Math.round(W*K0*Math.pow(.72,att+1))+'px ...');
+  }
+  if(!blob)throw new Error('blob');
+  const name='csharp-lab-Q'+(i+1)+'-'+Date.now()+'.png',file=new File([blob],name,{type:'image/png'});
+  if(/; wv\)/.test(navigator.userAgent)&&navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file]});}
+  else{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),5000);}
+  toast('✅ وێنەکە پاشەکەوت کرا ('+TW+'px)');
+ }catch(e){if(e&&e.name==='AbortError')toast('هەڵوەشێنرایەوە');else toast('❌ نەتوانرا وێنە بگیرێت');}
+ finally{shooting=false;}}
+let sbOnly=null,sbShow=false;function sbToggle(){sbShow=!sbShow;gid('tbSb').classList.toggle('on',sbShow);sbUpdate();}const SB={};
+function sbGeom(r){const f=gid('codeFull');
+ if(r==='code'){if(!f.classList.contains('open'))return null;const c=f.querySelector('.code-content'),n=f.querySelector('.line-numbers');if(!c)return null;const Rc=f.getBoundingClientRect();
+  return{R:Rc,hx:Rc.left+(n?n.getBoundingClientRect().width:0),v:{vp:f.clientHeight,ct:f.scrollHeight,pos:f.scrollTop,set:x=>{f.scrollTop=x;}},h:{vp:c.clientWidth,ct:c.scrollWidth,pos:c.scrollLeft,set:x=>{c.scrollLeft=x;}}};}
+ const p=gid(r==='req'?'paneReq':'paneSum');if(!p.classList.contains('open'))return null;const sc=p.querySelector('.psc');if(!sc)return null;const Rp=p.getBoundingClientRect();
+ return{R:Rp,hx:Rp.left,v:{vp:sc.clientHeight,ct:sc.scrollHeight,pos:sc.scrollTop,set:x=>{sc.scrollTop=x;}},h:{vp:sc.clientWidth,ct:sc.scrollWidth,pos:sc.scrollLeft,set:x=>{sc.scrollLeft=x;}}};}
+function sbUpdate(){const open=gid('codeFull').classList.contains('open');
+ ['code','req','sum'].forEach(r=>{const g=open?sbGeom(r):null;['v','h'].forEach(a=>{const bar=SB[r+a],th=bar.firstChild,m=g&&g[a];
+  if(!sbShow||!m||m.ct<=m.vp+2||(sbOnly&&sbOnly!==r)){bar.style.display='none';return;}
+  if(a==='v'){const tl=g.R.height-16;if(tl<40){bar.style.display='none';return;}bar.style.display='block';bar.style.left=(g.R.right-20)+'px';bar.style.top=(g.R.top+8)+'px';bar.style.height=tl+'px';const len=Math.max(28,tl*m.vp/m.ct);th.style.height=len+'px';th.style.top=((tl-len)*m.pos/(m.ct-m.vp))+'px';}
+  else{const x0=g.hx+6,tl=g.R.right-x0-24;if(tl<40){bar.style.display='none';return;}bar.style.display='block';bar.style.left=x0+'px';bar.style.top=(g.R.bottom-20)+'px';bar.style.width=tl+'px';const len=Math.max(28,tl*m.vp/m.ct);th.style.width=len+'px';th.style.left=((tl-len)*m.pos/(m.ct-m.vp))+'px';}});});}
+function wireSb(bar,r,a){const th=bar.firstChild;let d=false,s0=0,p0=0;
+ th.addEventListener('pointerdown',e=>{const g=sbGeom(r);if(!g)return;d=true;s0=a==='v'?e.clientY:e.clientX;p0=g[a].pos;sbOnly=r;try{th.setPointerCapture(e.pointerId);}catch(_){}e.preventDefault();e.stopPropagation();sbUpdate();});
+ th.addEventListener('pointermove',e=>{if(!d)return;const g=sbGeom(r);if(!g)return;const m=g[a],tl=a==='v'?bar.clientHeight:bar.clientWidth,len=a==='v'?th.offsetHeight:th.offsetWidth,mx=m.ct-m.vp;if(mx<=0)return;m.set(Math.max(0,Math.min(mx,p0+((a==='v'?e.clientY:e.clientX)-s0)*(mx/Math.max(1,tl-len)))));sbUpdate();});
+ const end=()=>{if(!d)return;d=false;sbOnly=null;sbUpdate();};th.addEventListener('pointerup',end);th.addEventListener('pointercancel',end);}
+['code','req','sum'].forEach(r=>['v','h'].forEach(a=>{const d=document.createElement('div');d.className='sbar '+a;d.innerHTML='<i></i>';document.body.appendChild(d);SB[r+a]=d;wireSb(d,r,a);}));
+document.addEventListener('scroll',sbUpdate,true);window.addEventListener('resize',sbUpdate);
+(function(){const tb=gid('tb');let t=null,x=0,y=0;const c=()=>{clearTimeout(t);t=null;};
+ tb.addEventListener('pointerdown',e=>{const el=e.target;if(!(el===tb||(el.classList&&el.classList.contains('sep'))))return;x=e.clientX;y=e.clientY;c();t=setTimeout(()=>{t=null;sbShow=!sbShow;gid('tbSb').classList.toggle('on',sbShow);if(navigator.vibrate)navigator.vibrate(30);toast(sbShow?'📜 سکرۆڵەکان دەرکەوتن':'سکرۆڵەکان شاردرانەوە');sbUpdate();},2000);});
+ tb.addEventListener('pointermove',e=>{if(t&&Math.hypot(e.clientX-x,e.clientY-y)>12)c();});tb.addEventListener('pointerup',c);tb.addEventListener('pointercancel',c);})();
+setLab(0);
+</script>
+<script>
+(function(){
+function reveal(oc){
+  const n=Math.max(1,(oc.textContent.match(/\n/g)||[]).length+1);
+  if(oc.animate)oc.animate([{clipPath:"inset(0 0 100% 0)"},{clipPath:"inset(0 0 0 0)"}],{duration:Math.min(1400,300+n*160),easing:"steps("+n+",end)"});
+}
+function busy(host,oc,done){
+  if(host._runT){clearTimeout(host._runT);const o=host.querySelector(".run-badge");if(o)o.remove();}
+  host.classList.add("run-live");
+  oc.style.visibility="hidden";
+  const b=document.createElement("div");b.className="run-badge";b.textContent="⏳ Running...";host.appendChild(b);
+  host._runT=setTimeout(()=>{b.remove();oc.style.visibility="";host._runT=null;done();},450);
+}
+function exitOut(box){
+  if(!box._ro)return;
+  box._ro=false;clearTimeout(box._rt);
+  box.classList.remove("run-out-on");
+  const p=box.querySelector(":scope > .run-out");if(p)p.remove();
+  if(box._so){box._so.disconnect();box._so=null;}
+  if(box._mo){box._mo.disconnect();box._mo=null;}
+  const b=box.querySelector(".run-btn");if(b){b.textContent="▶ Run";b.classList.remove("back");}
+}
+function enterOut(box,btn){
+  const ex=box.closest(".example");if(!ex)return;
+  const src=ex.querySelector(":scope > .output-box .output-content");if(!src)return;
+  const p=document.createElement("div");p.className="run-out";
+  p.innerHTML='<div class="ro-h">▶ Output &nbsp;|&nbsp; دەرەنجام</div><div class="ro-b"></div>';
+  const body=p.querySelector(".ro-b");
+  const fill=()=>{body.innerHTML=src.innerHTML;};
+  fill();body.style.visibility="hidden";
+  const badge=document.createElement("div");badge.className="run-badge";badge.textContent="⏳ Running...";p.appendChild(badge);
+  box.appendChild(p);box._ro=true;box.classList.add("run-out-on");
+  btn.textContent="↩ کۆد";btn.classList.add("back");
+  box._rt=setTimeout(()=>{badge.remove();body.style.visibility="";reveal(body);},450);
+  box._so=new MutationObserver(fill);box._so.observe(src,{childList:true,subtree:true,characterData:true});
+  // when the pin is switched off (or the tab changes) the box turns back into code
+  box._mo=new MutationObserver(()=>{if(!box.classList.contains("pinned"))exitOut(box);});
+  box._mo.observe(box,{attributes:true,attributeFilter:["class"]});
+}
+window.runCode=function(btn){
+  const box=btn.closest(".code-box");
+  if(box&&box.classList.contains("pinned")){if(box._ro)exitOut(box);else enterOut(box,btn);return;}
+  if(box&&box._ro)exitOut(box);
+  const ex=btn.closest(".example");if(!ex)return;
+  const out=ex.querySelector(":scope > .output-box");if(!out)return;
+  const oc=out.querySelector(".output-content");if(!oc)return;
+  out.scrollIntoView({behavior:"smooth",block:"center"});
+  busy(out,oc,()=>{reveal(oc);out.classList.remove("run-flash");void out.offsetWidth;out.classList.add("run-flash");});
+};
+window.runPopClose=function(){const p=document.getElementById("runPop");if(p)p.classList.remove("open");};
+window.qRun=function(btn){
+  const ex=document.querySelector(".content.active .example");if(!ex)return;
+  const src=ex.querySelector(":scope > .output-box .output-content");if(!src)return;
+  let p=document.getElementById("runPop");
+  if(!p){p=document.createElement("div");p.id="runPop";p.className="run-pop";
+    p.innerHTML='<div class="rp-h"><span>▶ Output</span><button onclick="runPopClose()" aria-label="close">✕</button></div><div class="rp-b" id="runPopB"></div>';
+    document.body.appendChild(p);}
+  const body=document.getElementById("runPopB");
+  body.innerHTML=src.innerHTML;p.classList.add("open");
+  busy(body,body,()=>{body.classList.remove("run-live");reveal(body);});
+};
+})();
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script>
+(function(){
+const FIREBASE_CFG={apiKey:"AIzaSyDJk3ExLlccT9Mc0UvxRRmPox_v67RYdls",authDomain:"it-department-id101.firebaseapp.com",projectId:"it-department-id101",storageBucket:"it-department-id101.firebasestorage.app",messagingSenderId:"800422445871",appId:"1:800422445871:web:0a2348a095b10e4d0917da"};
+const FORM_URL="https://formspree.io/f/xyekorok";
+const EN_NAME_RE=/^[A-Za-z0-9\s'.-]+$/;
+const $=id=>document.getElementById(id);
+// ئەسایمێنتەکان: لێرەدا زیادیان بکە. نموونە: {t:"Assignment 1",d:"2026-12-01",n:"تێبینی",u:"https://..."}
+const ASSIGNMENTS=[];
+const escH=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+let db=null,unsub=null,expTimer=null,holdTimeout=null,holdInterval=null;
+try{firebase.initializeApp(FIREBASE_CFG);db=firebase.firestore();}catch(e){db=null;}
+function visitorCode(){try{let c=localStorage.getItem("_am");if(!c){const ch="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";c="";for(let i=0;i<4;i++)c+=ch[Math.floor(Math.random()*ch.length)];localStorage.setItem("_am",c);}return c;}catch(e){return "----";}}
+function norm(s){return s.trim().replace(/\s+/g," ").toLowerCase();}
+function encodeName(s){const t=s.trim(),m=t.match(/^(.*?)(\d+)\s*$/);return m?"#"+m[1]+"@"+m[2]:"#"+t;}
+function decodeName(s){const t=(s||"").trim(),m=t.match(/^#(.*)@(\d+)$/);return m?m[1]+m[2]:t;}
+function showAlert(msg,title){const t=$("lockAlertTitle");t.textContent=title||"❌ هەڵە";t.style.color=(title||"").startsWith("✅")?"#166534":"#5b21b6";$("lockAlertBody").textContent=msg;$("lockAlertOverlay").classList.add("open");}
+function lsRemove(keys){try{keys.forEach(k=>localStorage.removeItem(k));}catch(e){}}
+function post(subject,message){return fetch(FORM_URL,{method:"POST",headers:{Accept:"application/json","Content-Type":"application/json"},body:JSON.stringify({subject:subject,message:message,visitor_code:visitorCode()})});}
+function holdEnd(){if(holdTimeout){clearTimeout(holdTimeout);holdTimeout=null;}if(holdInterval){clearInterval(holdInterval);holdInterval=null;}const b=$("lockReqBtn");if(b){b.classList.remove("holding");b.style.setProperty("--hold-pct","0%");}}
+function closeMenu(){const d=$("drawer"),b=$("drawerBg");if(d)d.classList.remove("open");if(b)b.classList.remove("open");}
+function forceLock(msg){
+  closeMenu();
+  if(unsub){unsub();unsub=null;}
+  if(expTimer){clearInterval(expTimer);expTimer=null;}
+  lsRemove(["siteAccessCode","siteAccessName","siteAccessExpires"]);
+  document.body.classList.add("locked");
+  $("lockOverlay").classList.remove("hide");
+  $("lockMsg").textContent=msg||"";
+  $("lockInput").value="";
+  const n=$("lockNameInput");if(n&&!n.hasAttribute("readonly"))n.value="";
+}
+function clearRequest(){
+  lsRemove(["siteReqName","siteReqNameEncoded","siteReqContact"]);
+  holdEnd();
+  const a=$("lockReqName");if(a){a.removeAttribute("readonly");a.value="";}
+  const c=$("lockReqContact");if(c)c.value="";
+  const n=$("lockNameInput");if(n){n.removeAttribute("readonly");n.value="";}
+}
+function forceLockAndClear(msg){forceLock(msg);clearRequest();}
+function watchExpiry(ms){
+  if(expTimer){clearInterval(expTimer);expTimer=null;}
+  if(ms)expTimer=setInterval(()=>{if(Date.now()>=ms)forceLock("❌ کۆدەکە بەسەرچوو، داوای کۆدێکی نوێ بکە");},1000);
+}
+function watchCode(code,expMs){
+  if(!db)return;
+  if(unsub)unsub();
+  watchExpiry(expMs);
+  unsub=db.collection("accessCodes").doc(code).onSnapshot(snap=>{
+    if(!snap.exists){forceLockAndClear("❌ مۆڵەتی چوونەژوورەوەت لابرا");return;}
+    const d=snap.data(),e=d.expiresAt?d.expiresAt.toMillis():null;
+    if(e&&e<Date.now())forceLock("❌ کۆدەکە بەسەرچوو، داوای کۆدێکی نوێ بکە");else watchExpiry(e);
+  },()=>{});
+}
+async function notifyLogin(name,code){try{await post("✅ چوونەژوورەوەی سەرکەوتوو",'بەکارهێنەر "'+name+'" سەرکەووتوبوو لە چوونە ژوورەوە.\nکۆد بەکارهاتوو: '+code);}catch(e){}}
+async function checkLock(){
+  const nameEl=$("lockNameInput"),codeEl=$("lockInput"),btn=$("lockBtn"),msg=$("lockMsg");
+  const code=codeEl.value.trim().toUpperCase(),typed=nameEl.value;
+  if(!typed.trim()){msg.textContent="❌ تکایە ناوت بنووسە";nameEl.classList.add("err");setTimeout(()=>nameEl.classList.remove("err"),350);showAlert("تکایە ناوت بنووسە");return;}
+  if(!code){codeEl.focus();return;}
+  btn.disabled=true;const old=btn.textContent;btn.textContent="⏳ پشکنین...";msg.textContent="";
+  let realName=typed;
+  if(nameEl.hasAttribute("readonly")){try{const r=localStorage.getItem("siteReqNameEncoded");if(r)realName=r;}catch(e){}}
+  try{
+    if(!db)throw new Error("no-db");
+    const snap=await db.collection("accessCodes").doc(code).get();
+    const data=snap.exists?snap.data():null;
+    const expMs=data&&data.expiresAt?data.expiresAt.toMillis():null;
+    const expired=!!(expMs&&expMs<Date.now());
+    if(data&&!expired&&norm(realName)===norm(data.name||"")){
+      const shown=decodeName(typed);
+      try{localStorage.setItem("siteAccessCode",code);localStorage.setItem("siteAccessName",shown);localStorage.setItem("siteAccessExpires",expMs||"");}catch(e){}
+      $("lockOverlay").classList.add("hide");document.body.classList.remove("locked");
+      msg.textContent="";codeEl.classList.remove("err");nameEl.classList.remove("err");
+      showAlert("بەکارهێنەر "+shown+" سەرکەوتوو بوو لە چوونەژوورەوە","✅ سەرکەوتوو");
+      notifyLogin(shown,code);
+      try{watchCode(code,expMs);}catch(e){}
+    }else{
+      const why=data?(expired?"کۆدەکە بەسەرچوو":"ناوەکە لەگەڵ کۆدەکە ناگونجێت"):"کۆدەکە هەڵەیە، تکایە دووبارە هەوڵ بدەرەوە";
+      msg.textContent="❌ "+why;codeEl.classList.add("err");nameEl.classList.add("err");codeEl.value="";codeEl.focus();
+      setTimeout(()=>{codeEl.classList.remove("err");nameEl.classList.remove("err");},350);
+      showAlert(why);
+    }
+  }catch(e){
+    const m="نەتوانرا پەیوەندی بە سێرڤەرەوە بکرێت، ئینتەرنێتەکەت بپشکنە";
+    msg.textContent="❌ "+m;showAlert(m);
+  }
+  btn.disabled=false;btn.textContent=old;
+}
+function toggleReq(){$("lockReq").classList.toggle("open");$("lockReqName").focus();}
+async function sendReq(){
+  const nameEl=$("lockReqName"),contactEl=$("lockReqContact"),msg=$("lockReqMsg"),btn=$("lockReqBtn");
+  if(nameEl.hasAttribute("readonly"))return;
+  const name=nameEl.value.trim(),contact=contactEl.value.trim();
+  if(!name){nameEl.focus();nameEl.classList.add("err");setTimeout(()=>nameEl.classList.remove("err"),350);return;}
+  if(!EN_NAME_RE.test(name)||name.length<6||!/[0-9]/.test(name)){
+    nameEl.classList.add("err");setTimeout(()=>nameEl.classList.remove("err"),350);
+    msg.style.color="#991b1b";msg.textContent="❌ بە ئینگلیزی بنووسە، نموونە: alifazll56";
+    nameEl.value="";contactEl.value="";
+    showAlert("❌ بە ئینگلیزی بنووسە، نموونە: alifazll56\nناوی خۆت+ناوی باوکت+ژمارە\nلایەنی کەم پێویستە ناوەکە لە شەش پیت کەمتر نەبێت");
+    return;
+  }
+  if(!contact){contactEl.focus();contactEl.classList.add("err");setTimeout(()=>contactEl.classList.remove("err"),350);return;}
+  btn.disabled=true;btn.textContent="⏳ دەنێردرێت...";
+  const enc=encodeName(name);
+  try{
+    const r=await post("داواکاری مۆڵەتی چوونەژوورەوە","کەسێک داوای مۆڵەتی چوونەژوورەوەی ماڵپەڕەکەی دەکات.\nناوی پیشاندان: "+name+"\nنرخی ڕاستەقینە (ئەمە بنووسە لە Firestore بۆ خانەی name): "+enc+"\nپەیوەندی: "+contact);
+    if(r.ok){
+      msg.style.color="#166534";msg.textContent="✅ داواکارییەکەت نێردرا بۆ دروستکەری ماڵپەڕ. چاوەڕێی کۆدەکەت بە.";
+      nameEl.setAttribute("readonly","readonly");
+      try{localStorage.setItem("siteReqName",name);localStorage.setItem("siteReqNameEncoded",enc);localStorage.setItem("siteReqContact",contact);}catch(e){}
+      const ln=$("lockNameInput");ln.value=name;ln.setAttribute("readonly","readonly");$("lockInput").focus();
+    }else{msg.style.color="#991b1b";msg.textContent="❌ نەتوانرا بنێردرێت، دووبارە هەوڵ بدەرەوە.";}
+  }catch(e){msg.style.color="#991b1b";msg.textContent="❌ کێشەی ئینتەرنێت ڕوویدا.";}
+  btn.disabled=false;btn.textContent="📤 ناردنی داواکاری";
+}
+function holdStart(){
+  const nameEl=$("lockReqName");
+  if(!nameEl||!nameEl.hasAttribute("readonly")||holdTimeout)return;
+  const btn=$("lockReqBtn");if(!btn)return;
+  let t=0;btn.classList.add("holding");btn.style.setProperty("--hold-pct","0%");
+  holdInterval=setInterval(()=>{t+=100;btn.style.setProperty("--hold-pct",Math.min(100,t/5000*100)+"%");},100);
+  holdTimeout=setTimeout(()=>{holdEnd();sendReminder();},5000);
+}
+async function sendReminder(){
+  const msg=$("lockReqMsg");let name=null,enc=null,contact=null;
+  try{name=localStorage.getItem("siteReqName");enc=localStorage.getItem("siteReqNameEncoded");contact=localStorage.getItem("siteReqContact");}catch(e){}
+  if(!name)return;
+  if(msg){msg.style.color="#5b21b6";msg.textContent="⏳ بیرخستنەوە دەنێردرێت...";}
+  try{
+    const r=await post("🔔 بیرخستنەوە: داواکاری چاوەڕوانی مۆڵەتە","بیرخستنەوەیە: ئەم بەکارهێنەرە هێشتا چاوەڕێی کۆدی چوونەژوورەوەیە.\nناوی پیشاندان: "+name+"\nنرخی ڕاستەقینە (ئەمە بنووسە لە Firestore بۆ خانەی name): "+(enc||"")+"\nپەیوەندی: "+(contact||""));
+    if(msg){if(r.ok){msg.style.color="#166534";msg.textContent="🔔 بیرخستنەوەکە نێردرا بۆ خاوەن ماڵپەڕ";}else{msg.style.color="#991b1b";msg.textContent="❌ نەتوانرا بیرخستنەوەکە بنێردرێت";}}
+  }catch(e){if(msg){msg.style.color="#991b1b";msg.textContent="❌ کێشەی ئینتەرنێت ڕوویدا.";}}
+}
+window.checkLock=checkLock;
+window.lockToggleReq=toggleReq;
+window.lockSendReq=sendReq;
+window.lockHoldStart=holdStart;
+window.lockHoldEnd=holdEnd;
+window.lockCloseAlert=function(){$("lockAlertOverlay").classList.remove("open");};
+window.siteMenu=function(open){
+  if(!open){closeMenu();return;}
+  let nm="";try{nm=localStorage.getItem("siteAccessName")||"";}catch(e){}
+  $("drawerUser").textContent=nm?"👤 "+nm:"";
+  $("drawer").classList.add("open");$("drawerBg").classList.add("open");
+};
+window.siteLogout=function(){forceLock("");};
+window.siteAssignments=function(){
+  closeMenu();
+  $("asgList").innerHTML=ASSIGNMENTS.length?ASSIGNMENTS.map(a=>'<div class="asg-item"><b>'+escH(a.t||"")+'</b>'+(a.d?'<span class="asg-due">'+escH(a.d)+'</span>':'')+(a.n?'<p>'+escH(a.n)+'</p>':'')+(a.u&&/^https?:\/\//.test(a.u)?'<a href="'+escH(a.u)+'" target="_blank" rel="noopener">بکەرەوە ↗</a>':'')+'</div>').join(""):'<div class="asg-empty">هێشتا هیچ ئەسایمێنتێک زیاد نەکراوە.</div>';
+  $("asgOverlay").classList.add("open");
+};
+window.asgClose=function(){$("asgOverlay").classList.remove("open");};
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeMenu();});
+// restore a pending request (name stays locked, grey, even after refresh)
+try{const rn=localStorage.getItem("siteReqName");if(rn){const a=$("lockReqName");a.value=rn;a.setAttribute("readonly","readonly");const b=$("lockNameInput");b.value=rn;b.setAttribute("readonly","readonly");}}catch(e){}
+// restore an existing session
+(async function(){
+  let code=null;try{code=localStorage.getItem("siteAccessCode");}catch(e){}
+  if(code){
+    try{
+      if(!db)throw new Error("no-db");
+      const snap=await db.collection("accessCodes").doc(code).get();
+      if(snap.exists){
+        const d=snap.data(),e=d.expiresAt?d.expiresAt.toMillis():null;
+        if(!(e&&e<Date.now())){$("lockOverlay").classList.add("hide");document.body.classList.remove("locked");watchCode(code,e);return;}
+        forceLock("❌ کۆدەکە بەسەرچوو، داوای کۆدێکی نوێ بکە");
+        ($("lockNameInput").hasAttribute("readonly")?$("lockInput"):$("lockNameInput")).focus();
+        return;
+      }
+    }catch(e){
+      // no connection: keep the earlier login so the site stays usable
+      $("lockOverlay").classList.add("hide");document.body.classList.remove("locked");return;
+    }
+    lsRemove(["siteAccessCode","siteAccessName","siteAccessExpires"]);
+    clearRequest();
+  }
+  ($("lockNameInput").hasAttribute("readonly")?$("lockInput"):$("lockNameInput")).focus();
+})();
+})();
+</script>
+</body>
+</html>
